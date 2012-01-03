@@ -2,7 +2,7 @@
   (:use [overtone.live])
 )
 
-From https://gist.github.com/1551277 by jennifersmith.
+;; From https://gist.github.com/1551277 by jennifersmith.
 
 (defcgen triangle-osc [freq phase {:default 0.0} harmonics {:default 40}]
   (:ar  (let
