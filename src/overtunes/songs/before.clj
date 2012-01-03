@@ -44,17 +44,19 @@
   (chord :Bb3 :major)
 ])
 
-(defn play-chord [notes] 
+(defn play-chord [notes duration] ( do 
+  (defn play-note [note] (organ-cornet note (/ duration 1000)))
   (mix 
-    (map organ-cornet (map midi->hz notes))
+    (map play-note (map midi->hz notes))
   )
-)
+))
 
 (def metro (metronome 200))
+(defn beat-length [metro] (- (metro 1) (metro 0))) 
 
 (defn play-progression [progression metro start] ( do
   (if (> (count progression) 0) (do
-    (at (metro (+ start 0)) (play-chord (nth progression 0)))
+    (at (metro (+ start 0)) (play-chord (nth progression 0) (* 4 (beat-length metro))))
     (play-progression (rest progression) metro (+ start 4))
   ))
 ))
