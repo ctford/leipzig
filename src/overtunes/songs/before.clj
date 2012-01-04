@@ -3,6 +3,10 @@
   (:use [overtunes.instruments.organ-cornet])
 )
 
+(def melody
+  [:C4 :Bb4 :Eb4 :G4]
+)
+
 (def starting-section [
   (chord :Eb3 :major)
   (chord :Eb3 :major)
@@ -57,7 +61,7 @@
   )
 ))
 
-(def metro (metronome 90))
+(def metro (metronome 60))
 (def bar 4)
 (defn beat-length [metro] (- (metro 1) (metro 0))) 
 (defn bar-length [metro] (* (beat-length metro) bar))
@@ -69,8 +73,21 @@
   ))
 ))
 
-(defn play [] ( 
-  (play-progression
+(defn play-melody [melody metro start] ( do
+  (def duration (/ (* 2 (beat-length metro)) 1000))
+  (defn play-note [note] (organ-cornet note duration))
+  (if (not (empty? melody)) (do
+    (at (metro start) (play-note (midi->hz (note (first melody)))))
+    (play-melody (rest melody) metro (+ start 2))
+  ))
+))
+
+(defn n-times [items n] 
+  (flatten (repeat n items))
+)
+
+(defn play [] ( do
+  (def chords
     (concat
       starting-section
       middle-section
@@ -78,6 +95,10 @@
       middle-section
       variation-section
     )
+  )
+  (play-melody (n-times melody (/ (count chords) 2)) metro (metro))
+  (play-progression
+    chords
     metro
     (metro)
   )
