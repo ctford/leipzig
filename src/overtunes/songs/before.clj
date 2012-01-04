@@ -68,7 +68,7 @@
 
 (defn play-progression [progression metro start] ( do
   (if (not (empty? progression)) (do
-    (at (metro (+ start 0)) (play-chord (nth progression 0) (bar-length metro)))
+    (at (metro (+ start 0)) (play-chord (first progression) (bar-length metro)))
     (play-progression (rest progression) metro (+ start bar))
   ))
 ))
