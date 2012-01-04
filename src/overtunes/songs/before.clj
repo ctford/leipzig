@@ -96,7 +96,7 @@
       variation-section
     )
   )
-  (play-melody (n-times melody (/ (count chords) 2)) metro (metro))
+  (play-melody (concat (n-times melody (/ (count chords) 2)) [:Eb4]) metro (metro))
   (play-progression
     chords
     metro
