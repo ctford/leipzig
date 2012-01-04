@@ -48,6 +48,11 @@
   (chord :Bb3 :major)
 ])
 
+(def finish [
+  (chord :Eb4 :major)
+  (chord :Eb4 :major)
+])
+
 (defn play-chord [notes duration] ( do 
   (defn play-note [note] (organ-cornet note (/ duration 1000) 0.7))
   (if (not (empty? notes))
@@ -98,7 +103,7 @@
   )
   (play-melody (n-times (/ (count chords) 2.5) melody) metro (metro))
   (play-progression
-    chords
+    (concat chords finish)
     metro
     (metro)
   )
