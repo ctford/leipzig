@@ -7,7 +7,7 @@
   [:C3 :Bb3 :Eb3 :G3]
 )
 
-(def starting-section [
+(def start [
   (chord :Eb3 :major)
   (chord :Eb3 :major)
   (chord :C3  :minor7)
@@ -18,7 +18,7 @@
   (chord :C3  :minor7)
 ])
 
-(def middle-section [
+(def middle [
   (chord :G3  :minor)
   (chord :G3  :minor)
   (chord :Ab3 :major)
@@ -29,7 +29,7 @@
   (chord :Bb3 :major)
 ])
 
-(def variation-section [
+(def variation [
   (chord :G3  :minor)
   (chord :G3  :minor)
   (chord :Ab3 :major)
@@ -82,21 +82,21 @@
   ))
 ))
 
-(defn n-times [items n] 
+(defn n-times [n items] 
   (flatten (repeat n items))
 )
 
 (defn play [] ( do
   (def chords
     (concat
-      starting-section
-      middle-section
-      starting-section
-      middle-section
-      variation-section
+      start
+      middle
+      start
+      middle
+      variation
     )
   )
-  (play-melody (concat (n-times melody (/ (count chords) 2)) [:Eb4]) metro (metro))
+  (play-melody (concat (n-times (/ (count chords) 2) melody) [:Eb4]) metro (metro))
   (play-progression
     chords
     metro
