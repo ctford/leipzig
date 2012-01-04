@@ -58,12 +58,14 @@
 ))
 
 (def metro (metronome 90))
+(def bar 4)
 (defn beat-length [metro] (- (metro 1) (metro 0))) 
+(defn bar-length [metro] (* (beat-length metro) bar))
 
 (defn play-progression [progression metro start] ( do
   (if (not (empty? progression)) (do
-    (at (metro (+ start 0)) (play-chord (nth progression 0) (* 4 (beat-length metro))))
-    (play-progression (rest progression) metro (+ start 4))
+    (at (metro (+ start 0)) (play-chord (nth progression 0) (bar-length metro)))
+    (play-progression (rest progression) metro (+ start bar))
   ))
 ))
 
