@@ -4,7 +4,7 @@
 )
 
 (def melody
-  [:C3 :Bb3 :Eb3 :G3]
+  [:C3 :Bb3 :Eb3 :G3 :Eb3]
 )
 
 (def start [
@@ -49,7 +49,7 @@
 ])
 
 (defn play-chord [notes duration] ( do 
-  (defn play-note [note] (organ-cornet note (/ duration 1000) 0.6))
+  (defn play-note [note] (organ-cornet note (/ duration 1000) 0.7))
   (if (not (empty? notes))
     (let [
       root (first notes)
@@ -96,7 +96,7 @@
       variation
     )
   )
-  (play-melody (concat (n-times (/ (count chords) 2) melody) [:Eb4]) metro (metro))
+  (play-melody (n-times (/ (count chords) 2.5) melody) metro (metro))
   (play-progression
     chords
     metro
