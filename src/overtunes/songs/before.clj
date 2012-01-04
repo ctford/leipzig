@@ -22,7 +22,7 @@
   (chord :Eb4 :major)
   (chord :Eb4 :major)
   (chord :Bb3 :major)
-  ()
+  (chord :Bb3 :major)
 ])
 
 (def variation-section [
@@ -41,7 +41,7 @@
   (chord :Eb4 :major)
   (chord :Eb4 :major)
   (chord :Bb3 :major)
-  ()
+  (chord :Bb3 :major)
 ])
 
 (defn play-chord [notes duration] ( do 
