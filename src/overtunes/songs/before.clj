@@ -4,7 +4,7 @@
 )
 
 (def melody
-  [:C4 :Bb4 :Eb4 :G4]
+  [:C3 :Bb3 :Eb3 :G3]
 )
 
 (def starting-section [
@@ -49,7 +49,7 @@
 ])
 
 (defn play-chord [notes duration] ( do 
-  (defn play-note [note] (organ-cornet note (/ duration 1000)))
+  (defn play-note [note] (organ-cornet note (/ duration 1000) 0.6))
   (if (not (empty? notes))
     (let [
       root (first notes)
