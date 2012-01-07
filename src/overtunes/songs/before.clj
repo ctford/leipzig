@@ -53,7 +53,6 @@
   (chord :Eb4 :major)
 ])
 
-(def metro (metronome 60))
 (defn beat-length [metro] (- (metro 1) (metro 0))) 
 
 (defn play-note [tone instrument duration]
@@ -108,5 +107,5 @@
   (play-progression (concat chords finish) metro (metro))
 ))
 
-(defn full-version [] (play (concat start middle start middle variation) metro))
+(defn full-version [] (play (concat start middle start middle variation) (metronome 60)))
 (defn short-version [] (play variation (metronome 200)))
