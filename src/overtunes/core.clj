@@ -1,3 +1,2 @@
 (ns overtunes.core
-  (:use [overtone.live])
-)
+  (:use [overtone.live]))
