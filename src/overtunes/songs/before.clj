@@ -3,8 +3,7 @@
   (:use [overtunes.instruments.organ-cornet]))
 
 (def melody
-  [:C3 :Bb3 :Eb3 :G3 :Eb3]
-)
+  [:C3 :Bb3 :Eb3 :G3 :Eb3])
 
 (def start [
   (chord :Eb3 :major)
@@ -14,8 +13,7 @@
   (chord :Eb3 :major)
   (chord :Eb3 :major)
   (chord :C3  :minor7)
-  (chord :C3  :minor7)
-])
+  (chord :C3  :minor7)])
 
 (def middle [
   (chord :G3  :minor)
@@ -25,8 +23,7 @@
   (chord :Eb4 :major)
   (chord :Eb4 :major)
   (chord :Bb3 :major)
-  (chord :Bb3 :major)
-])
+  (chord :Bb3 :major)])
 
 (def variation [
   (chord :G3  :minor)
@@ -44,13 +41,11 @@
   (chord :Eb4 :major)
   (chord :Eb4 :major)
   (chord :Bb3 :major)
-  (chord :Bb3 :major)
-])
+  (chord :Bb3 :major)])
 
 (def finish [
   (chord :Eb4 :major)
-  (chord :Eb4 :major)
-])
+  (chord :Eb4 :major)])
 
 (defn beat-length [metro] (- (metro 1) (metro 0))) 
 
