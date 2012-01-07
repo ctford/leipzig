@@ -83,7 +83,7 @@
     duration (* beats-per-chord (beat-length metro))
   ]
     (if (not (empty? progression)) ( do
-      (at (metro (+ start 0)) (play-chord (first progression) organ-cornet duration))
+      (at (metro start) (play-chord (first progression) organ-cornet duration))
       (play-progression (rest progression) metro (+ start beats-per-chord))
     ))
   )
@@ -105,19 +105,12 @@
   (flatten (repeat n items))
 )
 
-(defn play [] (
-  (let [
-    chords (concat
-        start
-        middle
-        start
-        middle
-        variation
-    )
-  ]
-    (do 
-      (play-melody (n-times (/ (count chords) 2.5) melody) metro (metro))
-      (play-progression (concat chords finish) metro (metro))
-    )
+(defn play [chords metro] (
+  (do 
+    (play-melody (n-times (/ (count chords) 2.5) melody) metro (metro))
+    (play-progression (concat chords finish) metro (metro))
   )
 ))
+
+(defn full-version [] (play (concat start middle start middle variation) metro))
+(defn short-version [] (play variation (metronome 200)))
