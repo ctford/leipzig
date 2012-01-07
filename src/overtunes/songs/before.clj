@@ -101,15 +101,11 @@
   )
 )
 
-(defn n-times [n items] 
-  (flatten (repeat n items))
-)
+(defn n-times [n items] (flatten (repeat n items)))
 
-(defn play [chords metro] (
-  ( do 
-    (play-melody (n-times (/ (count chords) 2.5) melody) metro (metro))
-    (play-progression (concat chords finish) metro (metro))
-  )
+(defn play [chords metro] ( do 
+  (play-melody (n-times (/ (count chords) 2.5) melody) metro (metro))
+  (play-progression (concat chords finish) metro (metro))
 ))
 
 (defn full-version [] (play (concat start middle start middle variation) metro))
