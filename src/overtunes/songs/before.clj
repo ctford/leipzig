@@ -54,7 +54,7 @@
     (let [ root (first tones)
            bass [(- root 12) (- root 24)]
            with-bass (concat bass tones)]
-      (mix (map (fn [tone] (play-note tone instrument duration)) with-bass)))))
+      (doall (map (fn [tone] (play-note tone instrument duration)) with-bass)))))
 
 (defn play-progression [progression metro start]
   (let [ beats-per-chord 4
