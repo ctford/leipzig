@@ -59,16 +59,16 @@
 (defn play-progression [progression metro start]
   (let [ beats-per-chord 4
          duration (* beats-per-chord (beat-length metro))]
-    (when-not (empty? progression) ( do
+    (when-not (empty? progression)
       (at (metro start) (play-chord (first progression) organ-cornet duration))
-      (play-progression (rest progression) metro (+ start beats-per-chord))))))
+      (play-progression (rest progression) metro (+ start beats-per-chord)))))
 
 (defn play-melody [melody metro start]
   (let [ beats-per-note 2
          duration (* beats-per-note (beat-length metro))]
-    (when-not (empty? melody) ( do
+    (when-not (empty? melody)
       (at (metro start) (play-note (first melody) organ-cornet duration))
-      (play-melody (rest melody) metro (+ start beats-per-note))))))
+      (play-melody (rest melody) metro (+ start beats-per-note)))))
 
 (defn n-times [n items] (flatten (repeat n items)))
 
