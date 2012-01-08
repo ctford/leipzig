@@ -70,10 +70,14 @@
       (at (metro start) (play-note (first melody) organ-cornet duration))
       (play-melody (rest melody) metro (+ start beats-per-note)))))
 
-(defn n-times [n items] (flatten (repeat n items)))
+(defn cycle-n
+  "Returns a new seq which is cycled n times
+  (cycle-n 2 [1 2 3]) ;=> [1 2 3 1 2 3]"
+  [n s]
+  (take (* (count s) n) (cycle s)))
 
 (defn play [chords metro]
-  (let [ melody-line (n-times (/ (count chords) 2.5) melody)] 
+  (let [ melody-line (cycle-n (/ (count chords) 2.5) melody)] 
   (do
     (play-melody melody-line metro (metro))
     (play-progression (concat chords finish) metro (metro)))))
