@@ -12,8 +12,7 @@
   frère-jacques frère-jacques
   dormez-vous dormez-vous
   sonnez-les-matines sonnez-les-matines
-  din-dan-don din-dan-don
-))
+  din-dan-don din-dan-don))
 
 (defn frere-jacques-round []
   (let [metro (metronome 120)] 
