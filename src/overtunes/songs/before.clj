@@ -102,8 +102,9 @@
   [n s]
   (take (* (count s) n) (cycle s)))
 
-(defn play [chords metro]
+(defn play
   "Play the melody over the chords to metro's time."
+  [chords metro]
   (let 
   [ repetitions-per-chord (/ (count melody) 2) 
     melody-line (cycle-n (/ (count chords) repetitions-per-chord) melody)] 
