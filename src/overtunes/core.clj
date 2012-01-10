@@ -16,9 +16,10 @@
   takes a frequency in Hz and a duration in seconds.
   (play-note :C4 organ-cornet 1200)"
   [tone instrument duration]
-  (let [seconds (/ duration 1000)
-        frequency (midi->hz (note tone))]
-    (instrument frequency seconds)))
+  (if-not (= :rest tone)
+    (let [seconds (/ duration 1000)
+          frequency (midi->hz (note tone))]
+      (instrument frequency seconds))))
 
 (defn play-melody [melody instrument metro]
   "Plays a seq of notes on instrument.
