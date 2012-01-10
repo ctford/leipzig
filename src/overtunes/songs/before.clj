@@ -64,25 +64,25 @@
   takes a frequency in Hz and a duration in seconds.
   (play-note :C4 organ-cornet 1.2)"
   [tone instrument duration]
-  (let [ seconds (/ duration 1000)
-         frequency (midi->hz (note tone))]
+  (let [seconds (/ duration 1000)
+        frequency (midi->hz (note tone))]
     (instrument frequency seconds)))
 
 (defn play-chord [tones instrument duration]
   "Plays a seq of tones as a chord on instrument for duration.
   (play-chord (chord :C4 :major) organ-cornet 1.2)"
   (if (not (empty? tones))
-    (let [ root (first tones)
-           bass [(- root 12) (- root 24)]
-           with-bass (concat bass tones)]
+    (let [root (first tones)
+          bass [(- root 12) (- root 24)]
+          with-bass (concat bass tones)]
       (doall (map (fn [tone] (play-note tone instrument duration)) with-bass)))))
 
 (defn play-progression [progression metro start]
   "Plays a seq of chords for two beats each on the cornet.
   Takes a metronome and a starting beat in addition to the chord progression.
   (play-progression [root fourth fifth] metro (metro))"
-  (let [ beats-per-chord 2
-         duration (* beats-per-chord (beat-length metro))]
+  (let [beats-per-chord 2
+        duration (* beats-per-chord (beat-length metro))]
     (when-not (empty? progression)
       (at (metro start) (play-chord (first progression) organ-cornet duration))
       (play-progression (rest progression) metro (+ start beats-per-chord)))))
@@ -105,12 +105,10 @@
 (defn play
   "Play the melody over the chords to metro's time."
   [chords metro]
-  (let 
-  [ repetitions-per-chord (/ (count melody) 2) 
-    melody-line (cycle-n (/ (count chords) repetitions-per-chord) melody)] 
-  (do
-    (play-melody melody-line metro (metro))
-    (play-progression (concat chords finish) metro (metro)))))
+  (let [repetitions-per-chord (/ (count melody) 2) 
+        melody-line (cycle-n (/ (count chords) repetitions-per-chord) melody)] 
+  (play-melody melody-line metro (metro))
+  (play-progression (concat chords finish) metro (metro))))
 
 (defn full-version []
   "The full version of 'Before', grave."
