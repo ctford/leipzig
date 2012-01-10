@@ -14,8 +14,13 @@
 (defn play-note
   "Plays a single tone on instrument for duration, assuming an instrument that
   takes a frequency in Hz and a duration in seconds.
-  (play-note :C4 organ-cornet 1200)"
+  (play-note :C4 organ-cornet 1200)
+
+  Also accepts (and does nothing with) :rest.
+  (play-note :rest organ-cornet 1200)"
+
   [tone instrument duration]
+
   (if-not (= :rest tone)
     (let [seconds (/ duration 1000)
           frequency (midi->hz (note tone))]
