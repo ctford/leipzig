@@ -22,9 +22,8 @@
   [tone instrument duration]
 
   (if-not (= :rest tone)
-    (let [seconds (/ duration 1000)
-          frequency (midi->hz (note tone))]
-      (instrument frequency seconds))))
+    (let [frequency (midi->hz (note tone))]
+      (instrument frequency duration))))
 
 (defn play-melody [melody instrument metro]
   "Plays a seq of notes on instrument.

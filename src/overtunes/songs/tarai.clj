@@ -45,13 +45,13 @@
 
 (defn foo-play-b [x y z j]
   (domonad beat-m
-           [_ (at-current-beat (foo (* 100 (+ x 3)) 1.0))
+           [_ (at-current-beat (foo (* 100 (+ x 3)) 1000))
             _ (wait 1)
-            _ (at-current-beat (foo (* 100 (+ y 3)) 1.0))
+            _ (at-current-beat (foo (* 100 (+ y 3)) 1000))
             _ (wait 1)
-            _ (at-current-beat (foo (* 100 (+ z 3)) 1.0))
+            _ (at-current-beat (foo (* 100 (+ z 3)) 1000))
             _ (wait 1)
-            _ (at-current-beat (foo (* 100 (+ j 3)) 1.0))
+            _ (at-current-beat (foo (* 100 (+ j 3)) 1000))
             _ (wait 1)]
            nil))
 
