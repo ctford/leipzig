@@ -1,5 +1,6 @@
 (ns overtunes.songs.before
   (:use [overtone.live])
+  (:use [overtunes.core])
   (:use [overtunes.instruments.organ-cornet]))
 
 (def melody
@@ -55,18 +56,6 @@
   [(chord :Eb4 :major)
    (chord :Eb4 :major)])
 
-(defn beat-length
-  "Determines the beat length in milliseconds of metro."
-  [metro] (- (metro 1) (metro 0))) 
-
-(defn play-note
-  "Plays a single tone on instrument for duration, assuming an instrument that
-  takes a frequency in Hz and a duration in seconds.
-  (play-note :C4 organ-cornet 1.2)"
-  [tone instrument duration]
-  (let [seconds (/ duration 1000)
-        frequency (midi->hz (note tone))]
-    (instrument frequency seconds)))
 
 (defn play-chord [tones instrument duration]
   "Plays a seq of tones as a chord on instrument for duration.
@@ -76,12 +65,6 @@
           bass [(- root 12) (- root 24)]
           with-bass (concat bass tones)]
       (doall (map (fn [tone] (play-note tone instrument duration)) with-bass)))))
-
-(defn metronome-from
-  "Returns a metronome that measures beats relative to start."
-  ([metro start] (fn
-    ([] (metro (+ 0 start)))
-    ([beat] (metro (+ beat start))))))
 
 (defn play-progression [progression metro]
   "Plays a seq of chords for two beats each on the cornet.
@@ -94,15 +77,6 @@
       (play-progression (rest progression)
         (metronome-from metro beats-per-chord)))))
 
-(defn play-melody [melody metro]
-  "Plays a seq of notes on the cornet.
-  Takes a relative metronome in addition to the melody.
-  (play-melody [:C3 :E3 :G3] metro)"
-  (let [duration (beat-length metro)]
-    (when-not (empty? melody)
-      (at (metro) (play-note (first melody) organ-cornet duration))
-      (play-melody (rest melody) (metronome-from metro 1)))))
-
 (defn cycle-n
   "Returns a new seq which is cycled n times.
   (cycle-n 2 [1 2 3]) ;=> [1 2 3 1 2 3]"
@@ -114,13 +88,13 @@
   [chords metro]
   (let [repetitions-per-chord (/ (count melody) 2) 
         melody-line (cycle-n (/ (count chords) repetitions-per-chord) melody)] 
-  (play-melody melody-line metro)
+  (play-melody melody-line organ-cornet metro)
   (play-progression (concat chords finish) metro)))
 
-(defn full-version []
+(defn before-full []
   "The full version of 'Before', grave."
   (play (concat start middle start middle variation) (metronome 30)))
 
-(defn short-version []
+(defn before-short []
   "A short version of 'Before', adante."
   (play variation (metronome 100)))

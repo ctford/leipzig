@@ -1,19 +1,12 @@
 (ns overtunes.songs.tarai
   (:use [overtone.live])
+  (:use [overtunes.instruments.foo])
   (:use [clojure.algo.monads :only [state-t cont-m run-cont domonad]]))
 
 ;; From https://gist.github.com/1441831, which is an edit of
 ;; https://gist.github.com/1371488 by @philandstuff.
 
 (def m (metronome 400))
-
-;; basic.clj より
-(defsynth foo [freq 200 dur 0.5]
-  (let [src (saw [freq (* freq 1.01) (* 0.99 freq)])
-        low (sin-osc (/ freq 2))
-        filt (lpf src (line:kr (* 10 freq) freq 10))
-        env (env-gen (perc 0.1 dur) :action FREE)]
-    (out 0 (pan2 (* 0.8 low env filt)))))
 
 (defmacro at-current-beat
   "An action in the beat monad which evaluates a number of exprs on the current beat using the at macro."
