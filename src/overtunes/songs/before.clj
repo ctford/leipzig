@@ -65,23 +65,20 @@
         bass [(- root 12) (- root 24)]]
     (concat bass chord)))
 
-(defn play-progression [progression metro]
-  "Plays a seq of chords for two beats each on the cornet.
-  Takes a relative metronome in addition to the chord progression.
-  (play-progression [root fourth fifth] metro)"
-  (let [beats-per-chord 2
-        duration (* beats-per-chord (beat-length metro))]
-    (when-not (empty? progression)
-      (at (metro) (play-chord
-        (with-bass (first progression)) organ-cornet duration))
-      (play-progression (rest progression)
-        (metronome-from metro beats-per-chord)))))
-
 (defn cycle-n
   "Returns a new seq which is cycled n times.
   (cycle-n 2 [1 2 3]) ;=> [1 2 3 1 2 3]"
   [n s]
   (take (* (count s) n) (cycle s)))
+
+(defn play-chords
+  "Plays a seq of chords for two beats each on the cornet.
+  Takes a relative metronome in addition to the chord progression.
+  (play-chords [root fourth fifth] metro)"
+  [chords metro]
+  (let [bassed-chords (map with-bass chords)
+        weighted-chords [bassed-chords (cycle-n (count chords) [2/1])]] 
+    (play-progression weighted-chords organ-cornet metro)))
 
 (defn cycle-melody
   "Returns a new melody which is cycled n times.
@@ -96,7 +93,7 @@
   (let [reps-per-chord (/ (count (first melody)) 2) 
         melody-line (cycle-melody (/ (count chords) reps-per-chord) melody)] 
     (play-melody melody-line organ-cornet metro)
-    (play-progression (concat chords finish) metro)))
+    (play-chords (concat chords finish) metro)))
 
 (defn before-full []
   "The full version of 'Before', grave."

@@ -32,7 +32,7 @@
   (if (not (empty? tones))
       (doall (map (fn [tone] (play-note tone instrument duration)) tones))))
 
-(defn play-chords
+(defn play-progression
   "Plays a chord progression on instrument according to metro's timing."
   [progression instrument metro]
   (when-not (empty? (first progression))
@@ -41,7 +41,7 @@
           beats (second weighted-chord)
           duration (* beats (beat-length metro))]
       (at (metro) (play-chord chord instrument duration))
-      (play-chords (map rest progression) instrument
+      (play-progression (map rest progression) instrument
         (metronome-from metro beats)))))
 
 (defn play-melody
@@ -49,6 +49,7 @@
   Takes a relative metronome in addition to the melody.
   (play-melody [[:C3 :E3 :G3][1/1 1/2 3/2]] organ-cornet metro)"
   [melody instrument metro]
-  (play-chords [(map vector (first melody)) (second melody)] instrument metro))
+  (play-progression
+    [(map vector (first melody)) (second melody)] instrument metro))
 
 
