@@ -32,14 +32,23 @@
   (if (not (empty? tones))
       (doall (map (fn [tone] (play-note tone instrument duration)) tones))))
 
-(defn play-melody [melody instrument metro]
-  "Plays a seq of notes on instrument.
+(defn play-chords
+  "Plays a chord progression on instrument according to metro's timing."
+  [progression instrument metro]
+  (when-not (empty? (first progression))
+    (let [weighted-chord (map first progression)
+          chord (first weighted-chord)
+          beats (second weighted-chord)
+          duration (* beats (beat-length metro))]
+      (at (metro) (play-chord chord instrument duration))
+      (play-chords (map rest progression) instrument
+        (metronome-from metro beats)))))
+
+(defn play-melody
+  "Plays a seq of weighted notes on instrument.
   Takes a relative metronome in addition to the melody.
   (play-melody [[:C3 :E3 :G3][1/1 1/2 3/2]] organ-cornet metro)"
-  (when-not (empty? (first melody))
-    (let [tone (map first melody)
-          pitch (first tone)
-          beats (second tone)
-          duration (* beats (beat-length metro))]
-      (at (metro) (play-note pitch instrument duration))
-      (play-melody (map rest melody) instrument (metronome-from metro beats)))))
+  [melody instrument metro]
+  (play-chords [(map vector (first melody)) (second melody)] instrument metro))
+
+
