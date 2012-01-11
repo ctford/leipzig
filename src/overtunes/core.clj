@@ -28,8 +28,11 @@
 (defn play-melody [melody instrument metro]
   "Plays a seq of notes on instrument.
   Takes a relative metronome in addition to the melody.
-  (play-melody [:C3 :E3 :G3] organ-cornet metro)"
-  (let [duration (beat-length metro)]
-    (when-not (empty? melody)
-      (at (metro) (play-note (first melody) instrument duration))
-      (play-melody (rest melody) instrument (metronome-from metro 1)))))
+  (play-melody [[:C3 :E3 :G3][1/1 1/2 3/2]] organ-cornet metro)"
+  (when-not (empty? (first melody))
+    (let [tone (map first melody)
+          pitch (first tone)
+          beats (second tone)
+          duration (* beats (beat-length metro))]
+      (at (metro) (play-note pitch instrument duration))
+      (play-melody (map rest melody) instrument (metronome-from metro beats)))))

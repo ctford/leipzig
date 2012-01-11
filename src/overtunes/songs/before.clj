@@ -6,7 +6,8 @@
 (def melody
   "A crude five-note melody that will constantly fall out of time when played
   over chords at a rate of two notes per chord." 
-  [:C3 :Bb3 :Eb3 :G3 :Eb3])
+  [[:C3 :Bb3 :Eb3 :G3 :Eb3]
+   [1/1 1/1  1/1  1/1 1/1]])
 
 (def start
   "In which we establish the key and give the syncopated relationship between
@@ -79,9 +80,10 @@
 
 (defn cycle-n
   "Returns a new seq which is cycled n times.
-  (cycle-n 2 [1 2 3]) ;=> [1 2 3 1 2 3]"
+  (cycle-n 2 [1 2 3]) ;=> [1 2 3 1 2 3]
+  (cycle-n 2 [[1 2 3][4 5 6]]) ;=> [[1 2 3 1 2 3][4 5 6 4 5 6]]"
   [n s]
-  (take (* (count s) n) (cycle s)))
+  (map concat (take (* (count s) n) (cycle s))))
 
 (defn play
   "Play the melody over the chords to the relative metro's time."

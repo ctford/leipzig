@@ -3,12 +3,16 @@
   (:use [overtunes.core])
   (:use [overtunes.instruments.foo]))
 
-(def Frère-Jacques [:C4 :D4 :E4 :C4])
-(def Dormez-vous? [:E4 :F4 :G4 :rest])
-(def Sonnez-les-matines! [:G4 :G4 :E4 :C4])
-(def Din-dan-don [:C4 :G3 :C4 :rest])
+(def Frère-Jacques         [[:C4 :D4 :E4 :C4]
+                            [1/1 1/1 1/1 1/1]])
+(def Dormez-vous?          [[:E4 :F4 :G4 :rest]
+                            [1/1 1/1 1/1 1/1]])
+(def Sonnez-les-matines!   [[:G4 :A4 :G4 :F4 :E4 :C4]
+                            [1/2 1/2 1/2 1/2 1/1 1/1]])
+(def Din-dan-don           [[:C4 :G3 :C4 :rest]
+                            [1/1 1/1 1/1 1/1]])
 
-(def melody (concat
+(def melody (map concat
   Frère-Jacques Frère-Jacques
   Dormez-vous? Dormez-vous?
   Sonnez-les-matines! Sonnez-les-matines!
