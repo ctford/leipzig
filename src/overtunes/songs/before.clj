@@ -57,6 +57,14 @@
   [(chord :Eb4 :major)
    (chord :Eb4 :major)])
 
+(defn with-bass
+  "Prepends an octave stretch to chord.
+  (with-bass (chord :C4 :major))"
+  [chord]
+  (let [root (first chord)
+        bass [(- root 12) (- root 24)]]
+    (concat bass chord)))
+
 (defn play-progression [progression metro]
   "Plays a seq of chords for two beats each on the cornet.
   Takes a relative metronome in addition to the chord progression.
@@ -64,24 +72,31 @@
   (let [beats-per-chord 2
         duration (* beats-per-chord (beat-length metro))]
     (when-not (empty? progression)
-      (at (metro) (play-chord (first progression) organ-cornet duration))
+      (at (metro) (play-chord
+        (with-bass (first progression)) organ-cornet duration))
       (play-progression (rest progression)
         (metronome-from metro beats-per-chord)))))
 
 (defn cycle-n
   "Returns a new seq which is cycled n times.
-  (cycle-n 2 [1 2 3]) ;=> [1 2 3 1 2 3]
-  (cycle-n 2 [[1 2 3][4 5 6]]) ;=> [[1 2 3 1 2 3][4 5 6 4 5 6]]"
+  (cycle-n 2 [1 2 3]) ;=> [1 2 3 1 2 3]"
   [n s]
-  (map concat (take (* (count s) n) (cycle s))))
+  (take (* (count s) n) (cycle s)))
+
+(defn cycle-melody
+  "Returns a new melody which is cycled n times.
+  (cycle-n 2 [[:C3 :D3 :E3][1/2 3/2 1]]) ;=>
+    [[:C3 :D3 :E3 :C3 :D3 :E3][1/2 3/2 1/1 1/2 3/2 1/1]]"
+  [n m]
+  [(cycle-n n (first m)) (cycle-n n (second m))])
 
 (defn play
   "Play the melody over the chords to the relative metro's time."
   [chords metro]
-  (let [repetitions-per-chord (/ (count melody) 2) 
-        melody-line (cycle-n (/ (count chords) repetitions-per-chord) melody)] 
-  (play-melody melody-line organ-cornet metro)
-  (play-progression (concat chords finish) metro)))
+  (let [reps-per-chord (/ (count (first melody)) 2) 
+        melody-line (cycle-melody (/ (count chords) reps-per-chord) melody)] 
+    (play-melody melody-line organ-cornet metro)
+    (play-progression (concat chords finish) metro)))
 
 (defn before-full []
   "The full version of 'Before', grave."

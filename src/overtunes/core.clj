@@ -25,14 +25,12 @@
     (let [frequency (midi->hz (note tone))]
       (instrument frequency duration))))
 
-(defn play-chord [tones instrument duration]
+(defn play-chord 
   "Plays a seq of tones as a chord on instrument for duration.
   (play-chord (chord :C4 :major) organ-cornet 1200)"
+  [tones instrument duration]
   (if (not (empty? tones))
-    (let [root (first tones)
-          bass [(- root 12) (- root 24)]
-          with-bass (concat bass tones)]
-      (doall (map (fn [tone] (play-note tone instrument duration)) with-bass)))))
+      (doall (map (fn [tone] (play-note tone instrument duration)) tones))))
 
 (defn play-melody [melody instrument metro]
   "Plays a seq of notes on instrument.
