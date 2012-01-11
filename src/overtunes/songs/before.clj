@@ -57,16 +57,6 @@
   [(chord :Eb4 :major)
    (chord :Eb4 :major)])
 
-
-(defn play-chord [tones instrument duration]
-  "Plays a seq of tones as a chord on instrument for duration.
-  (play-chord (chord :C4 :major) organ-cornet 1200)"
-  (if (not (empty? tones))
-    (let [root (first tones)
-          bass [(- root 12) (- root 24)]
-          with-bass (concat bass tones)]
-      (doall (map (fn [tone] (play-note tone instrument duration)) with-bass)))))
-
 (defn play-progression [progression metro]
   "Plays a seq of chords for two beats each on the cornet.
   Takes a relative metronome in addition to the chord progression.
