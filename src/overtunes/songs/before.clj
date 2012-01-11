@@ -95,7 +95,7 @@
     (play-melody melody-line organ-cornet metro)
     (play-chords (concat chords finish) metro)))
 
-(defn before-full []
+(defn before []
   "The full version of 'Before', grave."
   (play (concat start middle start middle variation) (metronome 30)))
 
