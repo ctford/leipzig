@@ -20,7 +20,7 @@
 
 (defn frere-jacques []
   (let [metro (metronome 120)] 
-    (play-melody melody foo metro)
+    (play-melody melody foo (metronome-from metro 0))
     (play-melody melody foo (metronome-from metro 8))
     (play-melody melody foo (metronome-from metro 16))
     (play-melody melody foo (metronome-from metro 24))))
