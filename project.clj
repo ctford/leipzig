@@ -5,5 +5,4 @@
     [org.clojure/algo.monads "0.1.0"]
     [overtone "0.6.0"]
   ]
-  :main overtunes.core
 )
