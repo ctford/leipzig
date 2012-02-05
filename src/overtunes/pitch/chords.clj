@@ -1,4 +1,9 @@
-(ns overtunes.pitch.chords)
+(ns overtunes.pitch.chords
+  (:use [overtone.inst.sampled-piano :only [sampled-piano]]
+        [overtone.live :only []]))
+
+(def note! sampled-piano)
+(def chord! #(map note! %))
 
 (defmacro defall
   "Define multiple values at once."
@@ -8,27 +13,30 @@
            names
            (eval values))))
 
-(def tone 2)
-(def semitone (/ tone 2))
-(def octave (* 12 semitone))
-(def sharp #(+ semitone %))
-(def flat #(- semitone %))
+(def semitone 1)
+(def tone (* semitone 2))
+(def octave1 (* 12 semitone))
 
-(defn scale 
+(def sharp1 #(+ % semitone))
+(def flat1 #(- % semitone))
+(def raise #(+ % octave1))
+
+(defn scale1 
   ([] '(0))
   ([interval & intervals]
-   (cons 0 (map #(+ interval %) (apply scale intervals)))))
+   (cons 0 (map #(+ interval %) (apply scale1 intervals)))))
 
 (def major-scale (zipmap
                    [:i :ii :iii :iv :v :vi :vii :viii]
-                   (scale tone tone semitone tone tone tone semitone)))
+                   (scale1 tone tone semitone tone tone tone semitone)))
 
 (defn grounding [offset]
+  "Takes an offset from root and produces a function for rendering chords."
   (fn
     ([octave-number]
-     (+ offset (* octave-number octave)))
+     (+ offset (* octave-number octave1)))
     ([octave-number chord]
-     (map #(+ offset % (* octave-number octave)) (vals chord)))))
+     (map #(+ offset % (* octave-number octave1)) (vals chord)))))
 
 ; Name notes
 (defall [C D E F G A B]
@@ -38,17 +46,17 @@
 
 ; Qualities
 (def major (select-keys major-scale [:i :iii :v]))
-(def minor (update-in major [:iii] flat))
+(def minor (update-in major [:iii] flat1))
 (def power (select-keys major-scale [:i :v :viii]))
 
 ; Modifications
-(def augmented #(update-in % [:v] sharp))
-(def diminished #(update-in % [:v] flat))
-(def suspended-second #(update-in % [:iii] 2)) 
-(def suspended-fourth #(update-in % [:iii] 5))
-(def sixth #(assoc % :vi 9))
+(def augmented #(update-in % [:v] sharp1))
+(def diminished #(update-in % [:v] flat1))
+(def suspended-second #(assoc % :iii (:ii major-scale))) 
+(def suspended-fourth #(assoc % :iii (:iv major-scale)))
+(def sixth1 #(assoc % :vi (:vi major-scale)))
 (def seventh #(assoc % :vii (+ (:v %) (:iii %))))
-(def dominant-seventh #(assoc % :vii 10))
-(def ninth #(assoc (seventh %) :ix 14))
-(def eleventh #(assoc (ninth %) :xi 17))
-(def thirteenth #(assoc (eleventh %) :xi 21))
+(def dominant-seventh #(assoc % :vii (flat1 (:vii major-scale))))
+(def ninth #(assoc (seventh %) :ix (raise (:ii major-scale))))
+(def eleventh #(assoc (ninth %) :xi (raise (:iv major-scale))))
+(def thirteenth #(assoc (eleventh %) :xi (raise (:vi major-scale))))
