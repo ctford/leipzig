@@ -1,4 +1,4 @@
-(ns overtunes.pitch.chords
+(ns overtunes.pitch
   (:use 
     [overtone.live :exclude [scale octave sharp flat sixth]]
     [overtone.inst.sampled-piano :only [sampled-piano]]))
