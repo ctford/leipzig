@@ -1,6 +1,7 @@
 (ns overtunes.pitch.chords
-  (:use [overtone.inst.sampled-piano :only [sampled-piano]]
-        [overtone.live :only []]))
+  (:use 
+    [overtone.live :exclude [scale octave sharp flat sixth]]
+    [overtone.inst.sampled-piano :only [sampled-piano]]))
 
 (def note! sampled-piano)
 (def chord! #(map note! %))
@@ -15,28 +16,29 @@
 
 (def semitone 1)
 (def tone (* semitone 2))
-(def octave1 (* 12 semitone))
+(def octave (* 12 semitone))
 
-(def sharp1 #(+ % semitone))
-(def flat1 #(- % semitone))
-(def raise #(+ % octave1))
+(def sharp #(+ % semitone))
+(def flat #(- % semitone))
+(def raise #(+ % octave))
 
-(defn scale1 
+(defn scale 
+  "Define a scale as a cumulative sum of intervals."
   ([] '(0))
   ([interval & intervals]
-   (cons 0 (map #(+ interval %) (apply scale1 intervals)))))
+   (cons 0 (map #(+ interval %) (apply scale intervals)))))
 
 (def major-scale (zipmap
                    [:i :ii :iii :iv :v :vi :vii :viii]
-                   (scale1 tone tone semitone tone tone tone semitone)))
+                   (scale tone tone semitone tone tone tone semitone)))
 
 (defn grounding [offset]
   "Takes an offset from root and produces a function for rendering chords."
   (fn
     ([octave-number]
-     (+ offset (* octave-number octave1)))
+     (+ offset (* octave-number octave)))
     ([octave-number chord]
-     (map #(+ offset % (* octave-number octave1)) (vals chord)))))
+     (map #(+ offset % (* octave-number octave)) (vals chord)))))
 
 ; Name notes
 (defall [C D E F G A B]
@@ -46,17 +48,17 @@
 
 ; Qualities
 (def major (select-keys major-scale [:i :iii :v]))
-(def minor (update-in major [:iii] flat1))
+(def minor (update-in major [:iii] flat))
 (def power (select-keys major-scale [:i :v :viii]))
 
 ; Modifications
-(def augmented #(update-in % [:v] sharp1))
-(def diminished #(update-in % [:v] flat1))
+(def augmented #(update-in % [:v] sharp))
+(def diminished #(update-in % [:v] flat))
 (def suspended-second #(assoc % :iii (:ii major-scale))) 
 (def suspended-fourth #(assoc % :iii (:iv major-scale)))
-(def sixth1 #(assoc % :vi (:vi major-scale)))
+(def sixth #(assoc % :vi (:vi major-scale)))
 (def seventh #(assoc % :vii (+ (:v %) (:iii %))))
-(def dominant-seventh #(assoc % :vii (flat1 (:vii major-scale))))
+(def dominant-seventh #(assoc % :vii (flat (:vii major-scale))))
 (def ninth #(assoc (seventh %) :ix (raise (:ii major-scale))))
 (def eleventh #(assoc (ninth %) :xi (raise (:iv major-scale))))
 (def thirteenth #(assoc (eleventh %) :xi (raise (:vi major-scale))))
