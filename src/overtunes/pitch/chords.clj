@@ -14,13 +14,16 @@
            names
            (eval values))))
 
+; Basic intervals
 (def semitone 1)
 (def tone (* semitone 2))
 (def octave (* 12 semitone))
 
+; Operations on intervals
 (def sharp #(+ % semitone))
 (def flat #(- % semitone))
 (def raise #(+ % octave))
+(def lower #(- % octave))
 
 (defn scale 
   "Define a scale as a cumulative sum of intervals."
