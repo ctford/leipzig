@@ -71,6 +71,7 @@
 (defn sharpened [key] #(update-in % [key] sharp))
 (defn raised [key] #(update-in % [key] raise))
 (defn lowered [key] #(update-in % [key] lower))
+(defn bass [key] (comp (lowered :bass) #(assoc % :bass (key major-scale)))) 
 
 ; Transformations 
 (def suspended-second #(assoc % :iii (:ii major-scale))) 
