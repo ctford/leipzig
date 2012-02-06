@@ -86,6 +86,7 @@
 (defn add [key] #(assoc % key (key major-scale))) 
 (defn omit [key] #(dissoc % key)) 
 (defn bass [key] (comp (lowered :bass) #(assoc % :bass (key major-scale)))) 
+(def bassed (bass :i))
 
 ; Qualities
 (def major (select-keys major-scale [:i :iii :v]))
@@ -97,3 +98,6 @@
 ; Let's play!
 (def note# sampled-piano)
 (def chord# #(map note# %))
+
+; (chord# (C 5 minor ninth bassed (omit :iii)))
+; (chord# (G 5 major seventh second-inversion bassed (omit :v)))
