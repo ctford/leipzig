@@ -100,5 +100,5 @@
 (def note# sampled-piano)
 (def chord# #(map note# %))
 
-; (chord# (C 5 minor ninth bassed (omit :iii)))
-; (chord# (G 5 major seventh second-inversion bassed (omit :v)))
+; The Hendrix chord
+; (chord# (G 4 major ninth (flattened :vii) (sharpened :ix)))
