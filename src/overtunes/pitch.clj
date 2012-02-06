@@ -83,5 +83,5 @@
 (def second-inversion #(update-values % (keys-except % [:i :iii]) lower))
 
 ; Let's play!
-(def note! sampled-piano)
-(def chord! #(map note! %))
+(def note# sampled-piano)
+(def chord# #(map note# %))
