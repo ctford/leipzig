@@ -4,9 +4,12 @@
     [overtone.live :exclude [scale octave sharp flat sixth]]
     [overtone.inst.sampled-piano :only [sampled-piano]]))
 
-(def note! sampled-piano)
-(def chord! #(map note! %))
+; Basic intervals
+(def semitone 1)
+(def tone (* semitone 2))
+(def octave (* 12 semitone))
 
+; Plumbing
 (defmacro defall
   "Define multiple values at once."
   [names values]
@@ -28,17 +31,16 @@
   "Gets the keys from m, excluding any that are present in ks."
   [m ks] (difference (set (keys m)) ks))
 
-; Basic intervals
-(def semitone 1)
-(def tone (* semitone 2))
-(def octave (* 12 semitone))
+(defn grounding [offset]
+  "Takes an offset from root and produces a function for rendering chords."
+  (fn
+    ([octave-number]
+     (+ offset (* octave-number octave)))
+    ([octave-number chord]
+     (map #(+ offset % (* octave-number octave)) (vals chord)))))
 
-; Operations on intervals
-(def sharp #(+ % semitone))
-(def flat #(- % semitone))
-(def raise #(+ % octave))
-(def lower #(- % octave))
-
+; Define a major scale. We could easily define other modes,
+; but they aren't needed at present.
 (defn scale 
   "Define a scale as a cumulative sum of intervals."
   ([] '(0))
@@ -49,19 +51,17 @@
                    [:i :ii :iii :iv :v :vi :vii :viii]
                    (scale tone tone semitone tone tone tone semitone)))
 
-(defn grounding [offset]
-  "Takes an offset from root and produces a function for rendering chords."
-  (fn
-    ([octave-number]
-     (+ offset (* octave-number octave)))
-    ([octave-number chord]
-     (map #(+ offset % (* octave-number octave)) (vals chord)))))
-
 ; Name notes
 (defall [C D E F G A B]
         (map
           grounding
-          (sort (vals  major-scale))))
+          (sort (vals major-scale))))
+
+; Operations on intervals
+(def sharp #(+ % semitone))
+(def flat #(- % semitone))
+(def raise #(+ % octave))
+(def lower #(- % octave))
 
 ; Qualities
 (def major (select-keys major-scale [:i :iii :v]))
@@ -81,3 +81,7 @@
 (def thirteenth #(assoc (eleventh %) :xi (raise (:vi major-scale))))
 (def first-inversion #(update-values % (keys-except % [:i]) lower))
 (def second-inversion #(update-values % (keys-except % [:i :iii]) lower))
+
+; Let's play!
+(def note! sampled-piano)
+(def chord! #(map note! %))
