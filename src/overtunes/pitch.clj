@@ -56,10 +56,13 @@
                    (scale unison tone tone semitone tone tone tone semitone)))
 
 ; Name notes
-(defall [C D E F G A B]
+(defall [C C# D D# E F F# G G# A A# B B#]
         (map
           grounding
-          (sort (vals major-scale))))
+          (range (+ 1 octave))))
+
+(defall [Cb Db Eb E# Fb Gb Ab Bb]
+        [D  C# D# F  E  F# G# A#])
 
 ; Operations on intervals
 (def sharp #(+ % semitone))
