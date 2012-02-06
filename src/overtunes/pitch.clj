@@ -64,11 +64,11 @@
 ; Qualities
 (def major (select-keys major-scale [:i :iii :v]))
 (def minor (update-in major [:iii] flat))
+(def augmented (update-in major [:v] sharp))
+(def diminished (update-in minor [:v] flat))
 (def power (select-keys major-scale [:i :v :viii]))
 
 ; Modifications
-(def augmented #(update-in % [:v] sharp))
-(def diminished #(update-in % [:v] flat))
 (def suspended-second #(assoc % :iii (:ii major-scale))) 
 (def suspended-fourth #(assoc % :iii (:iv major-scale)))
 (def sixth #(assoc % :vi (:vi major-scale)))
