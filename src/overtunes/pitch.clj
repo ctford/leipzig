@@ -38,7 +38,7 @@
      (+ offset (* octave-number octave)))
     ([octave-number chord & transformations]
      (let [octave-offset (* octave-number octave)
-          transform (apply comp transformations)
+          transform (apply comp (reverse transformations))
           transformed-chord (transform chord)]
        (map #(+ offset octave-offset %) (vals transformed-chord))))))
 
