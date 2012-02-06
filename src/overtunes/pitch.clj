@@ -66,13 +66,6 @@
 (def raise #(+ % octave))
 (def lower #(- % octave))
 
-; Paramatisesd transformations
-(defn flattened [key] #(update-in % [key] flat))
-(defn sharpened [key] #(update-in % [key] sharp))
-(defn raised [key] #(update-in % [key] raise))
-(defn lowered [key] #(update-in % [key] lower))
-(defn bass [key] (comp (lowered :bass) #(assoc % :bass (key major-scale)))) 
-
 ; Transformations 
 (def suspended-second #(assoc % :iii (:ii major-scale))) 
 (def suspended-fourth #(assoc % :iii (:iv major-scale)))
@@ -84,6 +77,15 @@
 (def thirteenth #(assoc (eleventh %) :xi (raise (:vi major-scale))))
 (def first-inversion #(update-values % (keys-except % [:i]) lower))
 (def second-inversion #(update-values % (keys-except % [:i :iii]) lower))
+
+; Paramatisesd transformations
+(defn flattened [key] #(update-in % [key] flat))
+(defn sharpened [key] #(update-in % [key] sharp))
+(defn raised [key] #(update-in % [key] raise))
+(defn lowered [key] #(update-in % [key] lower))
+(defn add [key] #(assoc % key (key major-scale))) 
+(defn omit [key] #(dissoc % key)) 
+(defn bass [key] (comp (lowered :bass) #(assoc % :bass (key major-scale)))) 
 
 ; Qualities
 (def major (select-keys major-scale [:i :iii :v]))
