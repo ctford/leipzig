@@ -66,12 +66,11 @@
 (def raise #(+ % octave))
 (def lower #(- % octave))
 
-; Qualities
-(def major (select-keys major-scale [:i :iii :v]))
-(def minor (update-in major [:iii] flat))
-(def augmented (update-in major [:v] sharp))
-(def diminished (update-in minor [:v] flat))
-(def power (select-keys major-scale [:i :v :viii]))
+; Paramatisesd transformations
+(defn flattened [key] #(update-in % [key] flat))
+(defn sharpened [key] #(update-in % [key] sharp))
+(defn raised [key] #(update-in % [key] raise))
+(defn lowered [key] #(update-in % [key] lower))
 
 ; Transformations 
 (def suspended-second #(assoc % :iii (:ii major-scale))) 
@@ -84,6 +83,13 @@
 (def thirteenth #(assoc (eleventh %) :xi (raise (:vi major-scale))))
 (def first-inversion #(update-values % (keys-except % [:i]) lower))
 (def second-inversion #(update-values % (keys-except % [:i :iii]) lower))
+
+; Qualities
+(def major (select-keys major-scale [:i :iii :v]))
+(def minor ((flattened :iii) major)) 
+(def augmented ((sharpened :v) major)) 
+(def diminished ((flattened :v) minor)) 
+(def power (select-keys major-scale [:i :v :viii]))
 
 ; Let's play!
 (def note# sampled-piano)
