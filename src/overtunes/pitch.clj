@@ -1,10 +1,11 @@
 (ns overtunes.pitch
   (:use 
     [clojure.set :only [difference]]
-    [overtone.live :exclude [scale octave sharp flat sixth]]
+    [overtone.live :exclude [scale octave sharp flat sixth unison]]
     [overtone.inst.sampled-piano :only [sampled-piano]]))
 
 ; Basic intervals
+(def unison 0)
 (def semitone 1)
 (def tone (* semitone 2))
 (def octave (* 12 semitone))
@@ -46,13 +47,13 @@
 ; but they aren't needed at present.
 (defn scale 
   "Define a scale as a cumulative sum of intervals."
-  ([] '(0))
+  ([] [])
   ([interval & intervals]
-   (cons 0 (map #(+ interval %) (apply scale intervals)))))
+   (cons interval (map #(+ interval %) (apply scale intervals)))))
 
 (def major-scale (zipmap
                    [:i :ii :iii :iv :v :vi :vii :viii]
-                   (scale tone tone semitone tone tone tone semitone)))
+                   (scale unison tone tone semitone tone tone tone semitone)))
 
 ; Name notes
 (defall [C D E F G A B]
