@@ -68,7 +68,7 @@
 (def diminished (update-in minor [:v] flat))
 (def power (select-keys major-scale [:i :v :viii]))
 
-; Modifications
+; Transformations 
 (def suspended-second #(assoc % :iii (:ii major-scale))) 
 (def suspended-fourth #(assoc % :iii (:iv major-scale)))
 (def sixth #(assoc % :vi (:vi major-scale)))
