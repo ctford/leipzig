@@ -14,6 +14,15 @@
            names
            (eval values))))
 
+(defn update-values 
+  "Apply f to all the values of m corresponding to keys in ks."
+  [m [& ks] f] (if ks
+                 (update-values
+                   (update-in m [(first ks)] f)
+                   (rest ks)
+                   f)
+                 m)) 
+
 ; Basic intervals
 (def semitone 1)
 (def tone (* semitone 2))
@@ -65,3 +74,5 @@
 (def ninth #(assoc (seventh %) :ix (raise (:ii major-scale))))
 (def eleventh #(assoc (ninth %) :xi (raise (:iv major-scale))))
 (def thirteenth #(assoc (eleventh %) :xi (raise (:vi major-scale))))
+(def second-inversion #(update-values % [:iii :v] lower))
+(def first-inversion #(update-values % [:v] lower))
