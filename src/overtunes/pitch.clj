@@ -90,6 +90,7 @@
 (def thirteenth #(assoc (eleventh %) :xiii (raise (:vi major-scale))))
 (def first-inversion #(update-values % (keys-except % [:i]) lower))
 (def second-inversion #(update-values % (keys-except % [:i :iii]) lower))
+(def third-inversion #(update-values % (keys-except % [:i :iii :v]) lower))
 (def with-bass (bass :i))
 
 ; Qualities
