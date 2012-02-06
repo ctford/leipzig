@@ -32,12 +32,15 @@
   [m ks] (difference (set (keys m)) ks))
 
 (defn grounding [offset]
-  "Takes an offset from root and produces a function for rendering chords."
+  "Takes an offset and produces a function for producing concrete sounds."
   (fn
     ([octave-number]
      (+ offset (* octave-number octave)))
-    ([octave-number chord]
-     (map #(+ offset % (* octave-number octave)) (vals chord)))))
+    ([octave-number chord & transformations]
+     (let [octave-offset (* octave-number octave)
+          transform (apply comp transformations)
+          transformed-chord (transform chord)]
+       (map #(+ offset octave-offset %) (vals transformed-chord))))))
 
 ; Define a major scale. We could easily define other modes,
 ; but they aren't needed at present.
