@@ -66,7 +66,7 @@
 (def raise #(+ % octave))
 (def lower #(- % octave))
 
-; Transformations 
+; Transformations on chords
 (def suspended-second #(assoc % :iii (:ii major-scale))) 
 (def suspended-fourth #(assoc % :iii (:iv major-scale)))
 (def sixth #(assoc % :vi (:vi major-scale)))
@@ -78,7 +78,7 @@
 (def first-inversion #(update-values % (keys-except % [:i]) lower))
 (def second-inversion #(update-values % (keys-except % [:i :iii]) lower))
 
-; Paramatisesd transformations
+; Paramatisesd transformations on chords
 (defn flattened [key] #(update-in % [key] flat))
 (defn sharpened [key] #(update-in % [key] sharp))
 (defn raised [key] #(update-in % [key] raise))
