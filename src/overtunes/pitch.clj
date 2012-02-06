@@ -1,6 +1,6 @@
 (ns overtunes.pitch
   (:use 
-    [clojure.set :only [difference]]
+    [clojure.set :only [difference union]]
     [overtone.live :exclude [scale octave sharp flat sixth unison]]
     [overtone.inst.sampled-piano :only [sampled-piano]]))
 
@@ -70,6 +70,15 @@
 (def raise #(+ % octave))
 (def lower #(- % octave))
 
+; Paramatised transformations on chords
+(defn flattened [key] #(update-in % [key] flat))
+(defn sharpened [key] #(update-in % [key] sharp))
+(defn raised [key] #(update-in % [key] raise))
+(defn lowered [key] #(update-in % [key] lower))
+(defn add [key] #(assoc % key (key (union (thirteenth %) major-scale)))) 
+(defn omit [key] #(dissoc % key)) 
+(defn bass [key] (comp (lowered :bass) #(assoc % :bass (key major-scale)))) 
+
 ; Transformations on chords
 (def suspended-second #(assoc % :iii (:ii major-scale))) 
 (def suspended-fourth #(assoc % :iii (:iv major-scale)))
@@ -78,18 +87,9 @@
 (def dominant-seventh #(assoc % :vii (flat (:vii major-scale))))
 (def ninth #(assoc (seventh %) :ix (raise (:ii major-scale))))
 (def eleventh #(assoc (ninth %) :xi (raise (:iv major-scale))))
-(def thirteenth #(assoc (eleventh %) :xi (raise (:vi major-scale))))
+(def thirteenth #(assoc (eleventh %) :xiii (raise (:vi major-scale))))
 (def first-inversion #(update-values % (keys-except % [:i]) lower))
 (def second-inversion #(update-values % (keys-except % [:i :iii]) lower))
-
-; Paramatised transformations on chords
-(defn flattened [key] #(update-in % [key] flat))
-(defn sharpened [key] #(update-in % [key] sharp))
-(defn raised [key] #(update-in % [key] raise))
-(defn lowered [key] #(update-in % [key] lower))
-(defn add [key] #(assoc % key (key major-scale))) 
-(defn omit [key] #(dissoc % key)) 
-(defn bass [key] (comp (lowered :bass) #(assoc % :bass (key major-scale)))) 
 (def with-bass (bass :i))
 
 ; Qualities
