@@ -78,7 +78,7 @@
 (def first-inversion #(update-values % (keys-except % [:i]) lower))
 (def second-inversion #(update-values % (keys-except % [:i :iii]) lower))
 
-; Paramatisesd transformations on chords
+; Paramatised transformations on chords
 (defn flattened [key] #(update-in % [key] flat))
 (defn sharpened [key] #(update-in % [key] sharp))
 (defn raised [key] #(update-in % [key] raise))
