@@ -87,7 +87,7 @@
 (defn add [key] #(assoc % key (key major-scale))) 
 (defn omit [key] #(dissoc % key)) 
 (defn bass [key] (comp (lowered :bass) #(assoc % :bass (key major-scale)))) 
-(def bassed (bass :i))
+(def with-bass (bass :i))
 
 ; Qualities
 (def major (select-keys major-scale [:i :iii :v]))
