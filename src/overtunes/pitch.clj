@@ -1,5 +1,6 @@
 (ns overtunes.pitch
   (:use 
+    [clojure.set :only [difference]]
     [overtone.live :exclude [scale octave sharp flat sixth]]
     [overtone.inst.sampled-piano :only [sampled-piano]]))
 
@@ -23,8 +24,9 @@
                    f)
                  m)) 
 
-
-(defn keys-except [m ks] (clojure.set/difference (set (keys m)) ks))
+(defn keys-except
+  "Gets the keys from m, excluding any that are present in ks."
+  [m ks] (difference (set (keys m)) ks))
 
 ; Basic intervals
 (def semitone 1)
