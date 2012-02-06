@@ -23,6 +23,9 @@
                    f)
                  m)) 
 
+
+(defn keys-except [m ks] (clojure.set/difference (set (keys m)) ks))
+
 ; Basic intervals
 (def semitone 1)
 (def tone (* semitone 2))
@@ -74,5 +77,5 @@
 (def ninth #(assoc (seventh %) :ix (raise (:ii major-scale))))
 (def eleventh #(assoc (ninth %) :xi (raise (:iv major-scale))))
 (def thirteenth #(assoc (eleventh %) :xi (raise (:vi major-scale))))
-(def second-inversion #(update-values % [:iii :v] lower))
-(def first-inversion #(update-values % [:v] lower))
+(def first-inversion #(update-values % (keys-except % [:i]) lower))
+(def second-inversion #(update-values % (keys-except % [:i :iii]) lower))
