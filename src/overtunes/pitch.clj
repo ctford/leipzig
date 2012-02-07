@@ -1,8 +1,5 @@
 (ns overtunes.pitch
-  (:use 
-    [clojure.set :only [difference union]]
-    [overtone.live :exclude [scale octave sharp flat sixth unison]]
-    [overtone.inst.sampled-piano :only [sampled-piano]]))
+  (:use [clojure.set :only [difference union]]))
 
 ; Basic intervals
 (def unison 0)
@@ -75,7 +72,6 @@
 (defn sharpened [key] #(update-in % [key] sharp))
 (defn raised [key] #(update-in % [key] raise))
 (defn lowered [key] #(update-in % [key] lower))
-(defn add [key] #(assoc % key (key (union (thirteenth %) major-scale)))) 
 (defn omit [key] #(dissoc % key)) 
 (defn bass [key] (comp (lowered :bass) #(assoc % :bass (key major-scale)))) 
 
@@ -88,10 +84,13 @@
 (def ninth #(assoc (seventh %) :ix (raise (:ii major-scale))))
 (def eleventh #(assoc (ninth %) :xi (raise (:iv major-scale))))
 (def thirteenth #(assoc (eleventh %) :xiii (raise (:vi major-scale))))
+(def fifteenth #(assoc (thirteenth %) :xv (raise (:viii major-scale))))
 (def first-inversion #(update-values % (keys-except % [:i]) lower))
 (def second-inversion #(update-values % (keys-except % [:i :iii]) lower))
 (def third-inversion #(update-values % (keys-except % [:i :iii :v]) lower))
 (def with-bass (bass :i))
+
+(defn add [key] #(assoc % key (key (union (fifteenth %) major-scale)))) 
 
 ; Qualities
 (def major (select-keys major-scale [:i :iii :v]))
@@ -99,10 +98,6 @@
 (def augmented ((sharpened :v) major)) 
 (def diminished ((flattened :v) minor)) 
 (def power (select-keys major-scale [:i :v :viii]))
-
-; Let's play!
-(def note# sampled-piano)
-(def chord# #(map note# %))
 
 ; The Hendrix chord
 ; (chord# (G 4 major ninth (flattened :vii) (sharpened :ix)))

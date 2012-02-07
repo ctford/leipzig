@@ -1,5 +1,7 @@
 (ns overtunes.core
-  (:use [overtone.live]))
+  (:use
+    [overtone.live :exclude [scale octave sharp flat sixth unison]]
+    [overtone.inst.sampled-piano :only [sampled-piano]]))
 
 (defn beat-length
   "Determines the beat length in milliseconds of metro."
@@ -52,4 +54,6 @@
   (play-progression
     [(map vector (first melody)) (second melody)] instrument metro))
 
-
+; Let's play!
+(def note# sampled-piano)
+(def chord# #(map note# %))
