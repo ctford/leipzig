@@ -8,7 +8,7 @@
   "A crude five-note melody that will constantly fall out of time when played
   over chords at a rate of two notes per chord." 
   [[(C 4) (Bb 4) (Eb 4) (G 4) (Eb 4)]
-   [1/1 1/1  1/1  1/1 1/1]])
+   [ 1/1   1/1    1/1    1/1   1/1]])
 
 (def start
   "In which we establish the key and give the syncopated relationship between
@@ -56,6 +56,7 @@
 (def finish
   "In which we return to root for resolution at the end of the piece."
   [(Eb 6 major)
+   (Eb 6 minor seventh)
    (Eb 6 major)])
 
 (defn cycle-n
