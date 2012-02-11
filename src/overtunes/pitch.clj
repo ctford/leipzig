@@ -25,6 +25,8 @@
                    f)
                  m)) 
 
+(defn update-all [m f] (update-values m (keys m) f))
+
 (defn keys-except
   "Gets the keys from m, excluding any that are present in ks."
   [m ks] (difference (set (keys m)) ks))
@@ -38,7 +40,7 @@
      (let [octave-offset (* octave-number octave)
           transform (apply comp (reverse transformations))
           transformed-chord (transform chord)]
-       (map #(+ offset octave-offset %) (vals transformed-chord))))))
+       (update-all transformed-chord #(+ offset octave-offset %))))))
 
 ; Define a major scale. We could easily define other modes,
 ; but they aren't needed at present.
@@ -88,7 +90,7 @@
 (def first-inversion #(update-values % (keys-except % [:i]) lower))
 (def second-inversion #(update-values % (keys-except % [:i :iii]) lower))
 (def third-inversion #(update-values % (keys-except % [:i :iii :v]) lower))
-(def with-bass (bass :i))
+(def with-bass #(assoc % :bass (flat (:i %))))
 
 (defn add [key] #(assoc % key (key (union major-scale (fifteenth %))))) 
 

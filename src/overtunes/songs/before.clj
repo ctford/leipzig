@@ -13,50 +13,50 @@
 (def start
   "In which we establish the key and give the syncopated relationship between
   the melody and the chords time to become apparent." 
-  [(Eb 3 major)
-   (Eb 3 major)
-   (C 3 minor seventh)
-   (C 3 minor seventh)
-   (Eb 3 major)
-   (Eb 3 major)
-   (C 3 minor seventh)
-   (C 3 minor seventh)])
+  [(Eb 4 major)
+   (Eb 4 major)
+   (C 4 minor seventh)
+   (C 4 minor seventh)
+   (Eb 4 major)
+   (Eb 4 major)
+   (C 4 minor seventh)
+   (C 4 minor seventh)])
 
 (def middle
   "In which we let the melody combine in interesting ways with a developing
   progression that builds and then resolves."
-  [(G 3 minor)
-   (G 3 minor)
-   (Ab 3 major)
-   (Bb 3 major)
-   (Eb 4 major)
-   (Eb 4 major)
-   (Bb 3 major)
-   (Bb 3 major)])
+  [(G 4 minor)
+   (G 4 minor)
+   (Ab 4 major)
+   (Bb 4 major)
+   (Eb 5 major)
+   (Eb 5 major)
+   (Bb 4 major)
+   (Bb 4 major)])
 
 (def variation
   "In which we elaborate on the middle section."
-  [(G 3 minor)
-   (G 3 minor)
-   (Ab 3 major)
-   (Ab 3 major)
-   (G 3 minor)
-   (G 3 minor)
-   (Ab 3 major)
-   (Ab 3 major)
-   (G 3 minor)
-   (G 3 minor)
-   (Ab 3 major)
-   (Bb 3 major)
-   (Eb 4 major)
-   (Eb 4 major)
-   (Bb 3 major)
-   (Bb 3 major)])
+  [(G 4 minor)
+   (G 4 minor)
+   (Ab 4 major)
+   (Ab 4 major)
+   (G 4 minor)
+   (G 4 minor)
+   (Ab 4 major)
+   (Ab 4 major)
+   (G 4 minor)
+   (G 4 minor)
+   (Ab 4 major)
+   (Bb 4 major)
+   (Eb 5 major)
+   (Eb 5 major)
+   (Bb 4 major)
+   (Bb 4 major)])
 
 (def finish
   "In which we return to root for resolution at the end of the piece."
-  [(Eb 4 major)
-   (Eb 4 major)])
+  [(Eb 5 major)
+   (Eb 5 major)])
 
 (defn cycle-n
   "Returns a new seq which is cycled n times.

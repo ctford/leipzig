@@ -32,7 +32,12 @@
   (play-chord (chord :C4 :major) organ-cornet 1200)"
   [tones instrument duration]
   (if (not (empty? tones))
-      (doall (map (fn [tone] (play-note tone instrument duration)) tones))))
+      (doall (map (fn [tone] (play-note tone instrument duration)) (vals tones)))))
+
+; Let's play!
+(def note# sampled-piano)
+(defn chord# [chord] (let [notes (vals chord)] 
+                       (doseq [note notes] (note# note))))
 
 (defn play-progression
   "Plays a chord progression on instrument according to metro's timing."
@@ -40,9 +45,8 @@
   (when-not (empty? (first progression))
     (let [weighted-chord (map first progression)
           chord (first weighted-chord)
-          beats (second weighted-chord)
-          duration (* beats (beat-length metro))]
-      (at (metro) (play-chord chord instrument duration))
+          beats (second weighted-chord)]
+      (at (metro) (chord# chord))
       (play-progression (map rest progression) instrument
         (metronome-from metro beats)))))
 
@@ -51,9 +55,7 @@
   Takes a relative metronome in addition to the melody.
   (play-melody [[:C3 :E3 :G3][1/1 1/2 3/2]] organ-cornet metro)"
   [melody instrument metro]
-  (play-progression
-    [(map vector (first melody)) (second melody)] instrument metro))
-
-; Let's play!
-(def note# sampled-piano)
-(def chord# #(doseq [note %] (note# note)))
+  (let [[names timings] melody
+        notes (map note names)
+        melody-chords [(map #(hash-map :i %) notes) timings]]
+    (play-progression melody-chords instrument metro)))
