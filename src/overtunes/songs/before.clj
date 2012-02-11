@@ -90,7 +90,8 @@
 
 (defn before []
   "The full version of 'Before', grave."
-  (play (concat start middle start middle variation) (metronome 30)))
+  (play (concat start middle start middle variation)
+        (metronome-from (metronome 30) 1)))
 
 (defn before-short []
   "A short version of 'Before', adante."
