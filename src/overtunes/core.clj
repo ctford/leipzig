@@ -1,6 +1,6 @@
 (ns overtunes.core
   (:use
-    [overtone.live :exclude [scale octave sharp flat sixth unison]]
+    [overtone.live :exclude [scale octave sharp flat sixth unison play]]
     [overtone.inst.sampled-piano :only [sampled-piano]]))
 
 (defn beat-length
@@ -36,23 +36,22 @@
 
 ; Let's play!
 (def note# sampled-piano)
-(defn chord# [chord] (let [notes (vals chord)] 
-                       (doseq [note notes] (note# note))))
+(defn chord# [chord] (doseq [note chord] (note# note)))
+
+(defn play-phrase
+  "Plays a phrase using f according to metro's timing."
+  [phrase f metro]
+  (when-not (empty? (first phrase))
+    (let [[[sound & sounds] [timing & timings]] phrase]
+      (at (metro) (f sound))
+      (play-phrase [sounds timings] f (metronome-from metro timing)))))
 
 (defn play-progression
   "Plays a chord progression on instrument according to metro's timing."
   [progression instrument metro]
-  (when-not (empty? (first progression))
-    (let [[[chord & chords] [timing & timings]] progression]
-      (at (metro) (chord# chord))
-      (play-progression [chords timings] instrument (metronome-from metro timing)))))
+  (play-phrase progression #(chord# (vals %)) metro))
 
 (defn play-melody
-  "Plays a seq of weighted notes on instrument.
-  Takes a relative metronome in addition to the melody.
-  (play-melody [[:C3 :E3 :G3][1/1 1/2 3/2]] organ-cornet metro)"
+  "Plays a melody on instrument according to metro's timing."
   [melody instrument metro]
-  (when-not (empty? (first melody))
-    (let [[[note & notes] [timing & timings]] melody]
-      (at (metro) (note# note))
-      (play-melody [notes timings] instrument (metronome-from metro timing)))))
+  (play-phrase melody #(note# %) metro))
