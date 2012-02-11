@@ -90,7 +90,7 @@
 (def third-inversion #(update-values % (keys-except % [:i :iii :v]) lower))
 (def with-bass (bass :i))
 
-(defn add [key] #(assoc % key (key (union (fifteenth %) major-scale)))) 
+(defn add [key] #(assoc % key (key (union major-scale (fifteenth %))))) 
 
 ; Qualities
 (def major (select-keys major-scale [:i :iii :v]))

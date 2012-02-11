@@ -56,4 +56,4 @@
 
 ; Let's play!
 (def note# sampled-piano)
-(def chord# #(map note# %))
+(def chord# #(doseq [note %] (note# note)))

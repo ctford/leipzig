@@ -1,6 +1,7 @@
 (ns overtunes.songs.before
-  (:use [overtone.live])
+  (:use [overtunes.pitch])
   (:use [overtunes.core])
+  (:use [overtone.core :only [metronome]])
   (:use [overtunes.instruments.organ-cornet]))
 
 (def melody
@@ -12,58 +13,50 @@
 (def start
   "In which we establish the key and give the syncopated relationship between
   the melody and the chords time to become apparent." 
-  [(chord :Eb3 :major)
-   (chord :Eb3 :major)
-   (chord :C3  :minor7)
-   (chord :C3  :minor7)
-   (chord :Eb3 :major)
-   (chord :Eb3 :major)
-   (chord :C3  :minor7)
-   (chord :C3  :minor7)])
+  [(Eb 3 major)
+   (Eb 3 major)
+   (C 3 minor seventh)
+   (C 3 minor seventh)
+   (Eb 3 major)
+   (Eb 3 major)
+   (C 3 minor seventh)
+   (C 3 minor seventh)])
 
 (def middle
   "In which we let the melody combine in interesting ways with a developing
   progression that builds and then resolves."
-  [(chord :G3  :minor)
-   (chord :G3  :minor)
-   (chord :Ab3 :major)
-   (chord :Bb3 :major)
-   (chord :Eb4 :major)
-   (chord :Eb4 :major)
-   (chord :Bb3 :major)
-   (chord :Bb3 :major)])
+  [(G 3 minor)
+   (G 3 minor)
+   (Ab 3 major)
+   (Bb 3 major)
+   (Eb 4 major)
+   (Eb 4 major)
+   (Bb 3 major)
+   (Bb 3 major)])
 
 (def variation
   "In which we elaborate on the middle section."
-  [(chord :G3  :minor)
-   (chord :G3  :minor)
-   (chord :Ab3 :major)
-   (chord :Ab3 :major)
-   (chord :G3  :minor)
-   (chord :G3  :minor)
-   (chord :Ab3 :major)
-   (chord :Ab3 :major)
-   (chord :G3  :minor)
-   (chord :G3  :minor)
-   (chord :Ab3 :major)
-   (chord :Bb3 :major)
-   (chord :Eb4 :major)
-   (chord :Eb4 :major)
-   (chord :Bb3 :major)
-   (chord :Bb3 :major)])
+  [(G 3 minor)
+   (G 3 minor)
+   (Ab 3 major)
+   (Ab 3 major)
+   (G 3 minor)
+   (G 3 minor)
+   (Ab 3 major)
+   (Ab 3 major)
+   (G 3 minor)
+   (G 3 minor)
+   (Ab 3 major)
+   (Bb 3 major)
+   (Eb 4 major)
+   (Eb 4 major)
+   (Bb 3 major)
+   (Bb 3 major)])
 
 (def finish
   "In which we return to root for resolution at the end of the piece."
-  [(chord :Eb4 :major)
-   (chord :Eb4 :major)])
-
-(defn with-bass
-  "Prepends an octave stretch to chord.
-  (with-bass (chord :C4 :major))"
-  [chord]
-  (let [root (first chord)
-        bass [(- root 12) (- root 24)]]
-    (concat bass chord)))
+  [(Eb 4 major)
+   (Eb 4 major)])
 
 (defn cycle-n
   "Returns a new seq which is cycled n times.
@@ -76,7 +69,7 @@
   Takes a relative metronome in addition to the chord progression.
   (play-chords [root fourth fifth] metro)"
   [chords metro]
-  (let [bassed-chords (map with-bass chords)
+  (let [bassed-chords chords
         weighted-chords [bassed-chords (cycle-n (count chords) [2/1])]] 
     (play-progression weighted-chords organ-cornet metro)))
 
