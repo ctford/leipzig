@@ -43,19 +43,16 @@
   "Plays a chord progression on instrument according to metro's timing."
   [progression instrument metro]
   (when-not (empty? (first progression))
-    (let [weighted-chord (map first progression)
-          chord (first weighted-chord)
-          beats (second weighted-chord)]
+    (let [[[chord & chords] [timing & timings]] progression]
       (at (metro) (chord# chord))
-      (play-progression (map rest progression) instrument
-        (metronome-from metro beats)))))
+      (play-progression [chords timings] instrument (metronome-from metro timing)))))
 
 (defn play-melody
   "Plays a seq of weighted notes on instrument.
   Takes a relative metronome in addition to the melody.
   (play-melody [[:C3 :E3 :G3][1/1 1/2 3/2]] organ-cornet metro)"
   [melody instrument metro]
-  (let [[names timings] melody
-        notes (map note names)
-        melody-chords [(map #(hash-map :i %) notes) timings]]
-    (play-progression melody-chords instrument metro)))
+  (when-not (empty? (first melody))
+    (let [[[note & notes] [timing & timings]] melody]
+      (at (metro) (note# note))
+      (play-melody [notes timings] instrument (metronome-from metro timing)))))
