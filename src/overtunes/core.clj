@@ -24,7 +24,7 @@
   [tone instrument duration]
 
   (if-not (= :rest tone)
-    (let [frequency (midi->hz (note tone))]
+    (let [frequency (midi->hz tone)]
       (instrument frequency duration))))
 
 (defn play-chord 
