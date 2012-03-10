@@ -97,3 +97,5 @@
 (defn before-short []
   "A short version of 'Before', adante."
   (play variation (metronome 100)))
+
+(before)
