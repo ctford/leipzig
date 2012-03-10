@@ -17,10 +17,12 @@
 (def note# (comp sampled-piano ground))
 (defn chord# [chord] (doseq [note (vals chord)] (note# note))) 
 
-(def ionian {:i 0, :ii 2, :iii 4, :iv 5, :v 7, :vi 9, :vii 11, :viii 12})
-(def I (select-keys ionian [:i :iii :v]))
-(def II (select-keys ionian [:ii :iv :vi]))
-(def V (select-keys ionian [:v :vii :ii]))
+(def ionian (sorted-map 1 0, 2 2, 3 4, 4 5, 5 7, 6 9, 7 11, 8 12))
+
+(defn triad [scale root] (zipmap [5 3 1] (vals (select-keys scale [root (+ 2 root) (+ 4 root)] ))))
+(def I (triad ionian 1))
+(def II (triad ionian 2))
+(def V (triad ionian 5))
 
 (def progression [I {} II {} II V I V])
 
@@ -29,4 +31,4 @@
     (at (timing 0) (chord# (first chords)))
     (rythm-n-bass# (from timing 4) (rest chords))))
 
-; (rythm-n-bass# (bpm 130) (cycle progression))
+(rythm-n-bass# (bpm 130) (cycle progression))
