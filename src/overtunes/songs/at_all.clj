@@ -17,9 +17,13 @@
 (def note# (comp sampled-piano ground))
 (defn chord# [chord] (doseq [note (vals chord)] (note# note))) 
 
-(def ionian [0 2 4 5 7 9 11 12])
+(def ionian (cycle [0 2 4 5 7 9 11]))
+(defn triad [scale root]
+  (zipmap [:i :iii :v]
+          [(nth scale root)
+           (nth scale (+ root 2))
+           (nth scale (+ root 4))])) 
 
-(defn triad [scale root] (zipmap [:v :iii :i] (vals (select-keys scale [root (+ 2 root) (+ 4 root)] ))))
 (def I (triad ionian 0))
 (def II (triad ionian 1))
 (def V (triad ionian 4))
