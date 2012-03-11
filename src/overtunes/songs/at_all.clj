@@ -63,7 +63,7 @@
         next))))
 
 (defn intro# [timing] 
-    (even-melody# timing (take 32 (cycle [9 7])))
+    (even-melody# timing (take 32 (cycle (map ionian [5 4]))))
     (rhythm-n-bass# timing (take 8 (cycle progression))))
 
 (defn first-bit# [timing]
@@ -103,4 +103,4 @@
 
 (defn play# [] (-> (bpm 120) (from 2) intro# first-bit# (speed-up 3/2) variation# final-chord#)) 
 
-;(play#)
+; (play#)
