@@ -12,7 +12,7 @@
 (defn from [timing offset] #(timing (+ offset %)))
 (defn speed-up [timing factor] #(timing (/ % factor)))
 
-(def scale 56)
+(def scale 60)
 (defn ground [note] (+ scale note))
 
 (def note# (comp sampled-piano ground))
@@ -91,7 +91,6 @@
     (from 11)
     (even-melody# (map ionian [11 11 12 11 8])))
   (first-bit# timing))
-
 
 (defn final-chord# [timing]
   (-> timing
