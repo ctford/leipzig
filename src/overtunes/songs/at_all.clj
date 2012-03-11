@@ -33,7 +33,7 @@
 (def II (with-base (triad ionian 1)))
 (def V (with-base (triad ionian 4)))
 
-(def progression [I I II II II V I (assoc V :base (lower (:base V)))])
+(def progression [I I II II II V I (update-in V [:base] lower)])
 
 (defn rythm-n-bass# [timing [chord & chords]]
   (do
