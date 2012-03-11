@@ -28,11 +28,14 @@
 (def II (triad ionian 1))
 (def V (triad ionian 4))
 
-(def progression [I {} II {} II V I V])
+(defn lower [note] (- note 12))
 
-(defn rythm-n-bass# [timing chords]
+(def progression [I I II II II V I V])
+
+(defn rythm-n-bass# [timing [chord & chords]]
   (do
-    (at (timing 0) (chord# (first chords)))
-    (rythm-n-bass# (from timing 4) (rest chords))))
+    (at (timing 0) (note# (lower (:i chord))))
+    (at (timing 2) (chord# chord))
+    (rythm-n-bass# (from timing 4) chords)))
 
 (rythm-n-bass# (bpm 130) (cycle progression))
