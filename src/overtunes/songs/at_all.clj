@@ -65,11 +65,17 @@
     (rhythm-n-bass# timing (take 8 (cycle progression))))
 
 (defn first-bit# [timing]
-    (even-melody# (speed-up (from timing -1) 2) (map ionian [2 4 5 4 4 2 4]))
-    (even-melody# (speed-up (from timing 7) 2) (map ionian [-2 1 2 1 1 -2 1]))
-    (even-melody# (speed-up (from timing 15) 2) (map ionian [-2 1 2 1 1 -2 1 2 3 4]))
-    (even-melody# (speed-up (from timing 23) 2) (map ionian [-1 -2 -3 0 0 -3 0 1 0 -3]))
-    (rhythm-n-bass# timing (take 8 (cycle progression))))
+  (-> timing
+    (from -1)
+    (speed-up 2)
+    (even-melody# (map ionian [2 4 5 4 4 2 4]))
+    (from 9)
+    (even-melody# (map ionian [-2 1 2 1 1 -2 1]))
+    (from 9)
+    (even-melody# (map ionian [-2 1 2 1 1 -2 1 2 3 4]))
+    (from 6)
+    (even-melody# (map ionian [-1 -2 -3 0 0 -3 0 1 0 -3])))
+  (rhythm-n-bass# timing (take 8 (cycle progression))))
 
 (defn play# [] (-> (bpm 120) (from 2) intro# first-bit# (speed-up 3/2) first-bit#)) 
 
