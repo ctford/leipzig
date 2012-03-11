@@ -18,7 +18,12 @@
 (def note# (comp sampled-piano ground))
 (defn chord# [chord] (doseq [note (vals chord)] (note# note))) 
 
-(def ionian #(+ (* 12 (quot % 7)) ([0 2 4 5 7 9 11] (mod % 7))))
+; ionian is quite messed up...
+(def ionian #(let [interval (mod % 7)
+                  note ([0 2 4 5 7 9 11] interval)
+                  octave (quot (- % interval) 7)] 
+              (+ (* 12 octave) note)))
+
 (defn triad [scale root]
   (zipmap [:i :iii :v]
           [(scale root)
