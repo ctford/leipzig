@@ -9,8 +9,8 @@
         ms-per-beat (/ ms-per-minute beats-per-minute)]
     #(+ start (* ms-per-beat %))))
 
-(defn from [timing offset] #(timing (+ offset %)))
-(defn speed-up [timing factor] #(timing (/ % factor)))
+(defn from [offset timing] #(timing (+ offset %)))
+(defn speed-up [factor timing] #(timing (/ % factor)))
 
 (def scale 56)
 (defn ground [note] (+ scale note))
@@ -47,7 +47,7 @@
     (at (timing 3) (note# (:base chord1)))
     (at (timing 4) (note# (:base chord2)))
     (at (timing 6) (chord# (dissoc chord2 :base)))
-    (let [next (from timing 8)]
+    (let [next (from 8 timing)]
       (if chords
         (rhythm-n-bass# next chords)
         next))))
@@ -55,7 +55,7 @@
 (defn even-melody# [timing [note & notes]]
   (do
     (at (timing 0) (note# note))
-    (let [next (from timing 1)]
+    (let [next (from 1 timing)]
       (if notes
         (even-melody# next notes)
         next))))
@@ -65,12 +65,12 @@
     (rhythm-n-bass# timing (take 8 (cycle progression))))
 
 (defn first-bit# [timing]
-    (even-melody# (speed-up (from timing -1) 2) (map ionian [2 4 5 4 4 2 4]))
-    (even-melody# (speed-up (from timing 7) 2) (map ionian [-2 1 2 1 1 -2 1]))
-    (even-melody# (speed-up (from timing 15) 2) (map ionian [-2 1 2 1 1 -2 1 2 3 4]))
-    (even-melody# (speed-up (from timing 23) 2) (map ionian [-1 -2 -3 0 0 -3 0 1 0 -3]))
+    (even-melody# (speed-up 2 (from -1 timing)) (map ionian [2 4 5 4 4 2 4]))
+    (even-melody# (speed-up 2 (from 7 timing)) (map ionian [-2 1 2 1 1 -2 1]))
+    (even-melody# (speed-up 2 (from 15 timing)) (map ionian [-2 1 2 1 1 -2 1 2 3 4]))
+    (even-melody# (speed-up 2 (from 23 timing)) (map ionian [-1 -2 -3 0 0 -3 0 1 0 -3]))
     (rhythm-n-bass# timing (take 8 (cycle progression))))
 
-(defn play# [] (-> (from (bpm 150) 2) intro# first-bit# first-bit#)) 
+(defn play# [] (-> (bpm 150) intro# first-bit# first-bit#)) 
 
 ; (play#)
