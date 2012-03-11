@@ -30,6 +30,8 @@
            (scale (+ root 4))])) 
 
 (defn lower [note] (- note 12))
+(defn raise [note] (+ note 12))
+
 (defn with-base [chord]
   (assoc chord :base
          (lower (:i chord))))
@@ -77,6 +79,10 @@
     (even-melody# (map ionian [-1 -2 -3 0 0 -3 0 1 0 -3])))
   (rhythm-n-bass# timing (take 8 (cycle progression))))
 
-(defn play# [] (-> (bpm 120) (from 2) intro# first-bit# (speed-up 3/2) first-bit#)) 
+(defn final-chord# [timing]
+  (at (timing 0)
+      (chord# (update-in I [:i] raise))))
+
+(defn play# [] (-> (bpm 120) (from 2) intro# first-bit# (speed-up 3/2) first-bit# final-chord#)) 
 
 ; (play#)
