@@ -79,10 +79,28 @@
     (even-melody# (map ionian [-1 -2 -3 0 0 -3 0 1 0 -3])))
   (rhythm-n-bass# timing (take 8 (cycle progression))))
 
+(defn variation# [timing]
+  (-> timing
+    (speed-up 2)
+    (from 9)
+    (even-melody# (map ionian [11 11 12 9 7]))
+    (from 11)
+    (even-melody# (map ionian [8 8 9 8 3]))
+    (from 11)
+    (even-melody# (map ionian [8 8 9 6 4]))
+    (from 11)
+    (even-melody# (map ionian [11 11 12 11 8])))
+  (first-bit# timing))
+
+
 (defn final-chord# [timing]
+  (-> timing
+    (from -1)
+    (speed-up 2)
+    (even-melody# (map ionian [11 13 14])))
   (at (timing 0)
       (chord# (update-in I [:i] raise))))
 
-(defn play# [] (-> (bpm 120) (from 2) intro# first-bit# (speed-up 3/2) first-bit# final-chord#)) 
+(defn play# [] (-> (bpm 120) (from 2) intro# first-bit# (speed-up 3/2) variation# final-chord#)) 
 
-; (play#)
+;(play#)
