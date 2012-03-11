@@ -35,10 +35,13 @@
 
 (def progression [I I II II II V I (update-in V [:base] lower)])
 
-(defn rythm-n-bass# [timing [chord & chords]]
+(defn rythm-n-bass# [timing [chord1 chord2 & chords]]
   (do
-    (at (timing 0) (note# (:base chord)))
-    (at (timing 2) (chord# (dissoc chord :base)))
-    (rythm-n-bass# (from timing 4) chords)))
+    (at (timing 0) (note# (:base chord1)))
+    (at (timing 2) (chord# (dissoc chord1 :base)))
+    (at (timing 3) (note# (:base chord1)))
+    (at (timing 4) (note# (:base chord2)))
+    (at (timing 6) (chord# (dissoc chord2 :base)))
+    (rythm-n-bass# (from timing 8) chords)))
 
 (rythm-n-bass# (bpm 130) (cycle progression))
