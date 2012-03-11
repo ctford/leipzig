@@ -18,11 +18,10 @@
 (def note# (comp sampled-piano ground))
 (defn chord# [chord] (doseq [note (vals chord)] (note# note))) 
 
-; ionian is quite messed up...
 (def ionian #(let [interval (mod % 7)
                   note ([0 2 4 5 7 9 11] interval)
-                  octave (quot (- % interval) 7)] 
-              (+ (* 12 octave) note)))
+                  octave (quot (- % interval) 7)]
+               (+ (* 12 octave) note)))
 
 (defn triad [scale root]
   (zipmap [:i :iii :v]
@@ -51,20 +50,27 @@
     (if chords
       (rhythm-n-bass# (from timing 8) chords))))
 
-
 (defn even-melody# [timing [note & notes]]
   (do
     (at (timing 0) (note# note))
     (if notes
       (even-melody# (from timing 1) notes))))
 
-(defn play# []
-  (let [timing (from (bpm 120) 2)]
-    (even-melody# timing (take 32 (cycle [9 7])))
-    (rhythm-n-bass# timing (take 16 (cycle progression)))
-    (even-melody# (speed-up (from timing 31) 2) (map ionian [2 4 5 4 4 2 4]))
-    (even-melody# (speed-up (from timing 39) 2) (map ionian [-3 1 2 1 1 -3 1]))
-    (even-melody# (speed-up (from timing 47) 2) (map ionian [-3 1 2 1 1 -3 1 2 3 4]))
-    (even-melody# (speed-up (from timing 55) 2) (map ionian [-3 1 2 1 1 -3 1 2 1 -1]))))
+(defn intro# [timing] 
+    (rhythm-n-bass# timing (take 8 (cycle progression)))
+    (even-melody# timing (take 32 (cycle [9 7]))))
 
-(play#)
+(defn first-bit# [timing]
+    (rhythm-n-bass# timing (take 8 (cycle progression)))
+    (even-melody# (speed-up (from timing -1) 2) (map ionian [2 4 5 4 4 2 4]))
+    (even-melody# (speed-up (from timing 7) 2) (map ionian [-2 1 2 1 1 -2 1]))
+    (even-melody# (speed-up (from timing 15) 2) (map ionian [-2 1 2 1 1 -2 1 2 3 4]))
+    (even-melody# (speed-up (from timing 23) 2) (map ionian [-1 -2 -3 0 0 -3 0 1 0 -3])))
+
+(defn play# []
+  (let [timing (from (bpm 120) 2)] ; Lead in with two beats so that everything starts at once.
+    (intro# timing)
+    (first-bit# (from timing 32))
+    (first-bit# (from timing 64))))
+
+; (play#)
