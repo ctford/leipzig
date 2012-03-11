@@ -42,6 +42,19 @@
     (at (timing 3) (note# (:base chord1)))
     (at (timing 4) (note# (:base chord2)))
     (at (timing 6) (chord# (dissoc chord2 :base)))
-    (rythm-n-bass# (from timing 8) chords)))
+    (if chords
+      (rythm-n-bass# (from timing 8) chords))))
 
-(rythm-n-bass# (bpm 130) (cycle progression))
+
+(defn even-melody# [timing [note & notes]]
+  (do
+    (at (timing 0) (note# note))
+    (if notes
+      (even-melody# (from timing 1) notes))))
+
+(defn play []
+  (let [timing (from (bpm 130) 4)]
+    (even-melody# timing (take 64 (cycle [9 7])))
+    (rythm-n-bass# timing (take 16 (cycle progression)))))
+
+; (play)
