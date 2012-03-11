@@ -36,7 +36,7 @@
 
 (def progression [I I II II II V I (update-in V [:base] lower)])
 
-(defn rythm-n-bass# [timing [chord1 chord2 & chords]]
+(defn rhythm-n-bass# [timing [chord1 chord2 & chords]]
   (do
     (at (timing 0) (note# (:base chord1)))
     (at (timing 2) (chord# (dissoc chord1 :base)))
@@ -44,7 +44,7 @@
     (at (timing 4) (note# (:base chord2)))
     (at (timing 6) (chord# (dissoc chord2 :base)))
     (if chords
-      (rythm-n-bass# (from timing 8) chords))))
+      (rhythm-n-bass# (from timing 8) chords))))
 
 
 (defn even-melody# [timing [note & notes]]
@@ -56,7 +56,7 @@
 (defn play# []
   (let [timing (from (bpm 120) 2)]
     (even-melody# timing (take 32 (cycle [9 7])))
-    (rythm-n-bass# timing (take 16 (cycle progression)))
+    (rhythm-n-bass# timing (take 16 (cycle progression)))
     (even-melody# (speed-up (from timing 31) 2) (map ionian [2 4 5 4 4 2 4]))
     (even-melody# (speed-up (from timing 39) 2) (map ionian [-3 1 2 1 1 -3 1]))
     (even-melody# (speed-up (from timing 47) 2) (map ionian [-3 1 2 1 1 -3 1 2 3 4]))
