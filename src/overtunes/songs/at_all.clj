@@ -18,7 +18,7 @@
 (def note# (comp sampled-piano ground))
 (defn chord# [chord] (doseq [note (vals chord)] (note# note))) 
 
-(def ionian #([0 2 4 5 7 9 11] (mod % 7)))
+(def ionian #(+ (* 12 (quot % 7)) ([0 2 4 5 7 9 11] (mod % 7))))
 (defn triad [scale root]
   (zipmap [:i :iii :v]
           [(scale root)
@@ -53,13 +53,13 @@
     (if notes
       (even-melody# (from timing 1) notes))))
 
-(defn play []
-  (let [timing (from (bpm 240) 2)]
+(defn play# []
+  (let [timing (from (bpm 120) 2)]
     (even-melody# timing (take 32 (cycle [9 7])))
     (rythm-n-bass# timing (take 16 (cycle progression)))
     (even-melody# (speed-up (from timing 31) 2) (map ionian [2 4 5 4 4 2 4]))
-    (even-melody# (speed-up (from timing 39) 2) (map ionian [5 1 2 1 1 5 1]))
-    (even-melody# (speed-up (from timing 47) 2) (map ionian [5 1 2 1 1 5 1 2 3 4]))
-    (even-melody# (speed-up (from timing 55) 2) (map ionian [5 1 2 1 1 5 1 2 1 6]))))
+    (even-melody# (speed-up (from timing 39) 2) (map ionian [-3 1 2 1 1 -3 1]))
+    (even-melody# (speed-up (from timing 47) 2) (map ionian [-3 1 2 1 1 -3 1 2 3 4]))
+    (even-melody# (speed-up (from timing 55) 2) (map ionian [-3 1 2 1 1 -3 1 2 1 -1]))))
 
-(play)
+(play#)
