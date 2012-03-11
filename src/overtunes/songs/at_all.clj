@@ -100,6 +100,6 @@
   (at (timing 0)
       (chord# (update-in I [:i] raise))))
 
-(defn play# [] (-> (bpm 120) (from 2) intro# first-bit# (speed-up 3/2) variation# final-chord#)) 
+(defn play# [] (-> (bpm 160) (from 2) intro# first-bit# (speed-up 3/2) variation# final-chord#)) 
 
 ; (play#)
