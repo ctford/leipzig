@@ -24,18 +24,21 @@
            (nth scale (+ root 2))
            (nth scale (+ root 4))])) 
 
-(def I (triad ionian 0))
-(def II (triad ionian 1))
-(def V (triad ionian 4))
-
 (defn lower [note] (- note 12))
+(defn with-base [chord]
+  (assoc chord :base
+         (lower (:i chord))))
 
-(def progression [I I II II II V I V])
+(def I (with-base (triad ionian 0)))
+(def II (with-base (triad ionian 1)))
+(def V (with-base (triad ionian 4)))
+
+(def progression [I I II II II V I (assoc V :base (lower (:base V)))])
 
 (defn rythm-n-bass# [timing [chord & chords]]
   (do
-    (at (timing 0) (note# (lower (:i chord))))
-    (at (timing 2) (chord# chord))
+    (at (timing 0) (note# (:base chord)))
+    (at (timing 2) (chord# (dissoc chord :base)))
     (rythm-n-bass# (from timing 4) chords)))
 
 (rythm-n-bass# (bpm 130) (cycle progression))
