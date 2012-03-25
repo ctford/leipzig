@@ -10,7 +10,6 @@
 
 (defn after [timing offset] #(timing (+ offset %)))
 (defn tempo [timing factor] #(timing (/ % factor)))
-
 (defn ground [note] (+ 60 note))
 
 (def note# (comp sampled-piano ground))
