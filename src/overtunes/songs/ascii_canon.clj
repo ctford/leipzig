@@ -32,7 +32,8 @@
          melody "clojuring clojuring clojuring clojuring"]
         (even-melody# timing melody) 
         (even-melody# (after timing 1/2) melody)
-        (even-melody# (after timing 1) melody)))
+        (even-melody# (after timing 1) melody)
+        (even-melody# (after timing 3/2) melody)))
 
 (play#)
 
