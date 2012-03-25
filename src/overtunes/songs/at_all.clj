@@ -9,7 +9,7 @@
         ms-per-beat (/ ms-per-minute beats-per-minute)]
     #(+ start (* ms-per-beat %))))
 
-(defn from [timing offset] #(timing (+ offset %)))
+(defn after [timing offset] #(timing (+ offset %)))
 (defn tempo [timing factor] #(timing (/ % factor)))
 
 (def scale 60)
@@ -49,7 +49,7 @@
     (at (timing 3) (note# (:base chord1)))
     (at (timing 4) (note# (:base chord2)))
     (at (timing 6) (chord# (dissoc chord2 :base)))
-    (let [next (from timing 8)]
+    (let [next (after timing 8)]
       (if chords
         (rhythm-n-bass# next chords)
         next))))
@@ -57,7 +57,7 @@
 (defn even-melody# [timing [note & notes]]
   (do
     (at (timing 0) (note# note))
-    (let [next (from timing 1)]
+    (let [next (after timing 1)]
       (if notes
         (even-melody# next notes)
         next))))
@@ -68,40 +68,40 @@
 
 (defn first-bit# [timing]
   (-> timing
-    (from -1)
+    (after -1)
     (tempo 2)
     (even-melody# (map ionian [2 4 5 4 4 2 4]))
-    (from 9)
+    (after 9)
     (even-melody# (map ionian [-2 1 2 1 1 -2 1]))
-    (from 9)
+    (after 9)
     (even-melody# (map ionian [-2 1 2 1 1 -2 1 2 3 4]))
-    (from 6)
+    (after 6)
     (even-melody# (map ionian [-1 -2 -3 0 0 -3 0 1 0 -3])))
   (rhythm-n-bass# timing (take 8 (cycle progression))))
 
 (defn variation# [timing]
   (-> timing
     (tempo 2)
-    (from 9)
+    (after 9)
     (even-melody# (map ionian [11 11 12 9 7]))
-    (from 11)
+    (after 11)
     (even-melody# (map ionian [8 8 9 8 3]))
-    (from 11)
+    (after 11)
     (even-melody# (map ionian [8 8 9 6 4]))
-    (from 11)
+    (after 11)
     (even-melody# (map ionian [11 11 12 11 8])))
   (first-bit# timing))
 
 (defn final-chord# [timing]
   (-> timing
-    (from -1)
+    (after -1)
     (tempo 2)
     (even-melody# (map ionian [11 13 14])))
   (at (timing 0)
       (chord# (update-in I [:i] raise))))
 
 (defn play# [] (->
-                 (bpm 160) (from 2)
+                 (bpm 160) (after 2)
                  intro# intro# 
                  first-bit#
                  (speed-up 3/2)
