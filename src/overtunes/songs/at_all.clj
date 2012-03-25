@@ -80,7 +80,6 @@
   (->
     (bpm 160 (now)) (after 2)
     intro# intro# first-bit#
-    (tempo 3/2)
-    first-bit# variation# final-chord#)) 
+    (tempo 3/2) variation# final-chord#)) 
 
 (play#)
