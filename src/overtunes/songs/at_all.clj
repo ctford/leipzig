@@ -61,41 +61,27 @@
 
 (defn first-bit# [timing]
   (-> timing
-    (after -1)
-    (tempo 2)
+    (after -1) (tempo 2)
     (even-melody# [2 4 5 4 4 2 4])
-    (after 9)
-    (even-melody# [-2 1 2 1 1 -2 1])
-    (after 9)
-    (even-melody# [-2 1 2 1 1 -2 1 2 3 4])
-    (after 6)
-    (even-melody# [-1 -2 -3 0 0 -3 0 1 0 -3]))
+    (after 9) (even-melody# [-2 1 2 1 1 -2 1])
+    (after 9) (even-melody# [-2 1 2 1 1 -2 1 2 3 4])
+    (after 6) (even-melody# [-1 -2 -3 0 0 -3 0 1 0 -3]))
   (rhythm-n-bass# timing (take 8 (cycle progression))))
 
 (defn variation# [timing]
-  (-> timing
-    (tempo 2)
-    (after 9)
-    (even-melody# [11 11 12 9 7])
-    (after 11)
-    (even-melody# [8 8 9 8 3])
-    (after 11)
-    (even-melody# [8 8 9 6 4])
-    (after 11)
-    (even-melody# [11 11 12 11 8]))
-  (first-bit# timing))
+  (first-bit# timing)
+  (-> timing (tempo 2)
+    (after 9) (even-melody# [11 11 12 9 7])
+    (after 11) (even-melody# [8 8 9 8 3])
+    (after 11) (even-melody# [8 8 9 6 4])
+    (after 11) (even-melody# [11 11 12 11 8])))
 
 (defn final-chord# [timing]
-  (-> timing
-    (after -1)
-    (tempo 2)
-    (even-melody# [11 13 14]))
-  (at (timing 0)
-      (chord# (update-in I [:i] raise))))
+  (-> timing (after -1) (tempo 2) (even-melody# [11 13 14]))
+  (at (timing 0) (chord# (update-in I [:i] raise))))
 
 (defn play# [] (->
-                 (bpm 160 (now))
-                 (after 2)
+                 (bpm 160 (now)) (after 2)
                  intro# intro# first-bit#
                  (tempo 3/2)
                  first-bit# variation# final-chord#)) 
