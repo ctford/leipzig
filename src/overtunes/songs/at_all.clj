@@ -10,7 +10,7 @@
     #(+ start (* ms-per-beat %))))
 
 (defn from [timing offset] #(timing (+ offset %)))
-(defn speed-up [timing factor] #(timing (/ % factor)))
+(defn tempo [timing factor] #(timing (/ % factor)))
 
 (def scale 60)
 (defn ground [note] (+ scale note))
@@ -69,7 +69,7 @@
 (defn first-bit# [timing]
   (-> timing
     (from -1)
-    (speed-up 2)
+    (tempo 2)
     (even-melody# (map ionian [2 4 5 4 4 2 4]))
     (from 9)
     (even-melody# (map ionian [-2 1 2 1 1 -2 1]))
@@ -81,7 +81,7 @@
 
 (defn variation# [timing]
   (-> timing
-    (speed-up 2)
+    (tempo 2)
     (from 9)
     (even-melody# (map ionian [11 11 12 9 7]))
     (from 11)
@@ -95,7 +95,7 @@
 (defn final-chord# [timing]
   (-> timing
     (from -1)
-    (speed-up 2)
+    (tempo 2)
     (even-melody# (map ionian [11 13 14])))
   (at (timing 0)
       (chord# (update-in I [:i] raise))))
