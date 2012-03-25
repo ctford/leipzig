@@ -9,14 +9,14 @@
     #(+ start (* ms-per-beat %))))
 
 
-(def ionian #(let [interval (mod % 7)
+(def major #(let [interval (mod % 7)
                   note ([0 2 4 5 7 9 11] interval)
                   octave (quot (- % interval) 7)]
                (+ (* 12 octave) note)))
 
 (defn after [timing offset] #(timing (+ offset %)))
 (defn tempo [timing factor] #(timing (/ % factor)))
-(defn ground [note] (+ 60 (ionian note)))
+(defn ground [note] (+ 60 (major note)))
 
 (def note# (comp sampled-piano ground))
 (defn chord# [chord] (doseq [note (vals chord)] (note# note))) 
