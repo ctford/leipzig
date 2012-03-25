@@ -24,15 +24,11 @@
 (defn triad [root] (zipmap [:i :iii :v] [root (+ root 2) (+ root 4)]))
 (defn lower [note] (- note 7))
 (defn raise [note] (+ note 7))
-
-(defn with-base [chord]
-  (assoc chord :base
-         (lower (:i chord))))
+(defn with-base [chord] (assoc chord :base (lower (:i chord))))
 
 (def I (with-base (triad 0)))
 (def II (with-base (triad 1)))
 (def V (with-base (triad 4)))
-
 (def progression [I I II II II V I (update-in V [:base] lower)])
 
 (defn rhythm-n-bass# [timing [chord1 chord2 & chords]]
@@ -80,10 +76,11 @@
   (-> timing (after -1) (tempo 2) (even-melody# [11 13 14]))
   (at (timing 0) (chord# (update-in I [:i] raise))))
 
-(defn play# [] (->
-                 (bpm 160 (now)) (after 2)
-                 intro# intro# first-bit#
-                 (tempo 3/2)
-                 first-bit# variation# final-chord#)) 
+(defn play# []
+  (->
+    (bpm 160 (now)) (after 2)
+    intro# intro# first-bit#
+    (tempo 3/2)
+    first-bit# variation# final-chord#)) 
 
 (play#)
