@@ -3,9 +3,8 @@
     [overtone.live :only [at now]]
     [overtone.inst.sampled-piano :only [sampled-piano]]))
 
-(defn bpm [beats-per-minute] 
-  (let [start (now)
-        ms-per-minute (* 60 1000)
+(defn bpm [beats-per-minute start] 
+  (let [ms-per-minute (* 60 1000)
         ms-per-beat (/ ms-per-minute beats-per-minute)]
     #(+ start (* ms-per-beat %))))
 
@@ -101,10 +100,11 @@
       (chord# (update-in I [:i] raise))))
 
 (defn play# [] (->
-                 (bpm 160) (after 2)
+                 (bpm 160 (now))
+                 (after 2)
                  intro# intro# 
                  first-bit#
-                 (speed-up 3/2)
+                 (tempo 3/2)
                  first-bit# variation#
                  final-chord#)) 
 
