@@ -3,7 +3,7 @@
     [overtone.live :only [at now]]
     [overtone.inst.sampled-piano :only [sampled-piano]]))
 
-(defn sum-up-to [series n] (apply + (take n series)))
+(defn sum-up-to [series n] (reduce + (take n series)))
 (def major-scale #(sum-up-to (cycle [2 2 1 2 2 2 1]) %))
 (def g-major #(-> % major-scale (+ 67))) 
 
