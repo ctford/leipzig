@@ -5,9 +5,9 @@
 
 (defn sum-up-to [series n] (apply + (take n series)))
 (def major-scale #(sum-up-to (cycle [2 2 1 2 2 2 1]) %))
-(def g-major #(+ 67 (major-scale %))) 
+(def g-major #(-> % major-scale (+ 67))) 
 
-(defn ms-per-beat [ms start] #(+ start (* % ms)))
+(defn bpm [beats start] #(-> % (/ beats) (* 60) (* 1000) (+ start)))
 (defn after [timing beats] #(timing (+ beats %)))
 (defn syncopate [timing lengths] #(timing (sum-up-to lengths %)))
 
@@ -19,7 +19,7 @@
     (dorun (map-indexed note# notes)))) 
 
 (defn play# []
-  (let [timing (ms-per-beat 500 (now))
+  (let [timing (bpm 150 (now))
         rhythm #(syncopate % durations)]
     (melody# (rhythm (after timing 0)) pitches)
     (melody# (rhythm (after timing 16)) pitches)
