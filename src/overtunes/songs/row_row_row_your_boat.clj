@@ -3,13 +3,13 @@
     [overtone.live :only [at now]]
     [overtone.inst.sampled-piano :only [sampled-piano]]))
 
-(defn sum-up-to [series n] (reduce + (take n series)))
-(def major-scale #(sum-up-to (cycle [2 2 1 2 2 2 1]) %))
+(defn sum-n [series n] (reduce + (take n series)))
+(def major-scale (partial sum-n (cycle [2 2 1 2 2 2 1])))
 (def g-major #(-> % major-scale (+ 67))) 
 
 (defn bpm [beats start] #(-> % (/ beats) (* 60) (* 1000) (+ start)))
 (defn after [timing beats] #(timing (+ beats %)))
-(defn syncopate [timing lengths] #(timing (sum-up-to lengths %)))
+(defn syncopate [timing durations] #(timing (sum-n durations %)))
 
 (def pitches [0 0 0 1 2, 2 1 2 3 4, 7 7 7 4 4 4 2 2 2 0 0 0, 4 3 2 1 0])
 (def durations [1 1 2/3 1/3 1, 2/3 1/3 2/3 1/3 2, 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3, 2/3 1/3 2/3 1/3 2])
@@ -20,12 +20,12 @@
 
 (defn play# []
   (let [timing (bpm 150 (now))
-        rhythm #(syncopate % durations)]
-    (melody# (rhythm (after timing 0)) pitches)
-    (melody# (rhythm (after timing 16)) pitches)
-    (melody# (rhythm (after timing 20)) pitches)
-    (melody# (rhythm (after timing 24)) pitches)
-    (melody# (rhythm (after timing 28)) pitches)
+        rhythm-from #(syncopate (after timing %) durations)]
+    (melody# (rhythm-from 0)  pitches)
+    (melody# (rhythm-from 16) pitches)
+    (melody# (rhythm-from 20) pitches)
+    (melody# (rhythm-from 24) pitches)
+    (melody# (rhythm-from 28) pitches)
     ))
 
 (play#)
