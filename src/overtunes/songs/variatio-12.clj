@@ -6,7 +6,8 @@
 (defn sum-n [series n] (reduce + (take n series)))
 (defn scale [intervals]
   #(if (neg? %)
-     (- ((scale (reverse intervals)) (- %)))
+     (let [downward-scale (comp - (scale (reverse intervals)))]
+       (-> % - downward-scale))
      (sum-n (cycle intervals) %)))
 
 (def major (scale [2 2 1 2 2 2 1]))
