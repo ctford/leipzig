@@ -21,8 +21,8 @@
     (range a (inc b))
     (reverse (run b a))))
 
-(def pitches (flatten [0 0 (run -1 3) (run 2 0) 4 (run 1 8) (run 7 -1) 0]))
-(def durations (flatten [1/2 (repeat 2 1/4) 1/2 (repeat 6 1/4) (repeat 8 1/4) 3/2 (repeat 10 1/4)])) 
+(def pitches (flatten [0 0 (run -1 3) (run 2 0) 4 (run 1 8) (run 7 -1) 0 (run 0 -3) 4 4 (run 2 -3) -1]))
+(def durations (flatten [1/2 (repeat 2 1/4) 1/2 (repeat 6 1/4) (repeat 8 1/4) 3/2 (repeat 10 1/4) 1/2 (repeat 2 1/4) 9/4 3/4 (repeat 8 1/4)])) 
 
 (defn melody# [timing notes] 
   (let [note# #(at (timing %1) (piano (g-major %2)))]
