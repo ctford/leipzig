@@ -16,8 +16,12 @@
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
 (defn translate [f x y] #(-> % (+ x) f (+ y)))
 (defn syncopate [timing durations] #(->> % (sum-n durations) timing))
+(defn run [a b] 
+  (if (<= a b)
+    (range a (inc b))
+    (reverse (run b a))))
 
-(def pitches (flatten [-7 0 (range -1 4) (range 2 -1 -1) 4 (range 1 9) (range 7 -2 -1) 0]))
+(def pitches (flatten [-7 0 (run -1 3) (run 2 0) 4 (run 1 8) (run 7 -1) 0]))
 (def durations (flatten [1/2 (repeat 2 1/4) 1/2 (repeat 6 1/4) (repeat 8 1/4) 3/2 (repeat 10 1/4)])) 
 
 (defn melody# [timing notes] 
