@@ -23,7 +23,7 @@
 
 (def durations (flatten [(repeat 2 1/4) 1/2 (repeat 6 1/4) (repeat 8 1/4) 3/2 (repeat 10 1/4) 1/2 (repeat 2 1/4) 9/4 3/4 (repeat 12 1/4) 1/2 1 1/2 (repeat 12 1/4) 1])) 
 (def pitches (flatten [0 (run -1 3) (run 2 0) 4 (run 1 8) (run 7 -1) 0 (run 0 -3) 4 4 (run 2 -3) -1 1 (run 4 6) 1 1 1 2 -1 -2 0 1 -1 -2 (run 5 0)]))
-(def bass (map #(- % 7) (flatten [(map #(repeat 3 %) (concat (run 0 -3) (run -5 -3) [-7])) 0])))
+(def bass (map #(- % 7) (flatten (map #(repeat 3 %) (concat (run 0 -3) (run -5 -3) [-7])))))
 
 (defn melody# [timing notes] 
   (let [note# #(at (timing %1) (piano (g-major %2)))]
@@ -37,6 +37,7 @@
     (melody# timing bass)
     (melody# (rhythm-from 1/2) leader)
     (melody# (rhythm-from 7/2) follower)
+    (melody# (syncopate (translate timing 23 0) [1 1/4 1/4 1/4 1/4 1]) [-7 -7 -5 -3 -1 0])
     ))
 
 (play#)
