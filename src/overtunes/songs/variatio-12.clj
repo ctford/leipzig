@@ -10,11 +10,12 @@
        (-> % - downward-scale))
      (sum-n (cycle intervals) %)))
 
+(defn translate [f x y] #(-> % (+ x) f (+ y)))
 (def major (scale [2 2 1 2 2 2 1]))
-(def g-major #(-> % major (+ 67))) 
+(defn modulate [scale mode] (translate scale mode (- (scale mode))))
+(def g-major (translate major 0 67))
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
-(defn translate [f x y] #(-> % (+ x) f (+ y)))
 (defn syncopate [timing durations] #(->> % (sum-n durations) timing))
 (defn run [a b] 
   (if (<= a b)
@@ -30,7 +31,7 @@
     (dorun (map-indexed note# notes)))) 
 
 (defn play# []
-  (let [timing (-> (bpm 120) (translate 0 (now)))
+  (let [timing (-> (bpm 90) (translate 0 (now)))
         rhythm-from #(syncopate (translate timing % 0) durations)
         leader pitches
         follower (->> leader (map -) (map #(- % 4)))]
