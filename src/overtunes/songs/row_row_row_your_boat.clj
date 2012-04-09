@@ -1,7 +1,7 @@
 (ns overtunes.songs.row-row-row-your-boat
   (:use
     [overtone.live :only [at now]]
-    [overtone.inst.sampled-piano :only [sampled-piano]]))
+    [overtone.inst.sampled-piano :only [sampled-piano] :rename {sampled-piano piano}]))
 
 (defn sum-n [series n] (reduce + (take n series)))
 (def major-scale (partial sum-n (cycle [2 2 1 2 2 2 1])))
@@ -16,7 +16,7 @@
 (def durations [1 1 2/3 1/3 1, 2/3 1/3 2/3 1/3 2, 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3, 2/3 1/3 2/3 1/3 2])
 
 (defn melody# [timing notes] 
-  (let [note# #(at (timing %1) (sampled-piano (g-major %2)))]
+  (let [note# #(at (timing %1) (piano (g-major %2)))]
     (dorun (map-indexed note# notes)))) 
 
 (defn play# []
