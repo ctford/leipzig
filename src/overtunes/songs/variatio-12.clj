@@ -21,7 +21,7 @@
     (range a (inc b))
     (reverse (run b a))))
 
-(def pitches (flatten [-7 0 (run -1 3) (run 2 0) 4 (run 1 8) (run 7 -1) 0]))
+(def pitches (flatten [0 0 (run -1 3) (run 2 0) 4 (run 1 8) (run 7 -1) 0]))
 (def durations (flatten [1/2 (repeat 2 1/4) 1/2 (repeat 6 1/4) (repeat 8 1/4) 3/2 (repeat 10 1/4)])) 
 
 (defn melody# [timing notes] 
@@ -30,8 +30,10 @@
 
 (defn play# []
   (let [timing (-> (bpm 120) (translate 0 (now)))
-        rhythm-from #(syncopate (translate timing % 0) durations)]
-    (melody# (rhythm-from 0) pitches)
-    ))
+        rhythm-from #(syncopate (translate timing % 0) durations)
+        leader pitches
+        follower (->> leader (map -) (map #(- % 4)))]
+    (melody# (rhythm-from 0) leader)
+    (melody# (rhythm-from 3) follower)))
 
 (play#)
