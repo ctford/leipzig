@@ -13,9 +13,11 @@
 (def g-major #(-> % major (+ 67))) 
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
-(defn after [timing beats] #(-> % (+ beats) timing))
+(defn transpose [f x y] #(-> % (+ x) f (+ y)))
+(def from #(transpose %1 0 %2))
+(def after #(transpose %1 %2 0))
 (defn syncopate [timing durations] #(->> % (sum-n durations) timing))
-(defn from [timing start] #(-> % timing (+ start))) 
+
 
 (def pitches (flatten [-7 0 (range -1 4) (range 2 -1 -1)]))
 (def durations (flatten [1/2 (repeat 2 1/4) 1/2 (repeat 6 1/4)])) 
