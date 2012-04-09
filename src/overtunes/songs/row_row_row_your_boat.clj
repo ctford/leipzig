@@ -9,7 +9,7 @@
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
 (defn after [timing beats] #(-> % (+ beats) timing))
-(defn syncopate [timing durations] #(-> (sum-n durations %) timing))
+(defn syncopate [timing durations] #(->> % (sum-n durations) timing))
 (defn from [timing start] #(-> % timing (+ start))) 
 
 (def pitches [0 0 0 1 2, 2 1 2 3 4, 7 7 7 4 4 4 2 2 2 0 0 0, 4 3 2 1 0])
