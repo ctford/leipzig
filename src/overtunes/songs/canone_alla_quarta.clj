@@ -15,7 +15,7 @@
 (defn modulate [scale mode] (translate scale mode (- (scale 0) (scale mode))))
 (def g-major (translate major 0 74))
 (def scales (repeat (modulate g-major 0)))
-;(def scales (repeat g-major))
+;(def scales (concat (repeat 9 g-major) (repeat 23 (modulate g-major 3)) (repeat 6 (modulate g-major 4)) (repeat g-major)))
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
 (defn syncopate [timing durations] #(->> % (sum-n durations) timing))
