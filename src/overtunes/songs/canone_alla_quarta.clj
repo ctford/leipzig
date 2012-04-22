@@ -12,10 +12,7 @@
 
 (defn translate [f x y] #(-> % (+ x) f (+ y)))
 (def major (scale [2 2 1 2 2 2 1]))
-(defn modulate [scale mode] (translate scale mode (- (scale 0) (scale mode))))
 (def g-major (translate major 0 74))
-(def scales (repeat (modulate g-major 0)))
-;(def scales (concat (repeat 9 g-major) (repeat 23 (modulate g-major 3)) (repeat 6 (modulate g-major 4)) (repeat g-major)))
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
 (defn syncopate [timing durations] #(->> % (sum-n durations) timing))
@@ -42,7 +39,7 @@
 (def bass (map #(- % 7) (flatten (map #(repeat 3 %) (concat (run 0 -3) (run -5 -3) [-7])))))
 
 (defn melody# [timing notes] 
-  (let [note# #(at (timing %1) (piano ((nth scales %1) %2)))]
+  (let [note# #(at (timing %1) (piano (g-major %2)))]
     (dorun (map-indexed note# notes)))) 
 
 (defn play# []
