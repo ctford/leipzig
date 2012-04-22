@@ -36,8 +36,11 @@
       [(first ks)]
       f)
     m)) 
-(defn sharpen [notes] #(update-all % notes inc)) 
+(defn sharps [notes] #(update-all (vec %) notes inc)) 
+(defn flats [notes] #(update-all (vec %) notes dec)) 
 
+; (flats [37])
+(def leader-accidentals (comp (sharps [12 22]) (flats [37])))
 (def pitches (concat
                [0] (run -1 3) (run 2 0)
                [4] (run 1 8) (run 7 -1)
@@ -46,12 +49,14 @@
                [1 1 1 2 -1 -2 0 1 -1 -2] (run 5 0)))
 
 (def lower #(- % 7))
-(def bass ((sharpen [8]) (vec (map
-            lower
-            (flatten (map #(repeat 3 %) (concat (run 0 -3) (run -5 -3) [-7])))))))
+;(def bass-accidentals (sharps [8]))
+(def bass-accidentals identity)
+(def bass (map lower
+            (flatten
+              (map #(repeat 3 %) (concat (run 0 -3) (run -5 -3) [-7])))))
 
 (defn melody# [timing notes] 
-  (let [note# #(at (timing %1) (piano (g-major %2)))]
+  (let [note# #(at (timing %1) (piano %2))]
     (dorun (map-indexed note# notes)))) 
 
 (defn play# []
@@ -59,10 +64,10 @@
         rhythm-from #(syncopate (translate timing % 0) durations)
         leader pitches
         follower (->> leader (map -) (map #(- % 4)))]
-    (melody# timing bass)
-    (melody# (rhythm-from 1/2) leader)
-    (melody# (rhythm-from 7/2) follower)
-    (melody# (syncopate (translate timing 23 0) [1 1/4 1/4 1/4 1/4 1]) [-7 -7 -5 -3 -1 0])
+    (melody# timing (bass-accidentals (map g-major bass)))
+    (melody# (rhythm-from 1/2) (leader-accidentals (map g-major leader)))
+    (melody# (rhythm-from 7/2) (map g-major follower))
+    (melody# (syncopate (translate timing 23 0) [1 1/4 1/4 1/4 1/4 1]) (map g-major [-7 -7 -5 -3 -1 0]))
     ))
 
 (play#)
