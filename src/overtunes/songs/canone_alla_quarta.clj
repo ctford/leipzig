@@ -39,7 +39,6 @@
 (defn sharps [notes] #(update-all (vec %) notes inc)) 
 (defn flats [notes] #(update-all (vec %) notes dec)) 
 
-; (flats [37])
 (def leader-accidentals (comp (sharps [12 22]) (flats [37])))
 (def pitches (concat
                [0] (run -1 3) (run 2 0)
@@ -49,8 +48,7 @@
                [1 1 1 2 -1 -2 0 1 -1 -2] (run 5 0)))
 
 (def lower #(- % 7))
-;(def bass-accidentals (sharps [8]))
-(def bass-accidentals identity)
+(def bass-accidentals (sharps [8]))
 (def bass (map lower
             (flatten
               (map #(repeat 3 %) (concat (run 0 -3) (run -5 -3) [-7])))))
@@ -63,7 +61,7 @@
   (let [timing (-> (bpm 90) (translate 0 (now)))
         rhythm-from #(syncopate (translate timing % 0) durations)
         leader pitches
-        follower (->> leader (map -) (map #(- % 4)))]
+        follower (->> leader (map -) (map #(- % 3)))]
     (melody# timing (bass-accidentals (map g-major bass)))
     (melody# (rhythm-from 1/2) (leader-accidentals (map g-major leader)))
     (melody# (rhythm-from 7/2) (map g-major follower))
