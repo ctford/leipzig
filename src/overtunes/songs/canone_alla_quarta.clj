@@ -69,8 +69,7 @@
 (defn melody# [melody] 
   (let [notes (update-all melody [:pitch :time] natural-seq)
         play-at #(at %1 (piano# %2))]
-    (dorun (map play-at (:time notes) (:pitch notes)))
-  notes))
+    (dorun (map play-at (:time notes) (:pitch notes)))))
 
 (defn update [k f] #(update-in % [k] f))
 (def mirror (update :pitch #(connect - %))) 
