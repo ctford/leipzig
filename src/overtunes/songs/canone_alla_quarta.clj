@@ -7,11 +7,10 @@
 
 (defn update-all [m [& ks] f]
     (if ks
-          (update-in
-                  (update-all m (rest ks) f)
-                  [(first ks)]
-                  f)
-          m))
+      (-> m
+        (update-all (rest ks) f)
+        (update-in [(first ks)] f))
+      m))
 
 (defn natural-map [ys] (zipmap (-> ys count range) ys))
 (defn natural-seq [f]
