@@ -48,13 +48,13 @@
 (def leader 
   (let [call
           {:time (mapcat repeat [2 1 14 1] [1/4 1/2 1/4 3/2])
-           :pitch (concat [0] (run -1 3) (run 2 0) [4] (run 1 8))}
+           :pitch (concat (run 0 -1 3 0) [4] (run 1 8))}
         response
           {:time (mapcat repeat [10 1 2 1]  [1/4 1/2 1/4 9/4])
-           :pitch (concat (run 7 -1) [0] (run 0 -3))}
+           :pitch (concat (run 7 -1 0) (run 0 -3))}
         development
           {:time (mapcat repeat [1 12 1 1 1 12 1] [3/4 1/4 1/2 1 1/2 1/4 3])
-           :pitch (concat [4 4] (run 2 -3) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1) [0 -1] (run 5 0))}
+           :pitch (concat [4 4] (run 2 -3) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1 -1) (run 5 0))}
         line
           (merge-with concat call response development)]
     (melody line)))
