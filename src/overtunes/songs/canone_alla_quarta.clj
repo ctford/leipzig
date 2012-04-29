@@ -65,7 +65,7 @@
            :pitch (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3) [0 7]))}
         lower-note #(- % 7)
         lower-melody (update :pitch #(connect lower-note %))]
-   (-> bassline melody lower-melody)))
+   (-> line melody lower-melody)))
 
 (defn melody# [melody] 
   (let [notes (update-all melody [:pitch :time] natural-seq)
