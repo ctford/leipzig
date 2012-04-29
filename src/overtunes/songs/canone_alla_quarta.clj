@@ -34,10 +34,11 @@
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
 (defn syncopate [timing durations] #(->> % (sum-n durations) timing))
-(defn run [a b] 
-  (if (<= a b)
-    (range a (inc b))
-    (reverse (run b a))))
+(defn run [a & bs] 
+  (let [up-or-down #(if (<= %1 %2) (range %1 %2) (reverse (range (inc %2) (inc %1))))]
+    (if bs
+      (concat (up-or-down a (first bs)) (apply run bs))
+      [a])))
 
 (defn melody [notes]
   (let [functionalise #(update-all % [:time :pitch] natural-map)
