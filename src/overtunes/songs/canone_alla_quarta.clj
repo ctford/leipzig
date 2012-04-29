@@ -49,7 +49,7 @@
 
 (def development
   {:time (concat [3/4] (repeat 12 1/4) [1/2 1 1/2] (repeat 12 1/4) [3])
-   :pitch (concat [4] (run 4 -2) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1) [0 -1] (run 5 0))})
+   :pitch (concat [4 4] (run 2 -3) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1) [0 -1] (run 5 0))})
 
 (defn lower [v] (- v 7))
 (def bass (update-all
@@ -81,7 +81,7 @@
 
 (defn play# []
   (let [from-now #(translate % 0 (now))
-        beat (from-now (bpm 90))
+        beat (from-now (bpm 100))
         with-beat (update :time (partial connect beat))
         in-key (update :pitch (partial connect g-major))
         after-a-half (after 1/2)
