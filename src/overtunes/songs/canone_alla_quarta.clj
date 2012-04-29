@@ -60,8 +60,8 @@
 
 (def bass
   (let [line
-          {:time (repeat 24 1) 
-           :pitch (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3) [0 0]))}
+          {:time (mapcat repeat [21 12] [1 1/4]) 
+           :pitch (concat (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3))) (run 12 0))}
         lower-note #(- % 7)
         lower-melody (update :pitch #(connect lower-note %))]
    (-> line melody lower-melody)))
@@ -82,7 +82,7 @@
 
 (defn play# []
   (let [from-now #(translate % 0 (now))
-        beat (from-now (bpm 100))
+        beat (from-now (bpm 90))
         with-beat (update :time (partial connect beat))
         in-key (update :pitch (partial connect g-major))
         with-bass-accidentals (update :pitch (partial sharps [8]))
