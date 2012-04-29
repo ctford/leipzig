@@ -46,13 +46,13 @@
 
 (def leader 
   (let [call
-          {:time (concat (repeat 2 1/4) [1/2] (repeat 14 1/4) [3/2])
+          {:time (mapcat repeat [2 1 14 1] [1/4 1/2 1/4 3/2])
            :pitch (concat [0] (run -1 3) (run 2 0) [4] (run 1 8))}
         response
-          {:time (concat (repeat 10 1/4) [1/2] (repeat 2 1/4) [9/4])
+          {:time (mapcat repeat [10 1 2 1]  [1/4 1/2 1/4 9/4])
            :pitch (concat (run 7 -1) [0] (run 0 -3))}
         development
-          {:time (concat [3/4] (repeat 12 1/4) [1/2 1 1/2] (repeat 12 1/4) [3])
+          {:time (mapcat repeat [1 12 1 1 1 12 1] [3/4 1/4 1/2 1 1/2 1/4 3])
            :pitch (concat [4 4] (run 2 -3) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1) [0 -1] (run 5 0))}
         line
           (merge-with concat call response development)]
