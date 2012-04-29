@@ -51,19 +51,24 @@
   {:time (concat [3/4] (repeat 12 1/4) [1/2 1 1/2] (repeat 12 1/4) [3])
    :pitch (concat [4 4] (run 2 -3) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1) [0 -1] (run 5 0))})
 
-(defn lower [v] (- v 7))
-(def bass (update-all
-            {:time (range 25) 
-             :pitch (map lower (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3) [0 7])))}
-            [:pitch :time] natural-map ))
+(defn melody [notes]
+  (let [functionalise #(update-all % [:time :pitch] natural-map)
+        ground-time (update :time sums)]
+    (-> notes ground-time functionalise)))
+
+(def bassline
+  {:time (repeat 24 1) 
+   :pitch (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3) [0 7]))})
+
+(def bass
+ (let [lower-note #(- % 7)
+       lower-melody (update :pitch #(connect lower-note %))]
+   (-> bassline melody lower-melody)))
 
 (defn subsequent [melody1 melody2]
   (merge-with concat melody1 melody2))
 
-(def melody
-  (let [functionalise #(update-all % [:time :pitch] natural-map)
-        ground-time #(update-in % [:time] sums)]
-    (functionalise (ground-time (reduce subsequent [call response development])))))
+(def leader (melody (reduce subsequent [call response development])))
 
 (defn melody# [melody] 
   (let [notes (update-all melody [:pitch :time] natural-seq)
@@ -88,8 +93,8 @@
         with-sharps (update :pitch #(comp (sharps [12 22]) %))
         with-flats (update :pitch #(comp (flats [37]) %))]
     (-> bass in-key with-beat melody#)
-    (-> melody after-a-half canone-alla-quarta in-key with-beat melody#)
-    (-> melody after-a-half in-key with-sharps with-flats with-beat melody#)
+    (-> leader after-a-half canone-alla-quarta in-key with-beat melody#)
+    (-> leader after-a-half in-key with-sharps with-flats with-beat melody#)
     ))
 
 (play#)
