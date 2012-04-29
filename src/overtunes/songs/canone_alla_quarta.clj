@@ -3,6 +3,8 @@
     [overtone.live :only [at now]]
     [overtone.inst.sampled-piano :only [sampled-piano] :rename {sampled-piano piano#}]))
 
+(defn => [val & fs] (reduce #(apply %2 [%1]) val fs))
+
 (defn update-all [m [& ks] f]
     (if ks
           (update-in
@@ -82,15 +84,14 @@
 
 (defn play# []
   (let [from-now #(translate % 0 (now))
-        beat (from-now (bpm 90))
-        with-beat (update :time (partial connect beat))
-        in-key (update :pitch (partial connect g-major))
+        with-beat (update :time (partial connect (from-now (bpm 90))))
+        in #(update :pitch (partial connect %))
         with-bass-accidentals (update :pitch (partial sharps [8]))
         with-leader-accidentals (connect (update :pitch (partial sharps [22 32])) (update :pitch (partial flats [37])))
         after-a-half (after 1/2)]
-    (-> bass in-key with-bass-accidentals with-beat melody#)
-    (-> leader after-a-half canone-alla-quarta in-key with-beat melody#)
-    (-> leader after-a-half in-key with-leader-accidentals with-beat melody#)
+    (=> bass (in g-major) with-bass-accidentals with-beat melody#)
+    (=> leader (after 1/2) canone-alla-quarta (in g-major) with-beat melody#)
+    (=> leader (after 1/2) (in g-major) with-leader-accidentals with-beat melody#)
     ))
 
 (play#)
