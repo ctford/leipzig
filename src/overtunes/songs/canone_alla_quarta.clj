@@ -69,7 +69,8 @@
 (defn melody# [melody] 
   (let [notes (update-all melody [:pitch :time] natural-seq)
         play-at #(at %1 (piano# %2))]
-    (dorun (map play-at (:time notes) (:pitch notes)))))
+    (dorun (map play-at (:time notes) (:pitch notes)))
+  notes))
 
 (defn update [k f] #(update-in % [k] f))
 (def mirror (update :pitch #(connect - %))) 
@@ -77,20 +78,15 @@
 (defn transpose [interval] (update :pitch #(shift % interval))) 
 (def canone-alla-quarta (reduce connect [(after 3) (transpose -3) mirror])) 
 
-(defn sharps [notes] #(if (contains? notes %) (inc %) %))
-(defn flats [notes] #(if (contains? notes %) (dec %) %))
-
 (defn play# []
   (let [from-now #(translate % 0 (now))
         beat (from-now (bpm 100))
         with-beat (update :time (partial connect beat))
         in-key (update :pitch (partial connect g-major))
-        after-a-half (after 1/2)
-        with-sharps (update :pitch #(comp (sharps [12 22]) %))
-        with-flats (update :pitch #(comp (flats [37]) %))]
+        after-a-half (after 1/2)]
     (-> bass in-key with-beat melody#)
     (-> leader after-a-half canone-alla-quarta in-key with-beat melody#)
-    (-> leader after-a-half in-key with-sharps with-flats with-beat melody#)
+    (-> leader after-a-half in-key with-beat melody#)
     ))
 
 (play#)
