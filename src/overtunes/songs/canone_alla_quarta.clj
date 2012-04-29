@@ -42,8 +42,17 @@
 (def call {:time (concat (repeat 2 1/4) [1/2] (repeat 14 1/4) [3/2])
            :pitch (concat [0] (run -1 3) (run 2 0) [4] (run 1 8))})
 
-(def response {:time (concat (repeat 10 1/4) [1/2] (repeat 3 1/4))
+(def response {:time (concat (repeat 10 1/4) [1/2] (repeat 2 1/4) [9/4])
                :pitch (concat (run 7 -1) [0] (run 0 -3))})
+
+(def development {:time (concat [3/4] (repeat 12 1/4) [1/2 1 1/2] (repeat 12 1/4) [3])
+               :pitch (concat [4] (run 4 -2) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1) [0 -1] (run 5 0))})
+
+(defn lower [v] (- v 7))
+(def bass (update-all
+                           {:time (range 25) 
+                           :pitch (map lower (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3) [0 7])))}
+  [:pitch :time] natural-map ))
 
 (defn subsequent [melody1 melody2]
   (merge-with concat melody1 melody2))
@@ -51,7 +60,7 @@
 (def melody
   (let [functionalise #(update-all % [:time :pitch] natural-map)
         ground-time #(update-in % [:time] sums)]
-    (functionalise (ground-time (subsequent call response)))))
+    (functionalise (ground-time (reduce subsequent [call response development])))))
 
 (defn melody# [melody] 
   (let [notes (update-all melody [:pitch :time] natural-seq)
@@ -64,13 +73,20 @@
 (defn transpose [interval] (update :pitch #(shift % interval))) 
 (def canone-alla-quarta (reduce connect [(after 3) (transpose -3) mirror])) 
 
+(defn sharps [notes] #(if (contains? notes %) (inc %) %))
+(defn flats [notes] #(if (contains? notes %) (dec %) %))
+
 (defn play# []
   (let [from-now #(translate % 0 (now))
-        beat (from-now (bpm 120))
+        beat (from-now (bpm 90))
         with-beat (update :time (partial connect beat))
-        in-key (update :pitch (partial connect g-major))]
-    (-> melody canone-alla-quarta in-key with-beat melody#)
-    (-> melody in-key with-beat melody#)
+        in-key (update :pitch (partial connect g-major))
+        after-a-half (after 1/2)
+        with-sharps (update :pitch #(comp (sharps [12 22]) %))
+        with-flats (update :pitch #(comp (flats [37]) %))]
+  (-> bass in-key with-beat melody#)
+   (-> melody after-a-half canone-alla-quarta in-key with-beat melody#)
+   (-> melody after-a-half in-key with-sharps with-flats with-beat melody#)
     ))
 
 (play#)
