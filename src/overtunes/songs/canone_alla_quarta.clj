@@ -61,7 +61,7 @@
 (def bass
   (let [line
           {:time (repeat 24 1) 
-           :pitch (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3) [0 7]))}
+           :pitch (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3) [0 0]))}
         lower-note #(- % 7)
         lower-melody (update :pitch #(connect lower-note %))]
    (-> line melody lower-melody)))
@@ -77,15 +77,20 @@
 (defn transpose [interval] (update :pitch #(shift % interval))) 
 (def canone-alla-quarta (reduce connect [(after 3) (transpose -3) mirror])) 
 
+(defn sharps [notes fpitches] #(if (some (partial = %) notes) (-> % fpitches inc) (fpitches %))) 
+(defn flats [notes fpitches] #(if (some (partial = %) notes) (-> % fpitches dec) (fpitches %))) 
+
 (defn play# []
   (let [from-now #(translate % 0 (now))
         beat (from-now (bpm 100))
         with-beat (update :time (partial connect beat))
         in-key (update :pitch (partial connect g-major))
+        with-bass-accidentals (update :pitch (partial sharps [8]))
+        with-leader-accidentals (connect (update :pitch (partial sharps [22 32])) (update :pitch (partial flats [37])))
         after-a-half (after 1/2)]
-    (-> bass in-key with-beat melody#)
+    (-> bass in-key with-bass-accidentals with-beat melody#)
     (-> leader after-a-half canone-alla-quarta in-key with-beat melody#)
-    (-> leader after-a-half in-key with-beat melody#)
+    (-> leader after-a-half in-key with-leader-accidentals with-beat melody#)
     ))
 
 (play#)
