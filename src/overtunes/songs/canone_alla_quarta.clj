@@ -41,8 +41,8 @@
 
 (defn melody [notes]
   (let [functionalise #(update-all % [:time :pitch] natural-map)
-        ground-time (update :time sums)]
-    (-> notes ground-time functionalise)))
+        accumulate-time (update :time sums)]
+    (-> notes accumulate-time functionalise)))
 
 (def leader 
   (let [call
