@@ -28,6 +28,7 @@
      (sum-n (cycle intervals) %)))
 
 (defn translate [f x y] #(-> % (+ x) f (+ y)))
+(defn shift [f x] (connect #(+ x %) f))
 (def major (scale [2 2 1 2 2 2 1]))
 (def g-major (translate major 0 74))
 
@@ -58,18 +59,18 @@
     (dorun (map play-at (:time notes) (:pitch notes)))))
 
 (defn update [k f] #(update-in % [k] f))
-(def mirror (update :pitch #(connect % -))) 
-(defn echo [beats] (update :time #(translate % 0 beats)))
-(defn transpose [interval] (update :pitch #(translate % interval 0))) 
-(def canone-alla-quarta (reduce connect [(echo 3) (transpose -3) mirror])) 
+(def mirror (update :pitch #(connect - %))) 
+(defn after [beats] (update :time #(shift % beats)))
+(defn transpose [interval] (update :pitch #(shift % interval))) 
+(def canone-alla-quarta (reduce connect [(after 3) (transpose -3) mirror])) 
 
 (defn play# []
   (let [from-now #(translate % 0 (now))
         beat (from-now (bpm 120))
-        with-beat #(update-in % [:time] (partial connect beat))
-        in-key #(update-in % [:pitch] (partial connect g-major))
-        leader (-> melody with-beat in-key)]
-  ;(-> leader canone-alla-quarta melody#)))
-  (-> leader melody#)))
+        with-beat (update :time (partial connect beat))
+        in-key (update :pitch (partial connect g-major))]
+    (-> melody canone-alla-quarta in-key with-beat melody#)
+    (-> melody in-key with-beat melody#)
+    ))
 
 (play#)
