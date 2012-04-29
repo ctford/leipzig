@@ -39,20 +39,23 @@
     (range a (inc b))
     (reverse (run b a))))
 
-(def call {:time (concat (repeat 2 1/4) [1/2] (repeat 14 1/4) [3/2])
-           :pitch (concat [0] (run -1 3) (run 2 0) [4] (run 1 8))})
+(def call
+  {:time (concat (repeat 2 1/4) [1/2] (repeat 14 1/4) [3/2])
+   :pitch (concat [0] (run -1 3) (run 2 0) [4] (run 1 8))})
 
-(def response {:time (concat (repeat 10 1/4) [1/2] (repeat 2 1/4) [9/4])
-               :pitch (concat (run 7 -1) [0] (run 0 -3))})
+(def response
+  {:time (concat (repeat 10 1/4) [1/2] (repeat 2 1/4) [9/4])
+   :pitch (concat (run 7 -1) [0] (run 0 -3))})
 
-(def development {:time (concat [3/4] (repeat 12 1/4) [1/2 1 1/2] (repeat 12 1/4) [3])
-               :pitch (concat [4] (run 4 -2) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1) [0 -1] (run 5 0))})
+(def development
+  {:time (concat [3/4] (repeat 12 1/4) [1/2 1 1/2] (repeat 12 1/4) [3])
+   :pitch (concat [4] (run 4 -2) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1) [0 -1] (run 5 0))})
 
 (defn lower [v] (- v 7))
 (def bass (update-all
-                           {:time (range 25) 
-                           :pitch (map lower (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3) [0 7])))}
-  [:pitch :time] natural-map ))
+            {:time (range 25) 
+             :pitch (map lower (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3) [0 7])))}
+            [:pitch :time] natural-map ))
 
 (defn subsequent [melody1 melody2]
   (merge-with concat melody1 melody2))
@@ -84,9 +87,9 @@
         after-a-half (after 1/2)
         with-sharps (update :pitch #(comp (sharps [12 22]) %))
         with-flats (update :pitch #(comp (flats [37]) %))]
-  (-> bass in-key with-beat melody#)
-   (-> melody after-a-half canone-alla-quarta in-key with-beat melody#)
-   (-> melody after-a-half in-key with-sharps with-flats with-beat melody#)
+    (-> bass in-key with-beat melody#)
+    (-> melody after-a-half canone-alla-quarta in-key with-beat melody#)
+    (-> melody after-a-half in-key with-sharps with-flats with-beat melody#)
     ))
 
 (play#)
