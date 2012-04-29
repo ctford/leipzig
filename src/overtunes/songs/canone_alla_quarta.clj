@@ -85,12 +85,11 @@
   (let [from-now #(translate % 0 (now))
         with-beat (update :time (partial connect (from-now (bpm 90))))
         in #(update :pitch (partial connect %))
-        with-bass-accidentals (update :pitch (partial sharps [8]))
-        with-leader-accidentals (connect (update :pitch (partial sharps [22 32])) (update :pitch (partial flats [37])))
-        after-a-half (after 1/2)]
-    (=> bass (in g-major) with-bass-accidentals with-beat melody#)
+        with-sharps #(update :pitch (partial sharps %))
+        with-flats #(update :pitch (partial flats %))]
+    (=> bass (in g-major) (with-sharps [8]) with-beat melody#)
     (=> leader (after 1/2) canone-alla-quarta (in g-major) with-beat melody#)
-    (=> leader (after 1/2) (in g-major) with-leader-accidentals with-beat melody#)
+    (=> leader (after 1/2) (in g-major) (with-sharps [22 32]) (with-flats [37]) with-beat melody#)
     ))
 
 (play#)
