@@ -39,22 +39,23 @@
     (range a (inc b))
     (reverse (run b a))))
 
-(def call
-  {:time (concat (repeat 2 1/4) [1/2] (repeat 14 1/4) [3/2])
-   :pitch (concat [0] (run -1 3) (run 2 0) [4] (run 1 8))})
-
-(def response
-  {:time (concat (repeat 10 1/4) [1/2] (repeat 2 1/4) [9/4])
-   :pitch (concat (run 7 -1) [0] (run 0 -3))})
-
-(def development
-  {:time (concat [3/4] (repeat 12 1/4) [1/2 1 1/2] (repeat 12 1/4) [3])
-   :pitch (concat [4 4] (run 2 -3) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1) [0 -1] (run 5 0))})
-
 (defn melody [notes]
   (let [functionalise #(update-all % [:time :pitch] natural-map)
         ground-time (update :time sums)]
     (-> notes ground-time functionalise)))
+
+(def leader 
+  (let [call {:time (concat (repeat 2 1/4) [1/2] (repeat 14 1/4) [3/2])
+              :pitch (concat [0] (run -1 3) (run 2 0) [4] (run 1 8))}
+        response
+             {:time (concat (repeat 10 1/4) [1/2] (repeat 2 1/4) [9/4])
+              :pitch (concat (run 7 -1) [0] (run 0 -3))}
+        development
+             {:time (concat [3/4] (repeat 12 1/4) [1/2 1 1/2] (repeat 12 1/4) [3])
+              :pitch (concat [4 4] (run 2 -3) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1) [0 -1] (run 5 0))}
+        mainline
+             (merge-with concat call response development)]
+    (melody mainline)))
 
 (def bassline
   {:time (repeat 24 1) 
@@ -65,10 +66,6 @@
        lower-melody (update :pitch #(connect lower-note %))]
    (-> bassline melody lower-melody)))
 
-(defn subsequent [melody1 melody2]
-  (merge-with concat melody1 melody2))
-
-(def leader (melody (reduce subsequent [call response development])))
 
 (defn melody# [melody] 
   (let [notes (update-all melody [:pitch :time] natural-seq)
