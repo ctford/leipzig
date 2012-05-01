@@ -32,6 +32,7 @@
 (defn shift [f x] (connect #(+ x %) f))
 (def major (scale [2 2 1 2 2 2 1]))
 (def g-major (translate major 0 74))
+(defn update [k f] #(update-in % [k] f))
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
 (defn run [a & bs] 
@@ -72,7 +73,6 @@
         play-at #(at %1 (piano# %2))]
     (dorun (map play-at (:time notes) (:pitch notes)))))
 
-(defn update [k f] #(update-in % [k] f))
 (def mirror (update :pitch #(connect - %))) 
 (defn after [beats] (update :time #(shift % beats)))
 (defn transpose [interval] (update :pitch #(shift % interval))) 
