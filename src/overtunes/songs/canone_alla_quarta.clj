@@ -13,11 +13,6 @@
       m))
 
 (defn natural-map [ys] (zipmap (-> ys count range) ys))
-(defn natural-seq [f]
-    (if-let [y (f 0)]
-          (cons y (natural-seq (comp f inc)))
-          '()))
-
 (defn connect [f1 f2] #(if-let [y2 (f2 %)] (f1 y2) nil))
 
 (defn sum-n [series n] (reduce + (take n series)))
@@ -43,8 +38,9 @@
 
 (defn melody [notes]
   (let [functionalise #(update-all % [:time :pitch] natural-map)
-        accumulate-time (update :time sums)]
-    (-> notes accumulate-time functionalise)))
+        accumulate-time (update :time sums)
+        add-count #(assoc % :count (count (:pitch notes)))]
+    (-> notes accumulate-time functionalise add-count)))
 
 (def leader 
   (let [call
@@ -69,9 +65,9 @@
    (-> line melody lower-melody)))
 
 (defn melody# [melody] 
-  (let [notes (update-all melody [:pitch :time] natural-seq)
-        play-at #(at %1 (piano# %2))]
-    (dorun (map play-at (:time notes) (:pitch notes)))))
+  (let [notes (map #(vector (=> % (:time melody)) (=> % (:pitch melody))) (range (:count melody)))
+        play-at# #(at (% 0) (piano# (% 1)))]
+    (dorun (map play-at# notes))))
 
 (def mirror (update :pitch #(connect - %))) 
 (defn after [beats] (update :time #(shift % beats)))
