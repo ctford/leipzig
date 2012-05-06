@@ -4,30 +4,24 @@
     [overtone.inst.sampled-piano :only [sampled-piano] :rename {sampled-piano piano#}]))
 
 (defn => [val & fs] (reduce #(apply %2 [%1]) val fs))
-
-(defn update-all [m [& ks] f]
-    (if ks
-      (-> m
-        (update-all (rest ks) f)
-        (update-in [(first ks)] f))
-      m))
-
-(defn natural-map [ys] (zipmap (-> ys count range) ys))
-(defn connect [f1 f2] #(if-let [y2 (f2 %)] (f1 y2) nil))
-
 (defn sum-n [series n] (reduce + (take n series)))
 (defn sums [series] (cons 0 (reductions + series)))
 (defn scale [intervals]
   #(if (neg? %)
-     (let [downward-scale (connect - (scale (reverse intervals)))]
+     (let [downward-scale (comp - (scale (reverse intervals)))]
        (-> % - downward-scale))
      (sum-n (cycle intervals) %)))
 
-(defn translate [f x y] #(-> % (+ x) f (+ y)))
-(defn shift [f x] (connect #(+ x %) f))
+(defn translate [point deltas] (map + point deltas))
+(defn map-in [m k f] (map #(update-in % [k] f) m)) 
+(defn transform [key f] #(update-in % [key] f))
+(defn transform-y [f] #(map-in % 1 f))
+(defn transform-x [f] #(map-in % 0 f))
+
 (def major (scale [2 2 1 2 2 2 1]))
-(def g-major (translate major 0 74))
-(defn update [k f] #(update-in % [k] f))
+(defn add [x] (partial + x))
+(def g-major (comp (add 74) major)) 
+
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
 (defn run [a & bs] 
@@ -36,13 +30,7 @@
       (concat (up-or-down a (first bs)) (apply run bs))
       [a])))
 
-(defn melody [notes]
-  (let [functionalise #(update-all % [:time :pitch] natural-map)
-        accumulate-time (update :time sums)
-        add-count #(assoc % :count (count (:pitch notes)))]
-    (-> notes accumulate-time functionalise add-count)))
-
-(def leader 
+(def melody 
   (let [call
           {:time (mapcat repeat [2 1 14 1] [1/4 1/2 1/4 3/2])
            :pitch (concat (run 0 -1 3 0) [4] (run 1 8))}
@@ -54,38 +42,23 @@
            :pitch (concat [4 4] (run 2 -3) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1 -1) (run 5 0))}
         line
           (merge-with concat call response development)]
-    (melody line)))
+    (=> line #(update-in % [:time] sums) #(map vector (:time %) (:pitch %)))))
 
-(def bass
-  (let [line
-          {:time (mapcat repeat [21 12] [1 1/4]) 
-           :pitch (concat (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3))) (run 12 0))}
-        lower-note #(- % 7)
-        lower-melody (update :pitch #(connect lower-note %))]
-   (-> line melody lower-melody)))
+(defn play# [notes] 
+  (let [play-at# #(at (% 0) (piano# (% 1)))]
+    (->> notes (map play-at#) dorun)))
 
-(defn melody# [melody] 
-  (let [notes (map #(vector (=> % (:time melody)) (=> % (:pitch melody))) (range (:count melody)))
-        play-at# #(at (% 0) (piano# (% 1)))]
-    (dorun (map play-at# notes))))
-
-(def mirror (update :pitch #(connect - %))) 
-(defn after [beats] (update :time #(shift % beats)))
-(defn transpose [interval] (update :pitch #(shift % interval))) 
-(def canone-alla-quarta (reduce connect [(after 3) (transpose -3) mirror])) 
-
-(defn sharps [notes fpitches] #(if (some (partial = %) notes) (-> % fpitches inc) (fpitches %))) 
-(defn flats [notes fpitches] #(if (some (partial = %) notes) (-> % fpitches dec) (fpitches %))) 
-
-(defn play# []
-  (let [from-now #(translate % 0 (now))
-        with-beat (update :time (partial connect (from-now (bpm 90))))
-        in #(update :pitch (partial connect %))
-        with-sharps #(update :pitch (partial sharps %))
-        with-flats #(update :pitch (partial flats %))]
-    (=> bass (in g-major) (with-sharps [8]) with-beat melody#)
-    (=> leader (after 1/2) canone-alla-quarta (in g-major) with-beat melody#)
-    (=> leader (after 1/2) (in g-major) (with-sharps [22 32]) (with-flats [37]) with-beat melody#)
+(defn canone-alla-quarta# []
+  (let [in #(transform-y %)
+        after #(transform-x (add %))
+        from-now (after (now))
+        tempo #(transform-x %) 
+        mirror (transform-y -)
+        transpose #(transform-y (add %)) 
+        leader #(=> % (after 1/2) (in g-major) (tempo (bpm 120)) from-now)
+        follower #(=> % mirror (transpose -3) (after 3) leader)]
+    (=> melody leader play#)
+    (=> melody follower play#)
     ))
 
-(play#)
+(canone-alla-quarta#)
