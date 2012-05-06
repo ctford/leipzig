@@ -44,6 +44,11 @@
           (merge-with concat call response development)]
     (=> line #(update-in % [:time] sums) #(map vector (:time %) (:pitch %)))))
 
+(def bassline
+  (map vector
+       (sums (mapcat repeat [21 12] [1 1/4]))
+       (concat (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3))) (run 12 0))))
+
 (defn play# [notes] 
   (let [play-at# #(at (% 0) (piano# (% 1)))]
     (->> notes (map play-at#) dorun)))
@@ -56,9 +61,10 @@
         mirror (transform-y -)
         transpose #(transform-y (add %)) 
         leader #(=> % (after 1/2) (in g-major) (tempo (bpm 120)) from-now)
-        follower #(=> % mirror (transpose -3) (after 3) leader)]
+        follower #(=> % mirror (transpose -3) (after 3) leader)
+        bass (=> bassline (transpose -7) (in g-major) (tempo (bpm 120)) from-now)]
     (=> melody leader play#)
     (=> melody follower play#)
-    ))
+    (=> bass play#)))
 
 (canone-alla-quarta#)
