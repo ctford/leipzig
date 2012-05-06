@@ -12,16 +12,14 @@
        (-> % - downward-scale))
      (sum-n (cycle intervals) %)))
 
-(defn translate [point deltas] (map + point deltas))
+(def t 0)
+(def p 1)
 (defn map-in [m k f] (map #(update-in % [k] f) m)) 
-(defn transform [key f] #(update-in % [key] f))
-(defn transform-y [f] #(map-in % 1 f))
-(defn transform-x [f] #(map-in % 0 f))
+(defn transform [k f] #(map-in % k f))
+(defn add [offset] (partial + offset))
 
 (def major (scale [2 2 1 2 2 2 1]))
-(defn add [x] (partial + x))
 (def g-major (comp (add 74) major)) 
-
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
 (defn run [a & bs] 
@@ -54,17 +52,17 @@
     (->> notes (map play-at#) dorun)))
 
 (defn canone-alla-quarta# []
-  (let [in #(transform-y %)
-        after #(transform-x (add %))
+  (let [in #(transform p %)
+        after #(transform t (add %))
         from-now (after (now))
-        tempo #(transform-x %) 
-        mirror (transform-y -)
-        transpose #(transform-y (add %)) 
+        tempo #(transform t %) 
+        mirror (transform p -)
+        transpose #(transform p (add %)) 
         leader #(=> % (after 1/2) (in g-major) (tempo (bpm 120)) from-now)
         follower #(=> % mirror (transpose -3) (after 3) leader)
         bass (=> bassline (transpose -7) (in g-major) (tempo (bpm 120)) from-now)]
+    (=> bass play#)
     (=> melody leader play#)
-    (=> melody follower play#)
-    (=> bass play#)))
+    (=> melody follower play#)))
 
 (canone-alla-quarta#)
