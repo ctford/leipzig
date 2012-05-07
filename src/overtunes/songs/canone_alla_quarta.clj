@@ -9,6 +9,13 @@
   (let [play-at# #(at (% 0) (piano# (% 1)))]
     (->> notes (map play-at#) dorun)))
 
+(defn demo# [pitches]
+  (let [start (now)
+        note-length 400
+        end (+ start (* note-length (count pitches)))
+        notes (map vector (range start end note-length) pitches)]
+    (play# notes)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scale                                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -20,10 +27,13 @@
      (=> % - (scale (reverse intervals)) -)))
 
 (def major (scale [2 2 1 2 2 2 1]))
+(def minor (scale [2 1 2 2 1 2 2]))
 (def g-major (comp (partial + 74) major)) 
 
-(def minor (scale [2 1 2 2 2 1 2]))
-(def a-minor (comp (partial + 76) minor)) 
+;(major 2)
+;(minor 2)
+;(demo# (let [key (comp (partial + 67) major), rest -100]
+;         (map key [0 1 2 0 0 1 2 0 2 3 4 rest 2 3 4 rest])))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Timing                                       ;;
