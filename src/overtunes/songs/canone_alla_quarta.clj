@@ -4,7 +4,7 @@
 
 (ns overtunes.songs.canone-alla-quarta
   (:use
-    [overtone.live :only [at now]]
+    [overtone.live :only [at now stop]]
     [overtone.inst.sampled-piano :only [sampled-piano] :rename {sampled-piano piano#}]))
 
 (defn => [val & fs] (reduce #(apply %2 [%1]) val fs))
@@ -127,5 +127,4 @@
 
 
 
-
-
+;(stop)
