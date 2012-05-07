@@ -7,10 +7,9 @@
 (defn sum-n [series n] (reduce + (take n series)))
 (defn sums [series] (cons 0 (reductions + series)))
 (defn scale [intervals]
-  #(if (neg? %)
-     (let [downward-scale (comp - (scale (reverse intervals)))]
-       (-> % - downward-scale))
-     (sum-n (cycle intervals) %)))
+  #(if (not (neg? %))
+     (sum-n (cycle intervals) %)
+     (=> % - (scale (reverse intervals)) -)))
 
 (def t 0)
 (def p 1)
