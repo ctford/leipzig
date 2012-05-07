@@ -79,6 +79,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Melody                                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (def melody 
   (let [call
           [(repeats [[2 1/4] [1 1/2] [14 1/4] [1 3/2]])
@@ -100,7 +101,6 @@
        (concat (triples (runs [[0 -3] [-5 -3]])) (run [12 0])))))
 
 ;melody
-;bassline
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
@@ -121,6 +121,7 @@
     (=> melody (shift [1/2 0]) play-now#)
     (=> melody (skew pitch -) (shift [7/2 -3]) play-now#)))
 
+;((bpm 120) 2)
 ;(canone-alla-quarta#)
 
 
