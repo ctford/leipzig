@@ -20,8 +20,8 @@
         notes (map vector (range start end note-length) pitches)]
     (play# notes)))
 
+;(piano# 50)
 ;(demo# (range 60 73))
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
