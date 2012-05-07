@@ -22,22 +22,22 @@
 (def g-major (comp (add 74) major)) 
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
-(defn run [a & bs] 
+(defn run [[a & bs]] 
   (let [up-or-down #(if (<= %1 %2) (range %1 %2) (reverse (range (inc %2) (inc %1))))]
     (if bs
-      (concat (up-or-down a (first bs)) (apply run bs))
+      (concat (up-or-down a (first bs)) (run bs))
       [a])))
 
 (def melody 
   (let [call
           {:time (mapcat repeat [2 1 14 1] [1/4 1/2 1/4 3/2])
-           :pitch (concat (run 0 -1 3 0) [4] (run 1 8))}
+           :pitch (mapcat run [[0 -1 3 0] [4] [1 8]])}
         response
-          {:time (mapcat repeat [10 1 2 1]  [1/4 1/2 1/4 9/4])
-           :pitch (concat (run 7 -1 0) (run 0 -3))}
+          {:time (mapcat repeat [10 1 2 1] [1/4 1/2 1/4 9/4])
+           :pitch (mapcat run [[7 -1 0] [0 -3]])}
         development
           {:time (mapcat repeat [1 12 1 1 1 12 1] [3/4 1/4 1/2 1 1/2 1/4 3])
-           :pitch (concat [4 4] (run 2 -3) [-1 -2 0] (run 3 5) (repeat 3 1) [2] (run -1 1 -1) (run 5 0))}
+           :pitch (mapcat run [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])}
         line
           (merge-with concat call response development)]
     (=> line #(update-in % [:time] sums) #(map vector (:time %) (:pitch %)))))
@@ -45,7 +45,7 @@
 (def bassline
   (map vector
        (sums (mapcat repeat [21 12] [1 1/4]))
-       (concat (mapcat (partial repeat 3) (concat (run 0 -3) (run -5 -3))) (run 12 0))))
+       (concat (mapcat (partial repeat 3) (mapcat run [[0 -3] [-5 -3]])) (run [12 0]))))
 
 (defn play# [notes] 
   (let [play-at# #(at (% 0) (piano# (% 1)))]
