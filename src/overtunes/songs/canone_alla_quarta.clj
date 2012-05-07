@@ -107,7 +107,7 @@
 (defn canone-alla-quarta# []
   (let [[timing pitch] [0 1]
         [tempo start] [(bpm 90) (now)]
-        in-time (comp (shift [start 0]) (skew timing tempo))
+        in-time #(=> % (skew timing tempo) (shift [start 0]))
         in-key (skew pitch g-major)
         play-now# #(=> % in-key in-time play#)]
 
@@ -116,7 +116,6 @@
     (=> melody (skew pitch -) (shift [7/2 -3]) play-now#)))
 
 ;(canone-alla-quarta#)
-
 
 
 
