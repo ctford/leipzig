@@ -92,24 +92,22 @@
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
 
-(def t 0)
-(def p 1)
-(defn map-in [m k f] (map #(update-in % [k] f) m)) 
-(defn transform [k f] #(map-in % k f))
-(defn add [offset] (partial + offset))
+(defn transform [k f]
+ (let [map-in (fn [m k f] (map #(update-in % [k] f) m))] 
+   #(map-in % k f)))
+
+(defn shift [point]
+  (let [offset (fn [point1 point2] (vec (map + point1 point2)))]
+        (partial map (partial offset point))))
 
 (defn canone-alla-quarta# []
-  (let [in #(transform p %)
-        after #(transform t (add %))
-        from-now (after (now))
-        tempo #(transform t %) 
-        mirror (transform p -)
-        transpose #(transform p (add %)) 
-        leader #(=> % (after 1/2) (in g-major) (tempo (bpm 120)) from-now)
-        follower #(=> % mirror (transpose -3) (after 3) leader)
-        bass #(=> % (transpose -7) (in g-major) (tempo (bpm 120)) from-now)]
-    (=> bassline bass play#)
-    (=> melody leader play#)
-    (=> melody follower play#)))
+  (let [[timing pitch] [0 1]
+        in-time (comp (shift [(now) 0]) (transform timing (bpm 90)))
+        in-key (transform pitch g-major)
+        play-now# (comp play# in-key in-time)]
+
+    (=> bassline (shift [0 -7]) play-now#)
+    (=> melody (shift [1/2 0]) play-now#)
+    (=> melody (transform pitch -) (shift [7/2 -3]) play-now#)))
 
 (canone-alla-quarta#)
