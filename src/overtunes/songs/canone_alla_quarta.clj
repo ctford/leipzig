@@ -44,9 +44,12 @@
     (map vector (sums (:length line)) (:pitch line))))
 
 (def bassline
-  (map vector
-       (sums (mapcat repeat [21 12] [1 1/4]))
-       (concat (mapcat (partial repeat 3) (mapcat run [[0 -3] [-5 -3]])) (run [12 0]))))
+  (let [triples (partial mapcat (partial repeat 3))
+        repeats (partial mapcat (partial apply repeat))
+        runs (partial mapcat run)]
+    (map vector
+       (sums (repeats [[21 1] [12 1/4]]))
+       (concat (triples (runs [[0 -3] [-5 -3]])) (run [12 0])))))
 
 (defn play# [notes] 
   (let [play-at# #(at (% 0) (piano# (% 1)))]
