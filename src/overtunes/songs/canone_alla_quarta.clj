@@ -62,8 +62,8 @@
         transpose #(transform p (add %)) 
         leader #(=> % (after 1/2) (in g-major) (tempo (bpm 120)) from-now)
         follower #(=> % mirror (transpose -3) (after 3) leader)
-        bass (=> bassline (transpose -7) (in g-major) (tempo (bpm 120)) from-now)]
-    (=> bass play#)
+        bass #(=> % (transpose -7) (in g-major) (tempo (bpm 120)) from-now)]
+    (=> bassline bass play#)
     (=> melody leader play#)
     (=> melody follower play#)))
 
