@@ -65,15 +65,15 @@
 ;            ))
 
 (def melody 
-  (let [call (vector
-          (repeats [[2 1/4] [1 1/2] [14 1/4] [1 3/2]])
-          (runs [[0 -1 3 0] [4] [1 8]]))
-        response (vector
-          (repeats [[10 1/4] [1 1/2] [2 1/4] [1 9/4]])
-          (runs [[7 -1 0] [0 -3]]))
-        development (vector
-          (repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 3]])
-          (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]]))
+  (let [call
+          [(repeats [[2 1/4] [1 1/2] [14 1/4] [1 3/2]])
+          (runs [[0 -1 3 0] [4] [1 8]])]
+        response
+          [(repeats [[10 1/4] [1 1/2] [2 1/4] [1 9/4]])
+          (runs [[7 -1 0] [0 -3]])]
+        development
+          [(repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 3]])
+          (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])]
         line
           (map concat call response development)]
     (map vector (sums (nth line 0)) (nth line 1))))
@@ -112,4 +112,4 @@
     (=> melody leader play#)
     (=> melody follower play#)))
 
-;(canone-alla-quarta#)
+(canone-alla-quarta#)
