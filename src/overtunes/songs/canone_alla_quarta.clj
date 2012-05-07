@@ -6,7 +6,7 @@
 (defn => [val & fs] (reduce #(apply %2 [%1]) val fs))
 
 (defn play# [notes] 
-  (let [play-at# #(at (% 0) (piano# (% 1)))]
+  (let [play-at# (fn [[t p]] (at t (piano# p)))]
     (->> notes (map play-at#) dorun)))
 
 (defn demo# [pitches]
