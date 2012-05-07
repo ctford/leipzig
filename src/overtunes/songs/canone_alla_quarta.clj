@@ -29,18 +29,20 @@
       [a])))
 
 (def melody 
-  (let [call
-          {:time (mapcat repeat [2 1 14 1] [1/4 1/2 1/4 3/2])
-           :pitch (mapcat run [[0 -1 3 0] [4] [1 8]])}
+  (let [repeats #(mapcat (partial apply repeat) %)
+        runs (partial mapcat run)
+        call
+          {:length (repeats [[2 1/4] [1 1/2] [14 1/4] [1 3/2]])
+           :pitch (runs [[0 -1 3 0] [4] [1 8]])}
         response
-          {:time (mapcat repeat [10 1 2 1] [1/4 1/2 1/4 9/4])
-           :pitch (mapcat run [[7 -1 0] [0 -3]])}
+          {:length (repeats [[10 1/4] [1 1/2] [2 1/4] [1 9/4]])
+           :pitch (runs [[7 -1 0] [0 -3]])}
         development
-          {:time (mapcat repeat [1 12 1 1 1 12 1] [3/4 1/4 1/2 1 1/2 1/4 3])
-           :pitch (mapcat run [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])}
+          {:length (repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 3]])
+           :pitch (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])}
         line
           (merge-with concat call response development)]
-    (=> line #(update-in % [:time] sums) #(map vector (:time %) (:pitch %)))))
+    (=> line #(update-in % [:length] sums) #(map vector (:length %) (:pitch %)))))
 
 (def bassline
   (map vector
