@@ -29,7 +29,7 @@
       [a])))
 
 (def melody 
-  (let [repeats #(mapcat (partial apply repeat) %)
+  (let [repeats (partial mapcat (partial apply repeat))
         runs (partial mapcat run)
         call
           {:length (repeats [[2 1/4] [1 1/2] [14 1/4] [1 3/2]])
