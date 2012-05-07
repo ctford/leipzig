@@ -22,6 +22,9 @@
 
 ;(demo# (range 60 73))
 
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scale                                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -41,6 +44,13 @@
 ;(demo# (let [key (comp (partial + 67) major), rest -100]
 ;         (map key [0 1 2 0 0 1 2 0 2 3 4 rest 2 3 4 rest])))
 
+
+
+
+
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Melody                                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -51,18 +61,16 @@
             (range start end)
             (reverse (range (inc end) (inc start)))))]
     (if tos 
-      (concat
-        (up-or-down from (first tos))
-        (run tos))
+      (concat (up-or-down from (first tos)) (run tos))
       [from])))
-
-(defn accumulate [series] (cons 0 (reductions + series)))
-(def repeats (partial mapcat (partial apply repeat)))
-(def runs (partial mapcat run))
 
 ;(demo# (map g-major
 ;            (run [0 3 1 3 -1 0])
 ;            ))
+
+(defn accumulate [series] (cons 0 (reductions + series)))
+(def repeats (partial mapcat (partial apply repeat)))
+(def runs (partial mapcat run))
 
 (def melody 
   (let [call
@@ -93,17 +101,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn bpm [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
-(defn transform [k f] (fn [points] (map #(update-in % [k] f) points))) 
+(defn skew [k f] (fn [points] (map #(update-in % [k] f) points))) 
 (defn shift [point] (fn [points] (map #(->> % (map + point) vec) points)))
 
 (defn canone-alla-quarta# []
   (let [[timing pitch] [0 1]
-        in-time (comp (shift [(now) 0]) (transform timing (bpm 90)))
-        in-key (transform pitch g-major)
-        play-now# (comp play# in-key in-time)]
+        [tempo start] [(bpm 90) (now)]
+        in-time (comp (shift [start 0]) (skew timing tempo))
+        in-key (skew pitch g-major)
+        play-now# #(=> % in-key in-time play#)]
 
     (=> bassline (shift [0 -7]) play-now#)
     (=> melody (shift [1/2 0]) play-now#)
-    (=> melody (transform pitch -) (shift [7/2 -3]) play-now#)))
+    (=> melody (skew pitch -) (shift [7/2 -3]) play-now#)))
 
-(canone-alla-quarta#)
+;(canone-alla-quarta#)
+
+
+
+
+
+
+
