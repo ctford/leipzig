@@ -4,23 +4,39 @@
     [overtone.inst.sampled-piano :only [sampled-piano] :rename {sampled-piano piano#}]))
 
 (defn => [val & fs] (reduce #(apply %2 [%1]) val fs))
+
+(defn play# [notes] 
+  (let [play-at# #(at (% 0) (piano# (% 1)))]
+    (->> notes (map play-at#) dorun)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Scale                                        ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defn sum-n [series n] (reduce + (take n series)))
-(defn sums [series] (map (partial sum-n series) (range (count series))))
 (defn scale [intervals]
   #(if (not (neg? %))
      (sum-n (cycle intervals) %)
      (=> % - (scale (reverse intervals)) -)))
 
-(def t 0)
-(def p 1)
-(defn map-in [m k f] (map #(update-in % [k] f) m)) 
-(defn transform [k f] #(map-in % k f))
-(defn add [offset] (partial + offset))
-
 (def major (scale [2 2 1 2 2 2 1]))
-(def g-major (comp (add 74) major)) 
+(def g-major (comp (partial + 74) major)) 
+
+(def minor (scale [2 1 2 2 2 1 2]))
+(def a-minor (comp (partial + 76) minor)) 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Timing                                       ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Melody                                       ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn sums [series] (map (partial sum-n series) (range (count series))))
+
 (defn run [[a & bs]] 
   (let [up-or-down
           #(if (<= %1 %2)
@@ -56,9 +72,15 @@
        (sums (repeats [[21 1] [12 1/4]]))
        (concat (triples (runs [[0 -3] [-5 -3]])) (run [12 0])))))
 
-(defn play# [notes] 
-  (let [play-at# #(at (% 0) (piano# (% 1)))]
-    (->> notes (map play-at#) dorun)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Canons                                       ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def t 0)
+(def p 1)
+(defn map-in [m k f] (map #(update-in % [k] f) m)) 
+(defn transform [k f] #(map-in % k f))
+(defn add [offset] (partial + offset))
 
 (defn canone-alla-quarta# []
   (let [in #(transform p %)
