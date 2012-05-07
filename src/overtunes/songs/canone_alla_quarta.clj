@@ -1,3 +1,7 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Canon Fodder - Chris Ford                    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (ns overtunes.songs.canone-alla-quarta
   (:use
     [overtone.live :only [at now]]
@@ -6,7 +10,7 @@
 (defn => [val & fs] (reduce #(apply %2 [%1]) val fs))
 
 (defn play# [notes] 
-  (let [play-at# (fn [[t p]] (at t (piano# p)))]
+  (let [play-at# (fn [[ms midi]] (at ms (piano# midi)))]
     (->> notes (map play-at#) dorun)))
 
 (defn demo# [pitches]
@@ -15,6 +19,8 @@
         end (+ start (* note-length (count pitches)))
         notes (map vector (range start end note-length) pitches)]
     (play# notes)))
+
+;(demo# (range 60 73))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scale                                        ;;
@@ -34,12 +40,6 @@
 ;(minor 2)
 ;(demo# (let [key (comp (partial + 67) major), rest -100]
 ;         (map key [0 1 2 0 0 1 2 0 2 3 4 rest 2 3 4 rest])))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Timing                                       ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Melody                                       ;;
@@ -65,18 +65,20 @@
 ;            ))
 
 (def melody 
-  (let [call
-          {:length (repeats [[2 1/4] [1 1/2] [14 1/4] [1 3/2]])
-           :pitch (runs [[0 -1 3 0] [4] [1 8]])}
-        response
-          {:length (repeats [[10 1/4] [1 1/2] [2 1/4] [1 9/4]])
-           :pitch (runs [[7 -1 0] [0 -3]])}
-        development
-          {:length (repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 3]])
-           :pitch (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])}
+  (let [call (vector
+          (repeats [[2 1/4] [1 1/2] [14 1/4] [1 3/2]])
+          (runs [[0 -1 3 0] [4] [1 8]]))
+        response (vector
+          (repeats [[10 1/4] [1 1/2] [2 1/4] [1 9/4]])
+          (runs [[7 -1 0] [0 -3]]))
+        development (vector
+          (repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 3]])
+          (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]]))
         line
-          (merge-with concat call response development)]
-    (map vector (sums (:length line)) (:pitch line))))
+          (map concat call response development)]
+    (map vector (sums (nth line 0)) (nth line 1))))
+
+;melody
 
 (def bassline
   (let [triples (partial mapcat (partial repeat 3))]
@@ -85,8 +87,10 @@
        (concat (triples (runs [[0 -3] [-5 -3]])) (run [12 0])))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Canons                                       ;;
+;; Canone alla quarta - Johann Sebastian Bach   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
 
 (def t 0)
 (def p 1)
@@ -108,4 +112,4 @@
     (=> melody leader play#)
     (=> melody follower play#)))
 
-(canone-alla-quarta#)
+;(canone-alla-quarta#)
