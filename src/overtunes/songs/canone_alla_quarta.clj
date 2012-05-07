@@ -52,7 +52,7 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Melody                                       ;;
+;; Structure                                    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn run [[from & tos]] 
@@ -72,6 +72,14 @@
 (def repeats (partial mapcat (partial apply repeat)))
 (def runs (partial mapcat run))
 
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Melody                                       ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (def melody 
   (let [call
           [(repeats [[2 1/4] [1 1/2] [14 1/4] [1 3/2]])
@@ -86,14 +94,13 @@
           (map concat call response development)]
     (map vector (accumulate (nth line 0)) (nth line 1))))
 
-;melody
-
 (def bassline
   (let [triples (partial mapcat (partial repeat 3))]
     (map vector
        (accumulate (repeats [[21 1] [12 1/4]]))
        (concat (triples (runs [[0 -3] [-5 -3]])) (run [12 0])))))
 
+;melody
 ;bassline
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
