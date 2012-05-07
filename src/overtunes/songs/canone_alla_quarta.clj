@@ -46,7 +46,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn sums [series] (map (partial sum-n series) (range (count series))))
-
+(def repeats (partial mapcat (partial apply repeat)))
 (defn run [[a & bs]] 
   (let [up-or-down
           #(if (<= %1 %2)
@@ -57,15 +57,14 @@
         (up-or-down a (first bs))
         (run bs))
       [a])))
+(def runs (partial mapcat run))
 
 ;(demo# (map g-major
 ;            (run [0 3 1 3 -1 0])
 ;            ))
 
 (def melody 
-  (let [repeats (partial mapcat (partial apply repeat))
-        runs (partial mapcat run)
-        call
+  (let [call
           {:length (repeats [[2 1/4] [1 1/2] [14 1/4] [1 3/2]])
            :pitch (runs [[0 -1 3 0] [4] [1 8]])}
         response
@@ -79,9 +78,7 @@
     (map vector (sums (:length line)) (:pitch line))))
 
 (def bassline
-  (let [triples (partial mapcat (partial repeat 3))
-        repeats (partial mapcat (partial apply repeat))
-        runs (partial mapcat run)]
+  (let [triples (partial mapcat (partial repeat 3))]
     (map vector
        (sums (repeats [[21 1] [12 1/4]]))
        (concat (triples (runs [[0 -3] [-5 -3]])) (run [12 0])))))
