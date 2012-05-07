@@ -22,9 +22,14 @@
 
 (defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
 (defn run [[a & bs]] 
-  (let [up-or-down #(if (<= %1 %2) (range %1 %2) (reverse (range (inc %2) (inc %1))))]
+  (let [up-or-down
+          #(if (<= %1 %2)
+            (range %1 %2)
+            (reverse (range (inc %2) (inc %1))))]
     (if bs
-      (concat (up-or-down a (first bs)) (run bs))
+      (concat
+        (up-or-down a (first bs))
+        (run bs))
       [a])))
 
 (def melody 
