@@ -5,7 +5,7 @@
 
 (defn => [val & fs] (reduce #(apply %2 [%1]) val fs))
 (defn sum-n [series n] (reduce + (take n series)))
-(defn sums [series] (cons 0 (reductions + series)))
+(defn sums [series] (map (partial sum-n series) (range (count series))))
 (defn scale [intervals]
   #(if (not (neg? %))
      (sum-n (cycle intervals) %)
