@@ -45,8 +45,6 @@
 ;; Melody                                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn sums [series] (map (partial sum-n series) (range (count series))))
-(def repeats (partial mapcat (partial apply repeat)))
 (defn run [[a & bs]] 
   (let [up-or-down
           #(if (<= %1 %2)
@@ -57,6 +55,9 @@
         (up-or-down a (first bs))
         (run bs))
       [a])))
+
+(defn sums [series] (map (partial sum-n series) (range (count series))))
+(def repeats (partial mapcat (partial apply repeat)))
 (def runs (partial mapcat run))
 
 ;(demo# (map g-major
