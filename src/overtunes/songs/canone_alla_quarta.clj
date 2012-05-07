@@ -56,7 +56,7 @@
         (run tos))
       [from])))
 
-(defn sums [series] (map (partial sum-n series) (range (count series))))
+(defn accumulate [series] (cons 0 (reductions + series)))
 (def repeats (partial mapcat (partial apply repeat)))
 (def runs (partial mapcat run))
 
@@ -76,15 +76,17 @@
           (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])]
         line
           (map concat call response development)]
-    (map vector (sums (nth line 0)) (nth line 1))))
+    (map vector (accumulate (nth line 0)) (nth line 1))))
 
 ;melody
 
 (def bassline
   (let [triples (partial mapcat (partial repeat 3))]
     (map vector
-       (sums (repeats [[21 1] [12 1/4]]))
+       (accumulate (repeats [[21 1] [12 1/4]]))
        (concat (triples (runs [[0 -3] [-5 -3]])) (run [12 0])))))
+
+;bassline
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
@@ -104,4 +106,4 @@
     (=> melody (shift [1/2 0]) play-now#)
     (=> melody (transform pitch -) (shift [7/2 -3]) play-now#)))
 
-;(canone-alla-quarta#)
+(canone-alla-quarta#)
