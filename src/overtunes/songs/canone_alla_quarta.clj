@@ -45,16 +45,16 @@
 ;; Melody                                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn run [[a & bs]] 
-  (let [up-or-down
-          #(if (<= %1 %2)
-            (range %1 %2)
-            (reverse (range (inc %2) (inc %1))))]
-    (if bs
+(defn run [[from & tos]] 
+  (let [up-or-down (fn [start end]
+          (if (<= start end)
+            (range start end)
+            (reverse (range (inc end) (inc start)))))]
+    (if tos 
       (concat
-        (up-or-down a (first bs))
-        (run bs))
-      [a])))
+        (up-or-down from (first tos))
+        (run tos))
+      [from])))
 
 (defn sums [series] (map (partial sum-n series) (range (count series))))
 (def repeats (partial mapcat (partial apply repeat)))
@@ -90,15 +90,9 @@
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn bpm [per-minute] #(-> % (/ per-minute) (* 60) (* 1000)))
-
-(defn transform [k f]
- (let [map-in (fn [m k f] (map #(update-in % [k] f) m))] 
-   #(map-in % k f)))
-
-(defn shift [point]
-  (let [offset (fn [point1 point2] (vec (map + point1 point2)))]
-        (partial map (partial offset point))))
+(defn bpm [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
+(defn transform [k f] (fn [points] (map #(update-in % [k] f) points))) 
+(defn shift [point] (fn [points] (map #(->> % (map + point) vec) points)))
 
 (defn canone-alla-quarta# []
   (let [[timing pitch] [0 1]
@@ -110,4 +104,4 @@
     (=> melody (shift [1/2 0]) play-now#)
     (=> melody (transform pitch -) (shift [7/2 -3]) play-now#)))
 
-(canone-alla-quarta#)
+;(canone-alla-quarta#)
