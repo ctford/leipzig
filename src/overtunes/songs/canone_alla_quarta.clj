@@ -42,7 +42,7 @@
            :pitch (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])}
         line
           (merge-with concat call response development)]
-    (=> line #(update-in % [:length] sums) #(map vector (:length %) (:pitch %)))))
+    (map vector (sums (:length line)) (:pitch line))))
 
 (def bassline
   (map vector
