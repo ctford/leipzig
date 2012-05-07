@@ -11,7 +11,7 @@
 
 (defn demo# [pitches]
   (let [start (now)
-        note-length 400
+        note-length 300
         end (+ start (* note-length (count pitches)))
         notes (map vector (range start end note-length) pitches)]
     (play# notes)))
@@ -57,6 +57,10 @@
         (up-or-down a (first bs))
         (run bs))
       [a])))
+
+;(demo# (map g-major
+;            (run [0 3 1 3 -1 0])
+;            ))
 
 (def melody 
   (let [repeats (partial mapcat (partial apply repeat))
