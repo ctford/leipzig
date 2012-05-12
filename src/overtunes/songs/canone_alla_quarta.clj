@@ -14,10 +14,10 @@
     (->> notes (map play-at#) dorun)))
 
 (defn demo# [pitches]
-  (loop [play-at (now), still-to-play pitches]
-    (if still-to-play (do
-      (at play-at (piano# (first still-to-play)))
-      (recur (+ 300 play-at) (next still-to-play))))))
+  (loop [play-at (now), [current & still-to-play] pitches]
+    (at play-at (piano# current))
+    (if still-to-play
+      (recur (+ 300 play-at) still-to-play))))
 
 ;(piano# 50)
 ;(demo# (range 60 73))
@@ -122,7 +122,7 @@
     (=> melody (skew pitch -) (shift [7/2 -3]) play-now#)))
 
 ;((bpm 120) 2)
-;(canone-alla-quarta#)
+(canone-alla-quarta#)
 
 
 
