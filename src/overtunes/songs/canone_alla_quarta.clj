@@ -55,13 +55,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn run [[from to & tos]] 
-  (let [up-or-down (fn [start end]
-          (if (<= start end)
-            (range start end)
-            (reverse (range (inc end) (inc start)))))]
-    (if to
-      (concat (up-or-down from to) (run (cons to tos)))
-      [from])))
+    (if-not to
+      [from]
+      (concat
+        (if (<= from to)
+          (range from to)
+          (reverse (range (inc to) (inc from))))
+        (run (cons to tos)))))
 
 ;(demo# (map g-major
 ;            (run [0 3 1 3 -1 0])
