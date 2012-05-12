@@ -7,8 +7,6 @@
     [overtone.live :only [at now stop]]
     [overtone.inst.sampled-piano :only [sampled-piano] :rename {sampled-piano piano#}]))
 
-(defn => [val & fs] (reduce #(apply %2 [%1]) val fs))
-
 (defn play# [notes] 
   (let [play-at# (fn [[ms midi]] (at ms (piano# midi)))]
     (->> notes (map play-at#) dorun)))
@@ -24,11 +22,15 @@
 
 
 
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scale                                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn sum-n [series n] (reduce + (take n series)))
+(defn => [value & fs] (reduce #(apply %2 [%1]) value fs))
+
 (defn scale [intervals]
   #(if-not (neg? %)
      (sum-n (cycle intervals) %)
@@ -42,8 +44,6 @@
 ;(minor 2)
 ;(demo# (let [key (comp (partial + 67) major), rest -100]
 ;         (map key [0 1 2 0 0 1 2 0 2 3 4 rest 2 3 4 rest])))
-
-
 
 
 
