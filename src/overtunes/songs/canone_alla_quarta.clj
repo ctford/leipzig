@@ -30,7 +30,7 @@
 
 (defn sum-n [series n] (reduce + (take n series)))
 (defn scale [intervals]
-  #(if (not (neg? %))
+  #(if-not (neg? %)
      (sum-n (cycle intervals) %)
      (=> % - (scale (reverse intervals)) -)))
 
@@ -122,7 +122,7 @@
     (=> melody (skew pitch -) (shift [7/2 -3]) play-now#)))
 
 ;((bpm 120) 2)
-(canone-alla-quarta#)
+;(canone-alla-quarta#)
 
 
 
