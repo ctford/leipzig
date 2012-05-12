@@ -95,7 +95,7 @@
     (map vector (accumulate (nth line 0)) (nth line 1))))
 
 (def bassline
-  (let [triples (partial mapcat (partial repeat 3))]
+  (let [triples (partial mapcat #(repeat 3 %))]
     (map vector
        (accumulate (repeats [[21 1] [12 1/4]]))
        (concat (triples (runs [[0 -3] [-5 -3]])) (run [12 0])))))
