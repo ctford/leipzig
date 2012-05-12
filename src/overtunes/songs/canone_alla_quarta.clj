@@ -29,7 +29,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn sum-n [series n] (reduce + (take n series)))
-(defn => [value & fs] (reduce #(apply %2 [%1]) value fs))
+(defn => [value & fs] (reduce #(%2 %1) value fs))
 
 (defn scale [intervals]
   #(if-not (neg? %)
