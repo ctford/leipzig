@@ -54,13 +54,13 @@
 ;; Structure                                    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn run [[from & tos]] 
+(defn run [[from to & tos]] 
   (let [up-or-down (fn [start end]
           (if (<= start end)
             (range start end)
             (reverse (range (inc end) (inc start)))))]
-    (if tos 
-      (concat (up-or-down from (first tos)) (run tos))
+    (if to
+      (concat (up-or-down from to) (run (cons to tos)))
       [from])))
 
 ;(demo# (map g-major
