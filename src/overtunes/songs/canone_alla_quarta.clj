@@ -55,13 +55,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn run [[from to & tos]] 
-    (if-not to
-      [from]
+    (if to
       (concat
         (if (<= from to)
           (range from to)
           (reverse (range (inc to) (inc from))))
-        (run (cons to tos)))))
+        (run (cons to tos)))
+      [from]))
 
 ;(demo# (map g-major
 ;            (run [0 3 1 3 -1 0])
