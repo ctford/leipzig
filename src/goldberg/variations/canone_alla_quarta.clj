@@ -121,8 +121,8 @@
     (=> melody (shift [1/2 0]) play-now#)
     (=> melody (skew pitch -) (shift [7/2 -3]) play-now#)))
 
-;((bpm 120) 2)
-(canon#)
+;((bpm 120) 3)
+;(canon#)
 
 
 
