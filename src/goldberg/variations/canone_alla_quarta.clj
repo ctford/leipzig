@@ -1,5 +1,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Canon Fodder - Chris Ford                    ;;
+;; Canon Fodder - Chris Ford (ThoughtWorks)     ;;
 ;;                                              ;;
 ;; http://github.com/ctford/goldberg            ;;
 ;; http://github.com/overtone/overtone          ;;
@@ -22,7 +22,6 @@
 
 ;(piano# 50)
 ;(even-melody# (range 60 73))
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
