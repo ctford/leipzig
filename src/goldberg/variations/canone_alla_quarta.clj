@@ -54,14 +54,13 @@
 ;; Structure                                    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn run [[from & tos]] 
-    (if-let [to (first tos)]
-      (let [up-or-down (if (<= from to)
-                         (range from to)
-                         (reverse (range (inc to) (inc from))))
-            the-rest (run tos)]
-        (concat up-or-down the-rest))
-      [from]))
+(defn run [[from & tos]]
+  (if-let [to (first tos)]
+    (let [up-or-down (if (<= from to)
+                       (range from to)
+                       (reverse (range (inc to) (inc from))))]
+      (concat up-or-down (run tos)))
+    [from]))
 
 (defn accumulate [series] (map (partial sum-n series) (range (count series))))
 (def repeats (partial mapcat #(apply repeat %)))
@@ -70,6 +69,7 @@
 ;(even-melody# (map g-major
 ;            (run [0 7 0])
 ;            ))
+
 
 
 
