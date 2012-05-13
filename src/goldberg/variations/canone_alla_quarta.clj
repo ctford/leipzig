@@ -1,5 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Canon Fodder - Chris Ford                    ;;
+;;                                              ;;
+;; http://github.com/ctford/goldberg            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (ns goldberg.variations.canone-alla-quarta
@@ -19,8 +21,6 @@
 
 ;(piano# 50)
 ;(even-melody# (range 60 73))
-
-
 
 
 
