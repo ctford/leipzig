@@ -2,6 +2,7 @@
 ;; Canon Fodder - Chris Ford                    ;;
 ;;                                              ;;
 ;; http://github.com/ctford/goldberg            ;;
+;; http://github.com/overtone/overtone          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (ns goldberg.variations.canone-alla-quarta
