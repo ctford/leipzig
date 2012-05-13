@@ -38,7 +38,7 @@
 
 (def major (scale [2 2 1 2 2 2 1]))
 (def minor (scale [2 1 2 2 1 2 2]))
-(def g-major (comp (partial + 74) major)) 
+(def g-major (comp (partial + 67) major)) 
 
 ;(major 2)
 ;(minor 2)
@@ -122,7 +122,7 @@
     (=> melody (skew pitch -) (shift [7/2 -3]) play-now#)))
 
 ;((bpm 120) 2)
-;(canon#)
+(canon#)
 
 
 
