@@ -63,13 +63,13 @@
         (run (cons to tos)))
       [from]))
 
-;(even-melody# (map g-major
-;            (run [0 7 0])
-;            ))
-
 (defn accumulate [series] (map (partial sum-n series) (range (count series))))
 (def repeats (partial mapcat #(apply repeat %)))
 (def runs (partial mapcat run))
+
+;(even-melody# (map g-major
+;            (run [0 7 0])
+;            ))
 
 
 
