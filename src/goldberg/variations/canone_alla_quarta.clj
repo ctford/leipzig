@@ -67,7 +67,7 @@
 ;            (run [0 7 0])
 ;            ))
 
-(defn accumulate [series] (reductions + (cons 0 series)))
+(defn accumulate [series] (map (partial sum-n series) (range (count series))))
 (def repeats (partial mapcat #(apply repeat %)))
 (def runs (partial mapcat run))
 
