@@ -20,7 +20,7 @@
         notes (map vector times pitches)]
     (play# notes)))
 
-;(piano# 50)
+;(piano# 55)
 ;(even-melody# (range 60 73))
 
 
@@ -42,7 +42,7 @@
 
 ;(major 2)
 ;(minor 2)
-;(even-melody# (let [key (comp (partial + 67) major), rest -100]
+;(even-melody# (let [key (comp (partial + 55) major), rest -100]
 ;         (map key [0 1 2 0 0 1 2 0 2 3 4 rest 2 3 4 rest])))
 
 
