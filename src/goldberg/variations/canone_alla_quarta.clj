@@ -54,12 +54,12 @@
 ;; Structure                                    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn run [[from to & tos]] 
-    (if to
+(defn run [[from & tos]] 
+    (if-let [to (first tos)]
       (let [up-or-down (if (<= from to)
                          (range from to)
                          (reverse (range (inc to) (inc from))))
-            the-rest (run (cons to tos))]
+            the-rest (run tos)]
         (concat up-or-down the-rest))
       [from]))
 
