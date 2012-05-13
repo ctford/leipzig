@@ -12,16 +12,16 @@
     (->> notes (map play-at#) dorun)))
 
 (defn demo# [pitches]
-  (loop [play-at (now), [current & still-to-play] pitches]
-    (at play-at (piano# current))
-    (if still-to-play
-      (recur (+ 300 play-at) still-to-play))))
+  (let [note-length 300
+        start (now)
+        end (+ (* note-length (count pitches) start)) 
+        timing (range start end note-length)
+        notes (map vector timing pitches)]
+    (play# notes)
+    notes))
 
 ;(piano# 50)
 ;(demo# (range 60 73))
-
-
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
