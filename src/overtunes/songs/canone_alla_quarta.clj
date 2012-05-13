@@ -64,7 +64,7 @@
       [from]))
 
 ;(even-melody# (map g-major
-;            (run [0 3 1 3 -1 0])
+;            (run [0 7 0])
 ;            ))
 
 (defn accumulate [series] (reductions + (cons 0 series)))
