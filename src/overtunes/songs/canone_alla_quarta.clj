@@ -11,14 +11,14 @@
   (let [play-at# (fn [[ms midi]] (at ms (piano# midi)))]
     (->> notes (map play-at#) dorun)))
 
-(defn demo# [pitches]
+(defn even-melody# [pitches]
   (let [times (reductions + (cons (now) (repeat 300)))
         notes (map vector times pitches)]
     (play# notes)
     notes))
 
 ;(piano# 50)
-;(demo# (range 60 73))
+;(even-melody# (range 60 73))
 
 
 
@@ -42,7 +42,7 @@
 
 ;(major 2)
 ;(minor 2)
-;(demo# (let [key (comp (partial + 67) major), rest -100]
+;(even-melody# (let [key (comp (partial + 67) major), rest -100]
 ;         (map key [0 1 2 0 0 1 2 0 2 3 4 rest 2 3 4 rest])))
 
 
@@ -63,7 +63,7 @@
         (run (cons to tos)))
       [from]))
 
-;(demo# (map g-major
+;(even-melody# (map g-major
 ;            (run [0 3 1 3 -1 0])
 ;            ))
 
