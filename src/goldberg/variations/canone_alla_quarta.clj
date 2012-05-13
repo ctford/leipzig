@@ -11,13 +11,13 @@
 
 (defn play# [notes] 
   (let [play-at# (fn [[ms midi]] (at ms (piano# midi)))]
-    (->> notes (map play-at#) dorun)))
+    (->> notes (map play-at#) dorun)
+    notes))
 
 (defn even-melody# [pitches]
   (let [times (reductions + (cons (now) (repeat 300)))
         notes (map vector times pitches)]
-    (play# notes)
-    notes))
+    (play# notes)))
 
 ;(piano# 50)
 ;(even-melody# (range 60 73))
