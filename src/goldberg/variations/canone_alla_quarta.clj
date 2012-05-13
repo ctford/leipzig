@@ -56,11 +56,11 @@
 
 (defn run [[from to & tos]] 
     (if to
-      (concat
-        (if (<= from to)
-          (range from to)
-          (reverse (range (inc to) (inc from))))
-        (run (cons to tos)))
+      (let [up-or-down (if (<= from to)
+                         (range from to)
+                         (reverse (range (inc to) (inc from))))
+            the-rest (run (cons to tos))]
+        (concat up-or-down the-rest))
       [from]))
 
 (defn accumulate [series] (map (partial sum-n series) (range (count series))))
