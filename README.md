@@ -1,4 +1,4 @@
-## Goldberg ##
+# Goldberg
 
 Johann Sebastian Bach's Goldberg Variations in Overtone by @ctford.
 
