@@ -2,7 +2,7 @@
 ;; Canon Fodder - Chris Ford                    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(ns overtunes.songs.canone-alla-quarta
+(ns goldberg.variations.canone-alla-quarta
   (:use
     [overtone.live :only [at now stop]]
     [overtone.inst.sampled-piano :only [sampled-piano] :rename {sampled-piano piano#}]))
@@ -110,7 +110,7 @@
 (defn skew [k f] (fn [points] (map #(update-in % [k] f) points))) 
 (defn shift [point] (fn [points] (map #(->> % (map + point) vec) points)))
 
-(defn canone-alla-quarta# []
+(defn canon# []
   (let [[timing pitch] [0 1]
         [tempo start] [(bpm 90) (now)]
         in-time #(=> % (skew timing tempo) (shift [start 0]))
@@ -122,7 +122,7 @@
     (=> melody (skew pitch -) (shift [7/2 -3]) play-now#)))
 
 ;((bpm 120) 2)
-;(canone-alla-quarta#)
+;(canon#)
 
 
 
