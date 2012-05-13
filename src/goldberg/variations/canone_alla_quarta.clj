@@ -90,9 +90,8 @@
         development
           [(repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 3]])
           (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])]
-        line
-          (map concat call response development)]
-    (map vector (accumulate (nth line 0)) (nth line 1))))
+        [durations pitches] (map concat call response development)]
+    (map vector (accumulate durations) pitches)))
 
 (def bassline
   (let [triples (partial mapcat #(repeat 3 %))]
@@ -101,6 +100,7 @@
        (concat (triples (runs [[0 -3] [-5 -3]])) (run [12 0])))))
 
 ;melody
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
