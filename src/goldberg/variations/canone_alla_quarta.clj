@@ -93,10 +93,10 @@
         [durations pitches] (map concat call response development)]
     (map vector (accumulate durations) pitches)))
 
-(def bassline
+(def bass
   (let [triples (partial mapcat #(repeat 3 %))]
     (map vector
-       (accumulate (repeats [[21 1] [12 1/4]]))
+       (accumulate (repeats [[21 1] [13 1/4]]))
        (concat (triples (runs [[0 -3] [-5 -3]])) (run [12 0])))))
 
 ;melody
@@ -117,7 +117,7 @@
         in-key (skew pitch g-major)
         play-now# #(=> % in-key in-time play#)]
 
-    (=> bassline (shift [0 -7]) play-now#)
+    (=> bass (shift [0 -7]) play-now#)
     (=> melody (shift [1/2 0]) play-now#)
     (=> melody (skew pitch -) (shift [7/2 -3]) play-now#)))
 
