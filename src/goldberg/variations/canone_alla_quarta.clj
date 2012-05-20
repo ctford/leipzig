@@ -119,9 +119,9 @@
 (def table-canon (comp mirror-canon crab-canon))
 
 (defn canone-alla-quarta# [start tempo scale]
-  (let [in-time (comp (shift [start 0]) (skew timing tempo))
+  (let [in-time #(=> % (skew timing tempo) (shift [start 0]))
         in-key (skew pitch scale)
-        play-now# (comp play# in-key in-time)]
+        play-now# #(=> % in-key in-time play#)]
 
     (=> bass play-now#)
     (=> melody play-now#)
