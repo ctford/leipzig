@@ -42,13 +42,12 @@
 (defn start-from [base] (partial + base))
 (def G (start-from 67))
 (def D (start-from 74))
+(def G-minor (comp G minor))
 
-(even-melody#
-  (let [_ -100] (map (comp D major) [0 1 2 0, 0 1 2 0, 2 3 4 _, 2 3 4 _]))
-)
-
-
-
+;(even-melody#
+;  (let [_ -100]
+;    (map (comp D minor) [0 1 2 0, 0 1 2 0, 2 3 4 _, 2 3 4 _]))
+;)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -128,4 +127,4 @@
     (=> melody play-now#)
     (=> melody (simple-canon 3) mirror-canon (interval-canon -3) play-now#)))
 
-(canone-alla-quarta# (now) (bpm 90) (comp D major))
+;(canone-alla-quarta# (now) (bpm 90) (comp D major))
