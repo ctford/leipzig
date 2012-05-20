@@ -115,7 +115,7 @@
 (def crab-canon (skew timing -))
 (defn sloth-canon [factor] (skew timing (partial * factor)))
 (defn interval-canon [interval] (shift [0 interval]))
-(defn simple-canon [after] (shift [after 0]))
+(defn simple-canon [wait] (shift [wait 0]))
 (def table-canon (comp mirror-canon crab-canon))
 
 (defn canone-alla-quarta# [start tempo scale]
