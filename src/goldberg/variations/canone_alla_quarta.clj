@@ -100,7 +100,7 @@
        (accumulate (repeats [[21 1] [13 1/4]]))
        (concat (triples (runs [[-7 -10] [-12 -10]])) (run [5 -7])))))
 
-;melody
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
