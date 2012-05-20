@@ -117,15 +117,14 @@
 (defn simple-canon [after] (shift [after 0]))
 (def table-canon (comp mirror-canon crab-canon))
 
-(defn canone-alla-quarta# []
-  (let [[tempo start] [(bpm 90) (now)]
-        in-time #(=> % (skew timing tempo) (shift [start 0]))
-        in-key (skew pitch g-major)
+(defn canone-alla-quarta# [start tempo scale]
+  (let [in-time #(=> % (skew timing tempo) (shift [start 0]))
+        in-key (skew pitch scale)
         play-now# #(=> % in-key in-time play#)]
 
     (=> bass (shift [0 -7]) play-now#)
     (=> melody (shift [1/2 0]) play-now#)
     (=> melody (simple-canon 7/2) mirror-canon (interval-canon -3) play-now#)))
 
-;(canone-alla-quarta#)
+(canone-alla-quarta# (now) (bpm 90) g-major)
 ;(stop)
