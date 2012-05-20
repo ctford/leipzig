@@ -39,10 +39,9 @@
 (def major (scale [2 2 1 2 2 2 1]))
 (def minor (scale [2 1 2 2 1 2 2]))
 (def g-major (comp (partial + 67) major)) 
+(def g-minor (comp (partial + 67) minor)) 
 
-;(major 2)
-;(minor 2)
-;(even-melody# (let [key (comp (partial + 55) major), rest -100]
+;(even-melody# (let [key (comp (partial + 55) minor), rest -100]
 ;         (map key [0 1 2 0 0 1 2 0 2 3 4 rest 2 3 4 rest])))
 
 
@@ -50,9 +49,13 @@
 
 
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Structure                                    ;;
+;; Abstractions                                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn bpm [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
+;((bpm 120) 3)
 
 (defn run [[from & tos]]
   (if-let [to (first tos)]
@@ -62,16 +65,13 @@
       (concat up-or-down (run tos)))
     [from]))
 
+;(even-melody# (map g-major
+;            (run [0 4 0 2 -1 0])
+;            ))
+
 (defn accumulate [series] (map (partial sum-n series) (range (count series))))
 (def repeats (partial mapcat #(apply repeat %)))
 (def runs (partial mapcat run))
-
-;(even-melody# (map g-major
-;            (run [0 7 0])
-;            ))
-
-
-
 
 
 
@@ -106,25 +106,26 @@
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn bpm [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
+(def timing 0)
+(def pitch 1)
 (defn skew [k f] (fn [points] (map #(update-in % [k] f) points))) 
 (defn shift [point] (fn [points] (map #(->> % (map + point) vec) points)))
 
-(defn canon# []
-  (let [[timing pitch] [0 1]
-        [tempo start] [(bpm 90) (now)]
+(def mirror-canon (skew pitch -))
+(def crab-canon (skew timing -))
+(defn interval-canon [interval] (shift [0 interval]))
+(defn simple-canon [after] (shift [after 0]))
+(def table-canon (comp mirror-canon crab-canon))
+
+(defn canone-alla-quarta# []
+  (let [[tempo start] [(bpm 90) (now)]
         in-time #(=> % (skew timing tempo) (shift [start 0]))
         in-key (skew pitch g-major)
         play-now# #(=> % in-key in-time play#)]
 
     (=> bass (shift [0 -7]) play-now#)
     (=> melody (shift [1/2 0]) play-now#)
-    (=> melody (skew pitch -) (shift [7/2 -3]) play-now#)))
+    (=> melody (simple-canon 7/2) mirror-canon (interval-canon -3) play-now#)))
 
-;((bpm 120) 3)
-;(canon#)
-
-
-
-
+;(canone-alla-quarta#)
 ;(stop)
