@@ -39,13 +39,14 @@
 (def major (scale [2 2 1 2 2 2 1]))
 (def minor (scale [2 1 2 2 1 2 2]))
 
-(def g-major (comp (partial + 67) major)) 
-(def d-major (comp (partial + 74) major)) 
-(def g-minor (comp (partial + 67) minor)) 
-(def d-minor (comp (partial + 74) minor)) 
+(defn start-from [base] (partial + base))
+(def G (start-from 67))
+(def D (start-from 74))
 
-;(even-melody# (let [key (comp (partial + 55) major), _ -100]
-;                (map key [0 1 2 0, 0 1 2 0, 2 3 4 _, 2 3 4 _])))
+(even-melody#
+  (let [_ -100] (map (comp D major) [0 1 2 0, 0 1 2 0, 2 3 4 _, 2 3 4 _]))
+)
+
 
 
 
@@ -65,7 +66,7 @@
       (concat up-or-down (run tos)))
     [from]))
 
-;(even-melody# (map g-major
+;(even-melody# (map (comp g major)
 ;            (run [0 4 -1 0])
 ;            ))
 
@@ -127,4 +128,4 @@
     (=> melody play-now#)
     (=> melody (simple-canon 3) mirror-canon (interval-canon -3) play-now#)))
 
-;(canone-alla-quarta# (now) (bpm 90) g-major)
+(canone-alla-quarta# (now) (bpm 90) (comp D major))
