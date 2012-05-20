@@ -16,7 +16,7 @@
     notes))
 
 (defn even-melody# [pitches]
-  (let [times (reductions + (cons (now) (repeat 300)))
+  (let [times (reductions + (cons (now) (repeat 400)))
         notes (map vector times pitches)]
     (play# notes)))
 
@@ -44,8 +44,8 @@
 (def g-minor (comp (partial + 67) minor)) 
 (def d-minor (comp (partial + 74) minor)) 
 
-;(even-melody# (let [key (comp (partial + 55) major), rest -100]
-;                (map key [0 1 2 0 0 1 2 0 2 3 4 rest 2 3 4 rest])))
+;(even-melody# (let [key (comp (partial + 55) major), _ -100]
+;                (map key [0 1 2 0, 0 1 2 0, 2 3 4 _, 2 3 4 _])))
 
 
 
@@ -66,7 +66,7 @@
     [from]))
 
 ;(even-melody# (map g-major
-;            (run [0 4 0 2 -1 0])
+;            (run [0 4 -1 0])
 ;            ))
 
 (defn accumulate [series] (map (partial sum-n series) (range (count series))))
@@ -127,4 +127,4 @@
     (=> melody play-now#)
     (=> melody (simple-canon 3) mirror-canon (interval-canon -3) play-now#)))
 
-(canone-alla-quarta# (now) (bpm 90) g-major)
+;(canone-alla-quarta# (now) (bpm 90) g-major)
