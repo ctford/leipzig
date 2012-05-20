@@ -91,8 +91,8 @@
           [(repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 3]])
           (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])]
         [durations pitches] (map concat call response development)
-        times (map (partial + 1/2) (accumulate durations))]
-    (map vector times pitches)))
+        timings (map (partial + 1/2) (accumulate durations))]
+    (map vector timings pitches)))
 
 (def bass
   (let [triples (partial mapcat #(repeat 3 %))]
