@@ -46,7 +46,7 @@
 
 ;(even-melody#
 ;  (let [_ -100]
-;    (map (comp D minor) [0 1 2 0, 0 1 2 0, 2 3 4 _, 2 3 4 _]))
+;    (map (comp D major) [0 1 2 0, 0 1 2 0, 2 3 4 _, 2 3 4 _]))
 ;)
 
 
@@ -65,7 +65,7 @@
       (concat up-or-down (run tos)))
     [from]))
 
-;(even-melody# (map (comp g major)
+;(even-melody# (map (comp G major)
 ;            (run [0 4 -1 0])
 ;            ))
 
