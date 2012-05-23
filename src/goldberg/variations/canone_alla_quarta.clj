@@ -21,7 +21,7 @@
     (play# notes)))
 
 ;(piano# 55)
-;(even-melody# (range 60 73))
+;(even-melody# (range 60 67))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -66,7 +66,7 @@
     [from]))
 
 ;(even-melody# (map (comp G major)
-;            (run [0 4 -1 0])
+;            (run [0 4 -1 0 1 0])
 ;            ))
 
 (defn accumulate [series] (map (partial sum-n series) (range (count series))))
