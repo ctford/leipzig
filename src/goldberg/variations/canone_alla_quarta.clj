@@ -111,20 +111,21 @@
 (defn skew [k f] (fn [points] (map #(update-in % [k] f) points))) 
 (defn shift [point] (fn [points] (map #(->> % (map + point) vec) points)))
 
+(defn simple-canon [wait] (shift [wait 0]))
+(defn interval-canon [interval] (shift [0 interval]))
 (def mirror-canon (skew pitch -))
 (def crab-canon (skew timing -))
-(defn sloth-canon [factor] (skew timing (partial * factor)))
-(defn interval-canon [interval] (shift [0 interval]))
-(defn simple-canon [wait] (shift [wait 0]))
 (def table-canon (comp mirror-canon crab-canon))
 
-(defn canone-alla-quarta# [start tempo scale]
+(def canone-alla-quarta (comp (interval-canon -3) mirror-canon (simple-canon 3)))
+
+(defn canon# [start tempo scale]
   (let [in-time #(=> % (skew timing tempo) (shift [start 0]))
         in-key (skew pitch scale)
-        play-now# #(=> % in-key in-time play#)]
+        play-now# (comp play# in-key in-time)]
 
-    (=> bass play-now#)
-    (=> melody play-now#)
-    (=> melody (simple-canon 3) mirror-canon (interval-canon -3) play-now#)))
+    (-> bass play-now#)
+    (-> melody play-now#)
+    (-> melody canone-alla-quarta play-now#)))
 
-;(canone-alla-quarta# (now) (bpm 90) (comp D major))
+;(canon# (now) (bpm 90) (comp D major))
