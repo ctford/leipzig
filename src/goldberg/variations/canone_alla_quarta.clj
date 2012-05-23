@@ -29,12 +29,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn sum-n [series n] (reduce + (take n series)))
-(defn => [value & fs] (reduce #(%2 %1) value fs))
 
 (defn scale [intervals]
   #(if-not (neg? %)
      (sum-n (cycle intervals) %)
-     (=> % - (scale (reverse intervals)) -)))
+     ((comp - (scale (reverse intervals)) -) %)))
 
 (def major (scale [2 2 1 2 2 2 1]))
 (def minor (scale [2 1 2 2 1 2 2]))
@@ -48,6 +47,7 @@
 ;  (let [_ -100]
 ;    (map (comp D major) [0 1 2 0, 0 1 2 0, 2 3 4 _, 2 3 4 _]))
 ;)
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -120,7 +120,7 @@
 (def canone-alla-quarta (comp (interval-canon -3) mirror-canon (simple-canon 3)))
 
 (defn canon# [start tempo scale]
-  (let [in-time #(=> % (skew timing tempo) (shift [start 0]))
+  (let [in-time (comp (shift [start 0]) (skew timing tempo))
         in-key (skew pitch scale)
         play-now# (comp play# in-key in-time)]
 
