@@ -106,18 +106,20 @@
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defn canon [f] (fn [notes] (concat notes (f notes))))
+
 (def timing 0)
 (def pitch 1)
 (defn skew [k f] (fn [points] (map #(update-in % [k] f) points))) 
 (defn shift [point] (fn [points] (map #(->> % (map + point) vec) points)))
 
-(defn simple-canon [wait] (shift [wait 0]))
-(defn interval-canon [interval] (shift [0 interval]))
-(def mirror-canon (skew pitch -))
-(def crab-canon (skew timing -))
-(def table-canon (comp mirror-canon crab-canon))
+(defn simple [wait] (shift [wait 0]))
+(defn interval [interval] (shift [0 interval]))
+(def mirror (skew pitch -))
+(def crab (skew timing -))
+(def table (comp mirror crab))
 
-(def canone-alla-quarta (comp (interval-canon -3) mirror-canon (simple-canon 3)))
+(def canone-alla-quarta (canon (comp (interval -3) mirror (simple 3))))
 
 (defn canon# [start tempo scale]
   (let [in-time (comp (shift [start 0]) (skew timing tempo))
@@ -125,7 +127,6 @@
         play-now# (comp play# in-key in-time)]
 
     (-> bass play-now#)
-    (-> melody play-now#)
     (-> melody canone-alla-quarta play-now#)))
 
 ;(canon# (now) (bpm 90) (comp D major))
