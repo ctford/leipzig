@@ -4,9 +4,12 @@
 ;; http://github.com/ctford/goldberg            ;;
 ;; http://github.com/overtone/overtone          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; WARNING - This will cause the 200MB sampled  ;;
 ;; piano to be downloaded and cached locally.   ;;
+;;                                              ;;
+;; If you don't want to download this, try the  ;;
+;; branch called "synth".                       ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (ns goldberg.variations.canone-alla-quarta
   (:use
     [overtone.live :only [at now ctl stop]]
