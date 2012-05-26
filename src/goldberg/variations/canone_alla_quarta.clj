@@ -5,27 +5,33 @@
 ;; http://github.com/overtone/overtone          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; WARNING - This will cause the 200MB sampled  ;;
-;; piano to be downloaded and cached locally.   ;;
 (ns goldberg.variations.canone-alla-quarta
-  (:use
-    [overtone.live :only [at now ctl stop]]
-    [overtone.inst.sampled-piano :only [sampled-piano] :rename {sampled-piano piano#}]))
+  (:use [overtone.live :exclude [scale bpm run pitch shift]]))
 
-(defn play# [notes] 
-  (let [play-at# (fn [[ms midi]]
-                   (at ms (piano# midi))
-                   (at (+ ms 150) (ctl piano# :gate 0)))]
+(defn play-on# [instrument# notes] 
+  (let [play-at# (fn [[ms midi]] (at ms (instrument# midi)))]
     (->> notes (map play-at#) dorun)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Synth                                        ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(definst saw# [freq 440 depth 5]
+  (let [envelope (env-gen (perc 0.1 0.4) (lf-pulse:kr 2) :action FREE)]
+    (*
+      envelope
+      (saw (+ freq (* depth (lf-saw:kr (lf-pulse:kr 0.1 0.2))))))))
+
+(defn synth# [midi-note] (-> midi-note midi->hz saw#))
+(def play# (partial play-on# synth#))
 
 (defn even-melody# [pitches]
   (let [times (reductions + (cons (now) (repeat 400)))
         notes (map vector times pitches)]
     (play# notes)))
 
-;(piano# 55)
-;(even-melody# (range 60 67))
-
+;(synth# 55)
+;(even-melody# (range 60 73))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scale                                        ;;
@@ -51,8 +57,6 @@
 ;    (map (comp D major) [0 1 2 0, 0 1 2 0, 2 3 4 _, 2 3 4 _]))
 ;)
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Abstractions                                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -75,9 +79,6 @@
 (defn accumulate [series] (map (partial sum-n series) (range (count series))))
 (def repeats (partial mapcat #(apply repeat %)))
 (def runs (partial mapcat run))
-
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Melody                                       ;;
@@ -102,8 +103,6 @@
     (map vector
        (accumulate (repeats [[21 1] [13 1/4]]))
        (concat (triples (runs [[-7 -10] [-12 -10]])) (run [5 -7])))))
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
