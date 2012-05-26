@@ -43,6 +43,7 @@
 
 (def major (scale [2 2 1 2 2 2 1]))
 (def blues (scale [3 2 1 1 3 2]))
+(def pentatonic (scale [3 2 2 3 2]))
 
 (defmacro defs [names values]
   `(do ~@(map
@@ -54,6 +55,7 @@
 (defs [sharp flat] [inc dec])
 
 ;(even-melody# (map (comp A blues) (range 13)))
+;(even-melody# (map (comp E flat pentatonic) (range 11)))
 ;(even-melody# (map (comp G major) (range 15)))
 ;(G 2)
 ;(major 2)
