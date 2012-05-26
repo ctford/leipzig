@@ -20,6 +20,7 @@
   (let [envelope (env-gen (perc 0.1 0.4) (lf-pulse:kr 2) :action FREE)]
     (*
       envelope
+      (sin-osc freq)
       (saw (+ freq (* depth (lf-saw:kr (lf-pulse:kr 0.1 0.2))))))))
 
 (defn synth# [midi-note] (-> midi-note midi->hz saw#))
