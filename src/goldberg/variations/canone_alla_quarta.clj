@@ -51,12 +51,14 @@
 
 (defn start-from [base] (partial + base))
 (defs [C D E F G A B] (map start-from (range 63 70)))
+(defs [sharp flat] [inc dec])
 
 ;(even-melody# (map (comp A blues) (range 13)))
 ;(even-melody# (map (comp G major) (range 15)))
 ;(G 2)
 ;(major 2)
 ;((comp G major) 2) 
+;((comp G sharp major) 2) 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modes                                        ;;
@@ -161,4 +163,4 @@
     (-> melody canone-alla-quarta play-now#)))
 
 ;(canon# (now) (bpm 90) (comp G ionian))
-;(canon# (now) (bpm 80) (comp B aeolian))
+;(canon# (now) (bpm 80) (comp B flat aeolian))
