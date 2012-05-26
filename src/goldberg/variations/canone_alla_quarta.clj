@@ -10,6 +10,7 @@
 ;; If you don't want to download this, try the  ;;
 ;; branch called "synth".                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (ns goldberg.variations.canone-alla-quarta
   (:use
     [overtone.live :only [at now ctl stop]]
@@ -28,7 +29,6 @@
 
 ;(piano# 55)
 ;(even-melody# (range 60 67))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scale                                        ;;
@@ -81,8 +81,6 @@
 ;    (map (comp D major) [0 1 2 0, 0 1 2 0, 2 3 4 _, 2 3 4 _]))
 ;)
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Abstractions                                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -105,9 +103,6 @@
 (defn accumulate [series] (map (partial sum-n series) (range (count series))))
 (def repeats (partial mapcat #(apply repeat %)))
 (def runs (partial mapcat run))
-
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Melody                                       ;;
@@ -132,8 +127,6 @@
     (map vector
        (accumulate (repeats [[21 1] [13 1/4]]))
        (concat (triples (runs [[-7 -10] [-12 -10]])) (run [5 -7])))))
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
