@@ -16,14 +16,14 @@
 ;; Synth                                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(definst saw# [freq 440 depth 10]
+(definst sawish# [freq 440 depth 10]
   (let [envelope (env-gen (perc 0.1 0.4) (lf-pulse:kr 2) :action FREE)]
     (*
       envelope
       (sin-osc freq)
       (saw (+ freq (* depth (lf-saw:kr (lf-pulse:kr 0.1 0.2))))))))
 
-(defn synth# [midi-note] (-> midi-note midi->hz saw#))
+(defn synth# [midi-note] (-> midi-note midi->hz sawish#))
 (def play# (partial play-on# synth#))
 
 (defn even-melody# [pitches]
@@ -158,4 +158,4 @@
     (-> melody canone-alla-quarta play-now#)))
 
 ;(canon# (now) (bpm 90) (comp G ionian))
-(canon# (now) (bpm 80) (comp B aeolian))
+;(canon# (now) (bpm 80) (comp B aeolian))
