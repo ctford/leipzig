@@ -5,6 +5,8 @@
 ;; http://github.com/overtone/overtone          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; WARNING - This will cause the 200MB sampled  ;;
+;; piano to be downloaded and cached locally.   ;;
 (ns goldberg.variations.canone-alla-quarta
   (:use
     [overtone.live :only [at now stop]]
