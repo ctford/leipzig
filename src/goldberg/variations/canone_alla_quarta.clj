@@ -64,15 +64,15 @@
 ;; Modes                                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn modulate [scale mode]
+(defn mode [n]
   (comp
-    #(- % (scale mode))
-    scale
-    (start-from mode)))
+    #(- % (major n))
+    major 
+    (start-from n)))
 
 (defs
   [ionian dorian phrygian lydian mixolydian aeolian locrian]
-  (map (partial modulate major) (range)))
+  (map mode (range)))
 
 (def minor aeolian)
 
