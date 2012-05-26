@@ -16,7 +16,7 @@
 ;; Synth                                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(definst saw# [freq 440 depth 5]
+(definst saw# [freq 440 depth 10]
   (let [envelope (env-gen (perc 0.1 0.4) (lf-pulse:kr 2) :action FREE)]
     (*
       envelope
@@ -158,4 +158,4 @@
     (-> melody canone-alla-quarta play-now#)))
 
 ;(canon# (now) (bpm 90) (comp G ionian))
-;(canon# (now) (bpm 80) (comp B aeolian))
+(canon# (now) (bpm 80) (comp B aeolian))
