@@ -23,12 +23,13 @@
       (sin-osc freq)
       (saw (+ freq (* depth (lf-saw:kr (lf-pulse:kr 0.1 0.2))))))))
 
-(definst harps1 [freq 440]
+(definst harps# [freq 440]
   (let [duration 1]
     (* (line:kr 1 1 duration FREE)
        (pluck (* (white-noise) (env-gen (perc 0.001 5) :action FREE)) 1 1 (/ 1 freq) (* duration 2) 0.25))))
 
-(defn synth# [midi-note] (-> midi-note midi->hz harps1))
+(defn synth# [midi-note] (-> midi-note midi->hz sawish#))
+;(defn synth# [midi-note] (-> midi-note midi->hz harps#))
 (def play# (partial play-on# synth#))
 
 (defn even-melody# [pitches]
