@@ -167,10 +167,12 @@
 
 (defn canon# [start tempo scale]
   (let [in-time (comp (shift [start 0]) (skew timing tempo))
-        in-key (with-accidentals scale accidentals)
+        ;in-key (with-accidentals scale accidentals)
+        in-key (skew pitch scale)
         play-now# (comp play# in-time in-key)]
 
     (-> bass play-now#)
     (-> melody canone-alla-quarta play-now#)))
 
-(canon# (now) (bpm 90) (comp G major))
+;(canon# (now) (bpm 90) (comp G major))
+;(canon# (now) (bpm 80) (comp G minor))
