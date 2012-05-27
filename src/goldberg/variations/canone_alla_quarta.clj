@@ -135,6 +135,19 @@
        (concat (triples (runs [[-7 -10] [-12 -10]])) (run [5 -7])))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Accidentals                                  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def accidentals {[15/4 3] sharp, [30/4 3] sharp, [32/4 -9] sharp, [56/4 -1] flat})
+
+(defn refine [scale targets [timing pitch :as note]]
+  (if-let [refinement (targets note)] 
+    [timing (-> pitch scale refinement)]
+    [timing (-> pitch scale)]))
+
+(defn with-accidentals [scale accidentals] (partial map (partial refine scale accidentals)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -155,11 +168,10 @@
 
 (defn canon# [start tempo scale]
   (let [in-time (comp (shift [start 0]) (skew timing tempo))
-        in-key (skew pitch scale)
-        play-now# (comp play# in-key in-time)]
+        in-key (with-accidentals scale accidentals)
+        play-now# (comp play# in-time in-key)]
 
     (-> bass play-now#)
     (-> melody canone-alla-quarta play-now#)))
 
-;(canon# (now) (bpm 90) (comp G ionian))
-;(canon# (now) (bpm 80) (comp B flat aeolian))
+;(canon# (now) (bpm 90) (comp G major))
