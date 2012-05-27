@@ -6,7 +6,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (ns goldberg.variations.canone-alla-quarta
-  (:use [overtone.live :exclude [scale bpm run pitch shift]]))
+  (:use [overtone.live :exclude [scale bpm run pitch shift sharp flat]]))
 
 (defn play-on# [instrument# notes] 
   (let [play-at# (fn [[ms midi]] (at ms (instrument# midi)))]
@@ -53,6 +53,8 @@
 
 (def major (scale [2 2 1 2 2 2 1]))
 (def blues (scale [3 2 1 1 3 2]))
+(def pentatonic (scale [3 2 2 3 2]))
+(def diatonic (scale [1]))
 
 (defmacro defs [names values]
   `(do ~@(map
@@ -60,27 +62,28 @@
            names (eval values))))
 
 (defn start-from [base] (partial + base))
-(defs [C D E F G A B] (map start-from (range 63 70)))
+(defs [sharp flat] [inc dec])
+(defs [C D E F G A B]
+  (map
+    (comp start-from (start-from 60) major)
+    (range)))
 
 ;(even-melody# (map (comp A blues) (range 13)))
-;(even-melody# (map (comp G major) (range 15)))
-;(G 2)
-;(major 2)
-;((comp G major) 2) 
+;(even-melody# (map (comp E flat pentatonic) (range 11)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modes                                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn modulate [scale mode]
+(defn mode [n]
   (comp
-    #(- % (scale mode))
-    scale
-    (start-from mode)))
+    #(- % (major n))
+    major 
+    (start-from n)))
 
 (defs
   [ionian dorian phrygian lydian mixolydian aeolian locrian]
-  (map (partial modulate major) (range)))
+  (map mode (range)))
 
 (def minor aeolian)
 
@@ -137,13 +140,25 @@
        (concat (triples (runs [[-7 -10] [-12 -10]])) (run [5 -7])))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Accidentals                                  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def accidentals {[15/4 3] sharp, [30/4 3] sharp, [32/4 -9] sharp, [56/4 -1] flat})
+
+(defn refine [scale targets [timing pitch :as note]]
+  (if-let [refinement (targets note)] 
+    [timing (-> pitch scale refinement)]
+    [timing (-> pitch scale)]))
+
+(defn with-accidentals [scale accidentals] (partial map (partial refine scale accidentals)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn canon [f] (fn [notes] (concat notes (f notes))))
 
-(def timing 0)
-(def pitch 1)
+(defs [timing pitch] [0 1])
 (defn skew [k f] (fn [points] (map #(update-in % [k] f) points))) 
 (defn shift [point] (fn [points] (map #(->> % (map + point) vec) points)))
 
@@ -157,11 +172,12 @@
 
 (defn canon# [start tempo scale]
   (let [in-time (comp (shift [start 0]) (skew timing tempo))
+        ;in-key (with-accidentals scale accidentals)
         in-key (skew pitch scale)
-        play-now# (comp play# in-key in-time)]
+        play-now# (comp play# in-time in-key)]
 
     (-> bass play-now#)
     (-> melody canone-alla-quarta play-now#)))
 
-;(canon# (now) (bpm 90) (comp G ionian))
-;(canon# (now) (bpm 80) (comp B aeolian))
+;(canon# (now) (bpm 90) (comp G major))
+;(canon# (now) (bpm 80) (comp G minor))
