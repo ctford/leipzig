@@ -153,8 +153,7 @@
 
 (defn canon [f] (fn [notes] (concat notes (f notes))))
 
-(def timing 0)
-(def pitch 1)
+(defs [timing pitch] [0 1])
 (defn skew [k f] (fn [points] (map #(update-in % [k] f) points))) 
 (defn shift [point] (fn [points] (map #(->> % (map + point) vec) points)))
 
@@ -174,4 +173,4 @@
     (-> bass play-now#)
     (-> melody canone-alla-quarta play-now#)))
 
-;(canon# (now) (bpm 90) (comp G major))
+(canon# (now) (bpm 90) (comp G major))
