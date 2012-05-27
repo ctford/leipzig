@@ -51,9 +51,11 @@
            names (eval values))))
 
 (defn start-from [base] (partial + base))
-(def C (start-from 60))
-(defs [D E F G A B] (map (comp start-from C major) (range 1 6)))
 (defs [sharp flat] [inc dec])
+(defs [C D E F G A B]
+  (map
+    (comp start-from (start-from 60) major)
+    (range)))
 
 ;(even-melody# (map (comp A blues) (range 13)))
 ;(even-melody# (map (comp E flat pentatonic) (range 11)))
