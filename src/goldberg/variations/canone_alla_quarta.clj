@@ -122,14 +122,14 @@
           [(repeats [[10 1/4] [1 1/2] [2 1/4] [1 9/4]])
           (runs [[7 -1 0] [0 -3]])]
         development
-          [(repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 13/4]])
-          (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])]
+          [(repeats [[1 1] [11 1/4] [1 1/2] [1 1] [1 3/4] [11 1/4] [1 13/4]])
+          (runs [[4] [2 -3] [-1 -2] [0] [3 5] [1] [1 2] [-1 1 -1] [5 0]])]
         reprise 
-          [(repeats [[15 1/4] [1 10/4] [1 1/2] [8 1/4] [1 1/2] [2 1/4] [1 1] [12 1/4] [1 1]])
-          (runs [[-1 4] [6 -3] [3] [3 1 7] [0 -1 0] [0] [2 -2 0 -1] [1 -2]])]
+          [(repeats [[15 1/4] [1 10/4] [1 3/4] [7 1/4] [1 1/2] [2 1/4] [1 5/4] [11 1/4] [1 6/4]])
+          (runs [[-1 4] [6 -3] [3 1 7] [0 -1 0] [2 -2 0 -1] [1 -2]])]
         finale 
-          [(repeats [[6 1/2] [1 3/2] [1 1/2] [2 1/4] [2 1/2] [3 1/4] [1 1/2] [1 1/4] [1 1]])
-          (runs [[-2] [4 1] [6] [0 -2] [1 0] [0 -2 -1] [4 3 4]])]
+          [(repeats [[5 1/2] [1 6/4] [1 1/2] [2 1/4] [1 1] [3 1/4] [1 1/2] [1 1/4] [1 1]])
+          (runs [[4 1] [6] [0 -2] [1 -2 -1] [4 3 4]])]
         [durations pitches] (map concat call response development reprise finale)
         timings (map (partial + 1/2) (accumulate durations))]
     (map vector timings pitches)))
@@ -185,7 +185,7 @@
 
 (defn truncate [n] (partial drop-last n))
 
-(def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 7) (simple 3))))
+(def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 6) (simple 3))))
 
 (defn canon# [start tempo scale]
   (let [in-time (comp (shift [start 0]) (skew timing tempo))
