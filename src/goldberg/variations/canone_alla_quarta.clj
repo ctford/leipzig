@@ -180,12 +180,9 @@
 (def crab (skew timing -))
 (def table (comp mirror crab))
 
-(defn truncate [end]
-  #(let [last-time (-> % last first)
-         chop (partial filter (fn [[timing _]] (< timing (- last-time end))))]
-    (chop %)))
+(defn truncate [n] (partial drop-last n))
 
-(def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 3) (simple 3))))
+(def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 7) (simple 3))))
 
 (defn canon# [start tempo scale]
   (let [in-time (comp (shift [start 0]) (skew timing tempo))
