@@ -127,7 +127,7 @@
         reprise 
           [(repeats [[14 1/4] [1 9/4] [9 1/4] [1 1/2] [2 1/4] [1 1] [12 1/4] [1 1]])
           (runs [[-1 5 -3] [3] [3 1 7] [0 -1 0] [0] [2 -2 0 -1] [1 -2]])]
-       finale 
+        finale 
           [(repeats [[6 1/2] [1 3/2] [2 1/4] [2 1/2] [3 1/4] [1 1/2] [1 1/4] [1 1]])
           (runs [[-2] [4 1] [6] [0 -2] [1 0] [0 -2 -1] [4 3 4]])]
         [durations pitches] (map concat call response development reprise finale)
@@ -135,10 +135,15 @@
     (map vector timings pitches)))
 
 (def bass
-  (let [triples (partial mapcat #(repeat 3 %))]
-    (map vector
-       (accumulate (repeats [[48 1] [13 1/4]]))
-       (concat (triples (runs [[-7 -10] [-12 -10] [-12] [-14] [-10] [-7] [-10] [-7] [-13] [-10] [-7]])) (run [-7 -10 -6 -7 -6 -7 -6 -7])))))
+  (let [triples (partial mapcat #(repeat 3 %))
+        crotchets
+          [(repeats [[48 1]])
+          (triples (runs [[-7 -10] [-12 -10] [-12] [-14] [-10] [-7] [-10] [-7] [-13] [-10] [-7]]))]
+        flourish
+          [(repeats [[13 1/4]])
+          (run [-7 -10 -6 -7 -6 -7 -6 -7])]
+        [durations pitches] (map concat crotchets flourish)]
+    (map vector (accumulate durations) pitches)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Accidentals                                  ;;
@@ -180,5 +185,5 @@
     (-> bass play-now#)
     (-> melody canone-alla-quarta play-now#)))
 
-(canon# (now) (bpm 90) (comp G major))
+;(canon# (now) (bpm 90) (comp G major))
 ;(canon# (now) (bpm 80) (comp G minor))
