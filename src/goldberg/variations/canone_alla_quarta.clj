@@ -146,9 +146,12 @@
           [(repeats [[2 1/4] [2 1/2] [4 1/4] [4 1/2] [4 1/4] [3 1/2] [1 7/4]])
           (runs [[-12 -10] [-12] [-9 -7 -9 -8 -11 -9 -11] [-9] [-11] [-13]])]
         buildup 
-          [(repeats [[7 1/4] [1 1/2] [1 3/4] [23 1/4] [2 1/2] [1 1]])
+          [(repeats [[7 1/4] [1 1/2] [1 3/4] [23 1/4] [2 1/2] [1 3/4]])
           (runs [[-10 -6 -8 -7] [-14] [-9 -6] [-8 -10] [-5] [-12] [-9 -11] [-13] [-10] [-7 -6] [-9] [-11] [-13] [-10 -9 -11 -10] [-13] [-17]])]
-        [durations pitches] (map concat crotchets elaboration busy buildup)]
+        end
+          [[ 1/4 0  0  1/4 1/4  0   0  1/4 1/4 0  0  1]
+           [-1   0 -3 -7  -2   -6  -3 -1   1   0 -3 -7]]
+        [durations pitches] (map concat crotchets elaboration busy buildup end)]
     (map vector (accumulate durations) pitches)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
