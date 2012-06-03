@@ -122,13 +122,13 @@
           [(repeats [[10 1/4] [1 1/2] [2 1/4] [1 9/4]])
           (runs [[7 -1 0] [0 -3]])]
         development
-          [(repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 7/2]])
+          [(repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 13/4]])
           (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])]
         reprise 
-          [(repeats [[14 1/4] [1 9/4] [9 1/4] [1 1/2] [2 1/4] [1 1] [12 1/4] [1 1]])
-          (runs [[-1 5 -3] [3] [3 1 7] [0 -1 0] [0] [2 -2 0 -1] [1 -2]])]
+          [(repeats [[15 1/4] [1 10/4] [1 1/2] [8 1/4] [1 1/2] [2 1/4] [1 1] [12 1/4] [1 1]])
+          (runs [[-1 4] [6 -3] [3] [3 1 7] [0 -1 0] [0] [2 -2 0 -1] [1 -2]])]
         finale 
-          [(repeats [[6 1/2] [1 3/2] [2 1/4] [2 1/2] [3 1/4] [1 1/2] [1 1/4] [1 1]])
+          [(repeats [[6 1/2] [1 3/2] [1 1/2] [2 1/4] [2 1/2] [3 1/4] [1 1/2] [1 1/4] [1 1]])
           (runs [[-2] [4 1] [6] [0 -2] [1 0] [0 -2 -1] [4 3 4]])]
         [durations pitches] (map concat call response development reprise finale)
         timings (map (partial + 1/2) (accumulate durations))]
@@ -140,12 +140,15 @@
           [(repeats [[21 1]])
           (triples (runs [[-7 -10] [-12 -10]]))]
         elaboration
-          [(repeats [[27 1]])
-          (triples (runs [[-12] [-14] [-10] [-7] [-10] [-7] [-13] [-10] [-7]]))]
-        flourish
-          [(repeats [[13 1/4]])
-          (run [-7 -10 -6 -7 -6 -7 -6 -7])]
-        [durations pitches] (map concat crotchets elaboration flourish)]
+          [(repeats [[1 3/4] [9 1/4] [1 1/2] [1 1] [2 1/4] [3 1/2] [1 1]])
+          (runs [[-7] [-12] [-9 -11] [-9 -13 -12] [-14] [-7 -8 -7] [-9 -8] [-5]])]
+        busy 
+          [(repeats [[2 1/4] [2 1/4] [4 1/4] [4 1/2] [4 1/4] [3 1/2] [1 7/4]])
+          (runs [[-12 -10] [-12] [-9 -7 -9 -8 -11 -9 -11] [-9] [-11] [-13]])]
+        buildup 
+          [(repeats [[7 1/4] [1 1/2] [1 3/4] [23 1/4] [2 1/4] [1 1]])
+          (runs [[-10 -6 -8 -7] [-14] [-9 -6] [-8 -10] [-5] [-12] [-9 -11] [-13] [-10] [-7 -6] [-9] [-11] [-13] [-10 -9 -11 -10] [-13] [-17]])]
+        [durations pitches] (map concat crotchets elaboration busy buildup)]
     (map vector (accumulate durations) pitches)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -177,7 +180,12 @@
 (def crab (skew timing -))
 (def table (comp mirror crab))
 
-(def canone-alla-quarta (canon (comp (interval -3) mirror (simple 3))))
+(defn truncate [end]
+  #(let [last-time (-> % last first)
+         chop (partial filter (fn [[timing _]] (< timing (- last-time end))))]
+    (chop %)))
+
+(def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 3) (simple 3))))
 
 (defn canon# [start tempo scale]
   (let [in-time (comp (shift [start 0]) (skew timing tempo))
@@ -185,8 +193,9 @@
         in-key (skew pitch scale)
         play-now# (comp play# in-time in-key)]
 
-    (-> bass play-now#)
-    (-> melody canone-alla-quarta play-now#)))
+   (-> bass play-now#)
+   (-> melody canone-alla-quarta play-now#)
+    ))
 
 ;(canon# (now) (bpm 90) (comp G major))
 ;(canon# (now) (bpm 80) (comp G minor))
