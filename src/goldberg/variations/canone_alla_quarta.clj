@@ -137,12 +137,15 @@
 (def bass
   (let [triples (partial mapcat #(repeat 3 %))
         crotchets
-          [(repeats [[48 1]])
-          (triples (runs [[-7 -10] [-12 -10] [-12] [-14] [-10] [-7] [-10] [-7] [-13] [-10] [-7]]))]
+          [(repeats [[21 1]])
+          (triples (runs [[-7 -10] [-12 -10]]))]
+        elaboration
+          [(repeats [[27 1]])
+          (triples (runs [[-12] [-14] [-10] [-7] [-10] [-7] [-13] [-10] [-7]]))]
         flourish
           [(repeats [[13 1/4]])
           (run [-7 -10 -6 -7 -6 -7 -6 -7])]
-        [durations pitches] (map concat crotchets flourish)]
+        [durations pitches] (map concat crotchets elaboration flourish)]
     (map vector (accumulate durations) pitches)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
