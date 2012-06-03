@@ -122,17 +122,23 @@
           [(repeats [[10 1/4] [1 1/2] [2 1/4] [1 9/4]])
           (runs [[7 -1 0] [0 -3]])]
         development
-          [(repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 3]])
+          [(repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 7/2]])
           (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])]
-        [durations pitches] (map concat call response development)
+        reprise 
+          [(repeats [[14 1/4] [1 9/4] [9 1/4] [1 1/2] [2 1/4] [1 1] [12 1/4] [1 1]])
+          (runs [[-1 5 -3] [3] [3 1 7] [0 -1 0] [0] [2 -2 0 -1] [1 -2]])]
+       finale 
+          [(repeats [[6 1/2] [1 3/2] [2 1/4] [2 1/2] [3 1/4] [1 1/2] [1 1/4] [1 1]])
+          (runs [[-2] [4 1] [6] [0 -2] [1 0] [0 -2 -1] [4 3 4]])]
+        [durations pitches] (map concat call response development reprise finale)
         timings (map (partial + 1/2) (accumulate durations))]
     (map vector timings pitches)))
 
 (def bass
   (let [triples (partial mapcat #(repeat 3 %))]
     (map vector
-       (accumulate (repeats [[21 1] [13 1/4]]))
-       (concat (triples (runs [[-7 -10] [-12 -10]])) (run [5 -7])))))
+       (accumulate (repeats [[48 1] [13 1/4]]))
+       (concat (triples (runs [[-7 -10] [-12 -10] [-12] [-14] [-10] [-7] [-10] [-7] [-13] [-10] [-7]])) (run [-7 -10 -6 -7 -6 -7 -6 -7])))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Accidentals                                  ;;
@@ -174,5 +180,5 @@
     (-> bass play-now#)
     (-> melody canone-alla-quarta play-now#)))
 
-;(canon# (now) (bpm 90) (comp G major))
+(canon# (now) (bpm 90) (comp G major))
 ;(canon# (now) (bpm 80) (comp G minor))
