@@ -36,10 +36,15 @@
 
 (defn sum-n [series n] (reduce + (take n series)))
 
-(defn scale [intervals]
+(defn negatable-scale [intervals]
   #(if-not (neg? %)
      (sum-n (cycle intervals) %)
      ((comp - (scale (reverse intervals)) -) %)))
+
+(defn scale [intervals]
+  #(if-not (integer? %)
+     (inc ((negatable-scale intervals) (int %)))
+     ((negatable-scale intervals) %)))
 
 (def major (scale [2 2 1 2 2 2 1]))
 (def blues (scale [3 2 1 1 3 2]))
@@ -63,7 +68,8 @@
 ;(even-melody# (map (comp G major) (range 15)))
 ;(G 2)
 ;(major 2)
-;((comp G major) 2) 
+;((comp G major) 3/2) 
+;((comp G major) 1) 
 ;((comp G sharp dorian) 2) 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -138,7 +144,7 @@
   (let [triples (partial mapcat #(repeat 3 %))
         crotchets-a
           [(repeats [[8 1] [1 10/4]])
-          (triples (runs [[-7 -9]]))]
+          (concat (triples (runs [[-7 -8]])) [-9 -9 -8.5])]
         twiddle 
           [(repeats [[2 1/4] [2 1/2]])
           (runs [[-11 -13] [-11]])]
@@ -203,5 +209,5 @@
    (-> bass play-now#)
    (-> melody canone-alla-quarta play-now#)))
 
-;(canon# (now) (bpm 90) (comp G major))
+(canon# (now) (bpm 90) (comp G major))
 ;(canon# (now) (bpm 80) (comp G minor))
