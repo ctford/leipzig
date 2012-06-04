@@ -63,7 +63,6 @@
 ;(even-melody# (map (comp G major) (range 15)))
 ;(G 2)
 ;(major 2)
-;((comp G major) 3/2) 
 ;((comp G major) 1) 
 ;((comp G sharp dorian) 2) 
 
@@ -203,4 +202,3 @@
    (-> melody canone-alla-quarta play-now#)))
 
 ;(canon# (now) (bpm 90) (comp G major))
-;(canon# (now) (bpm 80) (comp G minor))
