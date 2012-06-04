@@ -11,7 +11,7 @@
     [goldberg.canon]
     [goldberg.melody]
     [goldberg.instrument]
-    [overtone.live :only [midi->hz now]]))
+    [overtone.live :only [midi->hz now stop]]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Abstractions                                 ;;
@@ -71,11 +71,11 @@
 (def bass
   (let [triples (partial mapcat #(repeat 3 %))
         crotchets-a
-          [(repeats [[8 1] [1 10/4]])
+          [(repeat 9 1)
           (triples (runs [[-7 -9]]))]
         twiddle 
-          [(repeats [[2 1/4] [2 1/2]])
-          (runs [[-11 -13] [-11]])]
+          [(repeats [[1 1/4] [1 5/4] [2 1/4] [2 1/2]])
+          (runs [[-10] [-17] [-11 -13] [-11]])]
         crotchets-b
           [(repeat 9 1)
           (triples (runs [[-12 -10]]))]
@@ -125,4 +125,4 @@
 
 ;(canon# (now) (bpm 100) (comp B major) (comp harps# midi->hz))
 ;(canon# (now) (bpm 80) (comp E flat major) (comp sawish# midi->hz))
-(canon# (now) (bpm 90) (comp G major) piano#)
+;(canon# (now) (bpm 90) (comp G major) piano#)
