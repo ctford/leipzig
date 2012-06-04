@@ -17,6 +17,8 @@
 ;; Abstractions                                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defn => [value & fs] (reduce #(%2 %1) value fs))
+
 (defn run [[from & tos]]
   (if-let [to (first tos)]
     (let [up-or-down (if (<= from to)
@@ -43,23 +45,27 @@
 (defn subtract [n values] (concat (take n values) (drop (inc n) values)))
 (defn override [value n values] (concat (take n values) [value] (drop (inc n) values)))
 
+(defn minus [n] (partial subtract n))
+(defn plus [value n] (partial insert value n))
+(defn push [value n] (partial override value n))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Melody                                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def melody 
   (let [theme
-          [(override 1/2 2 (repeats [[17 1/4] [1 3/2]]))
-           (insert 4 9 (run [0 -1 3 0 8]))]
+          [(=> (repeat 17 1/4) (push 1/2 2) (plus 3/2 17))
+           (=> (run [0 -1 3 0 8]) (plus 4 9))]
         response
-          [(override 1/2 10 (repeats [[13 1/4] [1 9/4]]))
-           (insert 0 9 (run [7 -1 0 -3]))]
+          [(=> (repeat 13 1/4) (plus 9/4 13) (push 1/2 10))
+           (=> (run [7 -1 0 -3]) (plus 0 9))]
         development
           [(repeats [[1 1] [11 1/4] [1 1/2] [1 1] [1 3/4] [11 1/4] [1 13/4]])
-          (subtract 1 (runs [[4 -3] [-1 -2] [0] [3 5] [1] [1 2] [-1 1 -1] [5 0]]))]
+          (=> (runs [[4 -3] [-1 -2] [0] [3 5] [1] [1 2] [-1 1 -1] [5 0]]) (minus 1))]
         interlude 
-          [(insert 10/4 15 (repeat 15 1/4))
-          (subtract 6 (run [-1 6 -3]))]
+          [(=> (repeat 15 1/4) (plus 10/4 15))
+          (=> (run [-1 6 -3]) (minus 6))]
         finale 
           [(repeats [[1 3/4] [7 1/4] [1 1/2] [2 1/4] [1 5/4] [11 1/4] [1 6/4] [5 1/2]
                      [1 6/4] [1 1/2] [2 1/4] [1 1] [3 1/4] [1 1/2] [1 1/4] [1 1]])
@@ -72,13 +78,13 @@
   (let [triples (partial mapcat #(repeat 3 %))
         crotchets-a
           [(repeat 9 1)
-          (triples (run [-7 -9]))]
+          (=> (run [-7 -9]) triples)]
         twiddle 
           [(repeats [[1 1/4] [1 5/4] [2 1/4] [2 1/2]])
           (runs [[-10] [-17] [-11 -13] [-11]])]
         crotchets-b
           [(repeat 9 1)
-          (triples (run [-12 -10]))]
+          (=> (run [-12 -10]) triples)]
         elaboration
           [(repeats [[1 3/4] [9 1/4] [1 1/2] [1 1] [2 1/4] [3 1/2] [1 1]])
           (runs [[-7] [-12] [-9 -11] [-9 -13 -12] [-14] [-7 -8 -7] [-9 -8] [-5]])]
