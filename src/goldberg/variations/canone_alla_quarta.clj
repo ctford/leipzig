@@ -182,7 +182,7 @@
         bass
          {[8 -9] sharp, [(+ 28 3/4) -11] sharp, [33 -11] sharp, [43 -11] sharp,
           [(+ 45 3/4) -11] sharp}]
-    (merge bass-accidentals leader-accidentals follower-accidentals)))
+    (merge bass leader follower)))
 
 (defn refine [scale targets [timing pitch duration :as note]]
   (if-let [refinement (targets note)] 
