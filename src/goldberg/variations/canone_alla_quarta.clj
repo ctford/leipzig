@@ -49,6 +49,10 @@
 (defn plus [value n] (partial insert value n))
 (defn push [value n] (partial override value n))
 
+;(defn even-melody [duration] #(map vector (repeat duration) %))
+;(def theme (=> (run [0 -1 3 0 8]) (even-melody 1/4)
+;               (push [1/2 0] 2) (plus [1/4 4] 9) (push [3/2 8] 17)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Melody                                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -61,7 +65,7 @@
           [(=> (repeat 13 1/4) (plus 9/4 13) (push 1/2 10))
            (=> (run [7 -1 0 -3]) (plus 0 9))]
         development
-          [(repeats [[1 1] [11 1/4] [1 1/2] [1 1] [1 3/4] [11 1/4] [1 13/4]])
+          [(concat [1] (repeat 11 1/4) [1/2 1 3/4] (repeat 11 1/4) [13/4])
           (=> (runs [[4 -3] [-1 -2] [0] [3 5] [1] [1 2] [-1 1 -1] [5 0]]) (minus 1))]
         interlude 
           [(=> (repeat 15 1/4) (plus 10/4 15))
