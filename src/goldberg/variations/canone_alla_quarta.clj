@@ -123,4 +123,3 @@
 
 ;(canon# (now) (bpm 100) (comp B major) (comp harps# midi->hz))
 ;(canon# (now) (bpm 80) (comp E flat major) (comp sawish# midi->hz))
-;(canon# (now) (bpm 90) (comp G major) piano#)
