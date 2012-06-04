@@ -34,16 +34,12 @@
     (* (line:kr 1 1 duration FREE)
        (pluck (* (white-noise) (env-gen (perc 0.001 5) :action FREE)) 1 1 (/ 1 freq) (* duration 2) 0.25))))
 
-;(defn synth# [midi-note] (-> midi-note midi->hz sawish#))
-(defn synth# [midi-note] (-> midi-note midi->hz harps#))
-(def play# (partial play-on# synth#))
-
 (defn even-melody# [pitches]
   (let [times (reductions + (cons (now) (repeat 400)))
-        notes (map vector times pitches)]
-    (play# notes)))
+        notes (map vector times pitches (repeat 150))]
+    (play-on# (comp harps# midi->hz) notes)))
 
-;(synth# 55)
+;(harps# (midi->hz 55))
 ;(even-melody# (range 60 73))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -138,12 +134,13 @@
 (defn truncate [n] (partial drop-last n))
 (def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 6) (simple 3))))
 
-(defn canon# [start tempo scale]
+(defn canon# [start tempo scale instrument#]
   (let [in-time (comp (shift [start 0 0]) (skew timing tempo) (skew duration tempo))
         in-key (with-accidentals scale accidentals)
-        play-now# (comp play# in-time in-key)]
+        play-now# (comp (partial play-on# instrument#) in-time in-key)]
 
    (-> bass play-now#)
    (-> melody canone-alla-quarta play-now#)))
 
-;(canon# (now) (bpm 90) (comp G major))
+;(canon# (now) (bpm 90) (comp G major) (comp harps# midi->hz))
+;(canon# (now) (bpm 80) (comp E flat major) (comp sawish# midi->hz))
