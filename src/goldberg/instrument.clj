@@ -1,5 +1,9 @@
 (ns goldberg.instrument
-  (:use [overtone.live]))
+  (:use
+    [overtone.live]
+    [overtone.inst.sampled-piano :only [sampled-piano]]))
+
+(def piano# sampled-piano)
 
 (definst sawish# [freq 440 depth 10]
   (let [envelope (env-gen (perc 0.1 0.9) :action FREE)]

@@ -11,8 +11,7 @@
     [goldberg.canon]
     [goldberg.melody]
     [goldberg.instrument]
-    [overtone.live :exclude [scale bpm run pitch shift sharp flat]]
-    [overtone.inst.sampled-piano :only [sampled-piano] :rename {sampled-piano piano#}]))
+    [overtone.live :exclude [scale bpm run pitch shift sharp flat]]))
 
 (defn even-melody# [pitches]
   (let [times (reductions + (cons (now) (repeat 400)))
