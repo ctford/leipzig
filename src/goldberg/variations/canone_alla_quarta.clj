@@ -73,11 +73,13 @@
         interlude 
           [(=> (repeat 15 1/4) (plus 10/4 15))
           (=> (run [-1 6 -3]) (minus 6))]
+        buildup 
+          [(repeats [[1 3/4] [7 1/4] [1 1/2] [2 1/4] [1 5/4] [11 1/4] [1 6/4] [5 1/2]])
+          (runs [[3 1 7] [0 -1 0] [2 -2 0 -1] [1 -2] [4 1]])]
         finale 
-          [(repeats [[1 3/4] [7 1/4] [1 1/2] [2 1/4] [1 5/4] [11 1/4] [1 6/4] [5 1/2]
-                     [1 6/4] [1 1/2] [2 1/4] [1 1] [3 1/4] [1 1/2] [1 1/4] [1 1]])
-          (runs [[3 1 7] [0 -1 0] [2 -2 0 -1] [1 -2] [4 1] [6] [0 -2] [1 -2 -1] [4 3 4]])]
-        [durations pitches] (map concat theme response dip development interlude finale)
+          [(repeats [[1 6/4] [1 1/2] [2 1/4] [1 1] [3 1/4] [1 1/2] [1 1/4] [1 1]])
+          (runs [[6] [0 -2] [1 -2 -1] [4 3 4]])]
+        [durations pitches] (map concat theme response dip development interlude buildup finale)
         timings (map (partial + 1/2) (accumulate durations))]
     (map vector timings pitches durations)))
 
