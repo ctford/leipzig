@@ -70,6 +70,11 @@
 
 ;(even-melody# (map (comp A blues) (range 13)))
 ;(even-melody# (map (comp E flat pentatonic) (range 11)))
+;(even-melody# (map (comp G major) (range 15)))
+;(G 2)
+;(major 2)
+;((comp G major) 1) 
+;((comp G sharp dorian) 2) 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modes                                        ;;
@@ -127,23 +132,56 @@
           [(repeats [[10 1/4] [1 1/2] [2 1/4] [1 9/4]])
           (runs [[7 -1 0] [0 -3]])]
         development
-          [(repeats [[1 3/4] [12 1/4] [1 1/2] [1 1] [1 1/2] [12 1/4] [1 3]])
-          (runs [[4] [4] [2 -3] [-1 -2] [0] [3 5] [1] [1] [1 2] [-1 1 -1] [5 0]])]
-        [durations pitches] (map concat call response development)
+          [(repeats [[1 1] [11 1/4] [1 1/2] [1 1] [1 3/4] [11 1/4] [1 13/4]])
+          (runs [[4] [2 -3] [-1 -2] [0] [3 5] [1] [1 2] [-1 1 -1] [5 0]])]
+        reprise 
+          [(repeats [[15 1/4] [1 10/4] [1 3/4] [7 1/4] [1 1/2] [2 1/4] [1 5/4] [11 1/4] [1 6/4]])
+          (runs [[-1 4] [6 -3] [3 1 7] [0 -1 0] [2 -2 0 -1] [1 -2]])]
+        finale 
+          [(repeats [[5 1/2] [1 6/4] [1 1/2] [2 1/4] [1 1] [3 1/4] [1 1/2] [1 1/4] [1 1]])
+          (runs [[4 1] [6] [0 -2] [1 -2 -1] [4 3 4]])]
+        [durations pitches] (map concat call response development reprise finale)
         timings (map (partial + 1/2) (accumulate durations))]
     (map vector timings pitches)))
 
 (def bass
-  (let [triples (partial mapcat #(repeat 3 %))]
-    (map vector
-       (accumulate (repeats [[21 1] [13 1/4]]))
-       (concat (triples (runs [[-7 -10] [-12 -10]])) (run [5 -7])))))
+  (let [triples (partial mapcat #(repeat 3 %))
+        crotchets-a
+          [(repeats [[8 1] [1 10/4]])
+          (triples (runs [[-7 -9]]))]
+        twiddle 
+          [(repeats [[2 1/4] [2 1/2]])
+          (runs [[-11 -13] [-11]])]
+        crotchets-b
+          [(repeats [[9 1]])
+          (triples (runs [[-12 -10]]))]
+        elaboration
+          [(repeats [[1 3/4] [9 1/4] [1 1/2] [1 1] [2 1/4] [3 1/2] [1 1]])
+          (runs [[-7] [-12] [-9 -11] [-9 -13 -12] [-14] [-7 -8 -7] [-9 -8] [-5]])]
+        busy 
+          [(repeats [[2 1/4] [2 1/2] [4 1/4] [4 1/2] [4 1/4] [3 1/2] [1 7/4]])
+          (runs [[-12 -10] [-12] [-9 -7 -9 -8 -11 -9 -11] [-9] [-11] [-13]])]
+        buildup 
+          [(repeats [[7 1/4] [1 1/2] [1 3/4] [23 1/4] [2 1/2] [1 3/4]])
+          (runs [[-10 -6 -8 -7] [-14] [-9 -6] [-8 -10] [-5] [-12] [-9 -11] [-13] [-10] [-7 -6] [-9] [-11] [-13] [-10 -9 -11 -10] [-13] [-17]])]
+        [durations pitches] (map concat crotchets-a twiddle crotchets-b elaboration busy buildup)]
+    (map vector (accumulate durations) pitches)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Accidentals                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def accidentals {[15/4 3] sharp, [30/4 3] sharp, [32/4 -9] sharp, [56/4 -1] flat})
+(def accidentals 
+  (let [leader
+         {[(+ 3 3/4) 3] sharp, [(+ 7 1/2) 3] sharp, [14 -1] flat, [(+ 25 1/4) 3] sharp,
+          [(+ 30 1/2) 3] sharp, [40 3] sharp, [(+ 46 3/4) 3] sharp}
+        follower
+         {[(+ 27 3/4) -4] sharp, [30 -4] sharp, [(+ 34 1/2) -4] sharp, [(+ 38 1/2) -4] sharp,
+          [(+ 40 1/4) -4] sharp, [44 -4] sharp, [(+ 47 1/4) -4] sharp}
+        bass
+         {[8 -9] sharp, [(+ 28 3/4) -11] sharp, [33 -11] sharp, [43 -11] sharp,
+          [(+ 45 3/4) -11] sharp}]
+    (merge bass-accidentals leader-accidentals follower-accidentals)))
 
 (defn refine [scale targets [timing pitch :as note]]
   (if-let [refinement (targets note)] 
@@ -168,16 +206,16 @@
 (def crab (skew timing -))
 (def table (comp mirror crab))
 
-(def canone-alla-quarta (canon (comp (interval -3) mirror (simple 3))))
+(defn truncate [n] (partial drop-last n))
+
+(def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 6) (simple 3))))
 
 (defn canon# [start tempo scale]
   (let [in-time (comp (shift [start 0]) (skew timing tempo))
-        ;in-key (with-accidentals scale accidentals)
-        in-key (skew pitch scale)
+        in-key (with-accidentals scale accidentals)
         play-now# (comp play# in-time in-key)]
 
-    (-> bass play-now#)
-    (-> melody canone-alla-quarta play-now#)))
+   (-> bass play-now#)
+   (-> melody canone-alla-quarta play-now#)))
 
 ;(canon# (now) (bpm 90) (comp G major))
-;(canon# (now) (bpm 80) (comp G minor))
