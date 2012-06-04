@@ -11,15 +11,7 @@
     [goldberg.canon]
     [goldberg.melody]
     [goldberg.instrument]
-    [overtone.live :exclude [scale bpm run pitch shift sharp flat]]))
-
-(defn even-melody# [pitches]
-  (let [times (reductions + (cons (now) (repeat 400)))
-        notes (map vector times pitches (repeat 150))]
-    (play-on# (comp harps# midi->hz) notes)))
-
-;(harps# (midi->hz 55))
-;(even-melody# (range 60 73))
+    [overtone.live :only [midi->hz]]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Abstractions                                 ;;
@@ -33,6 +25,7 @@
       (concat up-or-down (run tos)))
     [from]))
 
+;(even-melody# (range 60 73))
 ;(even-melody# (map (comp G major)
 ;            (run [0 4 -1 0 1 0])
 ;            ))
