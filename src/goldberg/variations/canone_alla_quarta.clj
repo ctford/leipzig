@@ -11,7 +11,7 @@
     [goldberg.canon]
     [goldberg.melody]
     [goldberg.instrument]
-    [overtone.live :only [midi->hz]]))
+    [overtone.live :only [midi->hz now stop]]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Abstractions                                 ;;
@@ -34,23 +34,32 @@
 (def repeats (partial mapcat #(apply repeat %)))
 (def runs (partial mapcat run))
 
+(defn follow [first second]
+  (let [[timing _ duration] (last first)
+        shifted ((shift [(+ duration timing) 0 0]) second)]
+    (concat first shifted))) 
+
+(defn insert [value n values] (concat (take n values) [value] (drop n values)))
+(defn subtract [n values] (concat (take n values) (drop (inc n) values)))
+(defn override [value n values] (concat (take n values) [value] (drop (inc n) values)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Melody                                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def melody 
   (let [theme
-          [(repeats [[2 1/4] [1 1/2] [14 1/4] [1 3/2]])
-          (runs [[0 -1 3 0] [4] [1 8]])]
+          [(override 1/2 2 (repeats [[17 1/4] [1 3/2]]))
+           (insert 4 9 (run [0 -1 3 0 8]))]
         response
-          [(repeats [[10 1/4] [1 1/2] [2 1/4] [1 9/4]])
-          (runs [[7 -1 0] [0 -3]])]
+          [(override 1/2 10 (repeats [[13 1/4] [1 9/4]]))
+           (insert 0 9 (run [7 -1 0 -3]))]
         development
           [(repeats [[1 1] [11 1/4] [1 1/2] [1 1] [1 3/4] [11 1/4] [1 13/4]])
-          (runs [[4] [2 -3] [-1 -2] [0] [3 5] [1] [1 2] [-1 1 -1] [5 0]])]
+          (subtract 1 (runs [[4 -3] [-1 -2] [0] [3 5] [1] [1 2] [-1 1 -1] [5 0]]))]
         interlude 
-          [(repeats [[15 1/4] [1 10/4]])
-          (runs [[-1 4] [6 -3]])]
+          [(insert 10/4 15 (repeat 15 1/4))
+          (subtract 6 (run [-1 6 -3]))]
         finale 
           [(repeats [[1 3/4] [7 1/4] [1 1/2] [2 1/4] [1 5/4] [11 1/4] [1 6/4] [5 1/2]
                      [1 6/4] [1 1/2] [2 1/4] [1 1] [3 1/4] [1 1/2] [1 1/4] [1 1]])
@@ -62,14 +71,14 @@
 (def bass
   (let [triples (partial mapcat #(repeat 3 %))
         crotchets-a
-          [(repeats [[8 1] [1 10/4]])
-          (triples (runs [[-7 -9]]))]
+          [(repeat 9 1)
+          (triples (run [-7 -9]))]
         twiddle 
-          [(repeats [[2 1/4] [2 1/2]])
-          (runs [[-11 -13] [-11]])]
+          [(repeats [[1 1/4] [1 5/4] [2 1/4] [2 1/2]])
+          (runs [[-10] [-17] [-11 -13] [-11]])]
         crotchets-b
-          [(repeats [[9 1]])
-          (triples (runs [[-12 -10]]))]
+          [(repeat 9 1)
+          (triples (run [-12 -10]))]
         elaboration
           [(repeats [[1 3/4] [9 1/4] [1 1/2] [1 1] [2 1/4] [3 1/2] [1 1]])
           (runs [[-7] [-12] [-9 -11] [-9 -13 -12] [-14] [-7 -8 -7] [-9 -8] [-5]])]
