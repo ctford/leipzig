@@ -30,8 +30,8 @@
     (* (line:kr 1 1 duration FREE)
        (pluck (* (white-noise) (env-gen (perc 0.001 5) :action FREE)) 1 1 (/ 1 freq) (* duration 2) 0.25))))
 
-(defn synth# [midi-note] (-> midi-note midi->hz sawish#))
-;(defn synth# [midi-note] (-> midi-note midi->hz harps#))
+;(defn synth# [midi-note] (-> midi-note midi->hz sawish#))
+(defn synth# [midi-note] (-> midi-note midi->hz harps#))
 (def play# (partial play-on# synth#))
 
 (defn even-melody# [pitches]
