@@ -17,9 +17,9 @@
     [overtone.inst.sampled-piano :only [sampled-piano] :rename {sampled-piano piano#}]))
 
 (defn play# [notes] 
-  (let [play-at# (fn [[ms midi]]
-                   (let [id (at ms (piano# midi))]
-                     (at (+ ms 150) (ctl id :gate 0))))]
+  (let [play-at# (fn [[timing pitch duration]]
+                   (let [id (at timing (piano# pitch))]
+                     (at (+ timing duration) (ctl id :gate 0))))]
     (->> notes (map play-at#) dorun)))
 
 (defn even-melody# [pitches]
@@ -130,7 +130,7 @@
           (runs [[3 1 7] [0 -1 0] [2 -2 0 -1] [1 -2] [4 1] [6] [0 -2] [1 -2 -1] [4 3 4]])]
         [durations pitches] (map concat theme response development interlude finale)
         timings (map (partial + 1/2) (accumulate durations))]
-    (map vector timings pitches)))
+    (map vector timings pitches durations)))
 
 (def bass
   (let [triples (partial mapcat #(repeat 3 %))
@@ -154,7 +154,7 @@
           (runs [[-10 -6 -8 -7] [-14] [-9 -6] [-8 -10] [-5] [-12] [-9 -11] [-13]
                  [-10] [-7 -6] [-9] [-11] [-13] [-10 -9 -11 -10] [-13] [-17]])]
         [durations pitches] (map concat crotchets-a twiddle crotchets-b elaboration busy finale)]
-    (map vector (accumulate durations) pitches)))
+    (map vector (accumulate durations) pitches durations)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Accidentals                                  ;;
@@ -172,10 +172,10 @@
           [(+ 45 3/4) -11] sharp}]
     (merge bass-accidentals leader-accidentals follower-accidentals)))
 
-(defn refine [scale targets [timing pitch :as note]]
+(defn refine [scale targets [timing pitch duration :as note]]
   (if-let [refinement (targets note)] 
-    [timing (-> pitch scale refinement)]
-    [timing (-> pitch scale)]))
+    [timing (-> pitch scale refinement) duration]
+    [timing (-> pitch scale) duration]))
 
 (defn with-accidentals [scale accidentals] (partial map (partial refine scale accidentals)))
 
@@ -185,12 +185,12 @@
 
 (defn canon [f] (fn [notes] (concat notes (f notes))))
 
-(defs [timing pitch] [0 1])
+(defs [timing pitch duration] [0 1 2])
 (defn skew [k f] (fn [points] (map #(update-in % [k] f) points))) 
 (defn shift [point] (fn [points] (map #(->> % (map + point) vec) points)))
 
-(defn simple [wait] (shift [wait 0]))
-(defn interval [interval] (shift [0 interval]))
+(defn simple [wait] (shift [wait 0 0]))
+(defn interval [interval] (shift [0 interval 0]))
 (def mirror (skew pitch -))
 (def crab (skew timing -))
 (def table (comp mirror crab))
@@ -200,7 +200,7 @@
 (def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 6) (simple 3))))
 
 (defn canon# [start tempo scale]
-  (let [in-time (comp (shift [start 0]) (skew timing tempo))
+  (let [in-time (comp (shift [start 0 0]) (skew timing tempo) (skew duration tempo))
         in-key (with-accidentals scale accidentals)
         play-now# (comp play# in-time in-key)]
 
