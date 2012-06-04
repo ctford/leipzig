@@ -1,10 +1,7 @@
-(ns goldberg.canon)
+(ns goldberg.canon
+  (:use [goldberg.melody]))
 
 (defn canon [f] (fn [notes] (concat notes (f notes))))
-
-(def #^{:private true} timing 0)
-(def #^{:private true} pitch 1)
-(def #^{:private true} duration 2)
 
 (defn skew [k f] (fn [points] (map #(update-in % [k] f) points)))
 (defn shift [point] (fn [points] (map #(->> % (map + point) vec) points)))

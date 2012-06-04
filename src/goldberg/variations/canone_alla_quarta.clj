@@ -15,6 +15,7 @@
   (:use
     [goldberg.scale]
     [goldberg.canon]
+    [goldberg.melody]
     [overtone.live :only [at now ctl stop]]
     [overtone.inst.sampled-piano :only [sampled-piano] :rename {sampled-piano piano#}]))
 
@@ -35,9 +36,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Abstractions                                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn bpm [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
-;((bpm 120) 3)
 
 (defn run [[from & tos]]
   (if-let [to (first tos)]
@@ -135,7 +133,7 @@
 (def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 6) (simple 3))))
 
 (defn canon# [start tempo scale]
-  (let [in-time (comp (shift [start 0 0]) (skew 0 tempo) (skew 2 tempo))
+  (let [in-time (comp (shift [start 0 0]) (skew timing tempo) (skew duration tempo))
         in-key (with-accidentals scale accidentals)
         play-now# (comp play# in-time in-key)]
 
