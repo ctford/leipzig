@@ -18,8 +18,8 @@
 
 (defn play# [notes] 
   (let [play-at# (fn [[ms midi]]
-                   (at ms (piano# midi))
-                   (at (+ ms 150) (ctl piano# :gate 0)))]
+                   (let [id (at ms (piano# midi))]
+                     (at (+ ms 150) (ctl id :gate 0))))]
     (->> notes (map play-at#) dorun)))
 
 (defn even-melody# [pitches]
