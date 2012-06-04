@@ -12,12 +12,6 @@
     [goldberg.melody]
     [overtone.live :exclude [scale bpm run pitch shift sharp flat]]))
 
-(defn play-on# [instrument# notes] 
-  (let [play-at# (fn [[timing pitch duration]]
-                   (let [id (at timing (instrument# pitch))]
-                     (at (+ timing duration) (ctl id :gate 0))))]
-    (->> notes (map play-at#) dorun)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Synth                                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
