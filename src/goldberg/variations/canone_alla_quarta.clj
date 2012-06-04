@@ -11,7 +11,7 @@
     [goldberg.canon]
     [goldberg.melody]
     [goldberg.instrument]
-    [overtone.live :exclude [scale bpm run pitch shift sharp flat]]))
+    [overtone.live :only [midi->hz]]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Abstractions                                 ;;
