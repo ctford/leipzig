@@ -10,23 +10,9 @@
     [goldberg.scale]
     [goldberg.canon]
     [goldberg.melody]
-    [overtone.live :exclude [scale bpm run pitch shift sharp flat]]))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Synth                                        ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(definst sawish# [freq 440 depth 10]
-  (let [envelope (env-gen (perc 0.1 0.9) :action FREE)]
-    (*
-      envelope
-      (sin-osc freq)
-      (saw (+ freq (* depth (lf-saw:kr 0.1 0.2)))))))
-
-(definst harps# [freq 440]
-  (let [duration 1]
-    (* (line:kr 1 1 duration FREE)
-       (pluck (* (white-noise) (env-gen (perc 0.001 5) :action FREE)) 1 1 (/ 1 freq) (* duration 2) 0.25))))
+    [goldberg.instrument]
+    [overtone.live :exclude [scale bpm run pitch shift sharp flat]]
+    [overtone.inst.sampled-piano :only [sampled-piano] :rename {sampled-piano piano#}]))
 
 (defn even-melody# [pitches]
   (let [times (reductions + (cons (now) (repeat 400)))
@@ -136,5 +122,6 @@
    (-> bass play-now#)
    (-> melody canone-alla-quarta play-now#)))
 
-;(canon# (now) (bpm 90) (comp G major) (comp harps# midi->hz))
+;(canon# (now) (bpm 100) (comp B major) (comp harps# midi->hz))
 ;(canon# (now) (bpm 80) (comp E flat major) (comp sawish# midi->hz))
+;(canon# (now) (bpm 90) (comp G major) piano#)
