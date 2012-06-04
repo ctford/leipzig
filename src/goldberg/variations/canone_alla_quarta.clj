@@ -115,7 +115,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def melody 
-  (let [call
+  (let [theme
           [(repeats [[2 1/4] [1 1/2] [14 1/4] [1 3/2]])
           (runs [[0 -1 3 0] [4] [1 8]])]
         response
@@ -124,13 +124,14 @@
         development
           [(repeats [[1 1] [11 1/4] [1 1/2] [1 1] [1 3/4] [11 1/4] [1 13/4]])
           (runs [[4] [2 -3] [-1 -2] [0] [3 5] [1] [1 2] [-1 1 -1] [5 0]])]
-        reprise 
-          [(repeats [[15 1/4] [1 10/4] [1 3/4] [7 1/4] [1 1/2] [2 1/4] [1 5/4] [11 1/4] [1 6/4]])
-          (runs [[-1 4] [6 -3] [3 1 7] [0 -1 0] [2 -2 0 -1] [1 -2]])]
+        interlude 
+          [(repeats [[15 1/4] [1 10/4]])
+          (runs [[-1 4] [6 -3]])]
         finale 
-          [(repeats [[5 1/2] [1 6/4] [1 1/2] [2 1/4] [1 1] [3 1/4] [1 1/2] [1 1/4] [1 1]])
-          (runs [[4 1] [6] [0 -2] [1 -2 -1] [4 3 4]])]
-        [durations pitches] (map concat call response development reprise finale)
+          [(repeats [[1 3/4] [7 1/4] [1 1/2] [2 1/4] [1 5/4] [11 1/4] [1 6/4] [5 1/2]
+                     [1 6/4] [1 1/2] [2 1/4] [1 1] [3 1/4] [1 1/2] [1 1/4] [1 1]])
+          (runs [[3 1 7] [0 -1 0] [2 -2 0 -1] [1 -2] [4 1] [6] [0 -2] [1 -2 -1] [4 3 4]])]
+        [durations pitches] (map concat theme response development interlude finale)
         timings (map (partial + 1/2) (accumulate durations))]
     (map vector timings pitches)))
 
@@ -153,7 +154,8 @@
           (runs [[-12 -10] [-12] [-9 -7 -9 -8 -11 -9 -11] [-9] [-11] [-13]])]
         buildup 
           [(repeats [[7 1/4] [1 1/2] [1 3/4] [23 1/4] [2 1/2] [1 3/4]])
-          (runs [[-10 -6 -8 -7] [-14] [-9 -6] [-8 -10] [-5] [-12] [-9 -11] [-13] [-10] [-7 -6] [-9] [-11] [-13] [-10 -9 -11 -10] [-13] [-17]])]
+          (runs [[-10 -6 -8 -7] [-14] [-9 -6] [-8 -10] [-5] [-12] [-9 -11] [-13]
+                 [-10] [-7 -6] [-9] [-11] [-13] [-10 -9 -11 -10] [-13] [-17]])]
         [durations pitches] (map concat crotchets-a twiddle crotchets-b elaboration busy buildup)]
     (map vector (accumulate durations) pitches)))
 
