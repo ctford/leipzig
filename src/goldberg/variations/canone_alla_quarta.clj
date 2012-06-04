@@ -207,4 +207,4 @@
    (-> bass play-now#)
    (-> melody canone-alla-quarta play-now#)))
 
-(canon# (now) (bpm 90) (comp G major))
+;(canon# (now) (bpm 90) (comp G major))
