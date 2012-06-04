@@ -64,9 +64,12 @@
         response
           [(=> (repeat 13 1/4) (plus 9/4 13) (push 1/2 10))
            (=> (run [7 -1 0 -3]) (plus 0 9))]
+        dip
+          [(concat [1] (repeat 11 1/4))
+          (=> (runs [[4 -3] [-1 -2] [0] [3 5]]) (minus 1))]
         development
-          [(concat [1] (repeat 11 1/4) [1/2 1 3/4] (repeat 11 1/4) [13/4])
-          (=> (runs [[4 -3] [-1 -2] [0] [3 5] [1] [1 2] [-1 1 -1] [5 0]]) (minus 1))]
+          [(concat [1/2 1 3/4] (repeat 11 1/4) [13/4])
+          (=> (runs [[1] [1 2] [-1 1 -1] [5 0]]))]
         interlude 
           [(=> (repeat 15 1/4) (plus 10/4 15))
           (=> (run [-1 6 -3]) (minus 6))]
@@ -74,7 +77,7 @@
           [(repeats [[1 3/4] [7 1/4] [1 1/2] [2 1/4] [1 5/4] [11 1/4] [1 6/4] [5 1/2]
                      [1 6/4] [1 1/2] [2 1/4] [1 1] [3 1/4] [1 1/2] [1 1/4] [1 1]])
           (runs [[3 1 7] [0 -1 0] [2 -2 0 -1] [1 -2] [4 1] [6] [0 -2] [1 -2 -1] [4 3 4]])]
-        [durations pitches] (map concat theme response development interlude finale)
+        [durations pitches] (map concat theme response dip development interlude finale)
         timings (map (partial + 1/2) (accumulate durations))]
     (map vector timings pitches durations)))
 
