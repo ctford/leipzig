@@ -36,17 +36,10 @@
 
 (defn sum-n [series n] (reduce + (take n series)))
 
-(defn negatable-scale [intervals]
+(defn scale [intervals]
   #(if-not (neg? %)
      (sum-n (cycle intervals) %)
      ((comp - (scale (reverse intervals)) -) %)))
-
-(defn scale [intervals]
-  #(if-not (integer? %)
-    (if (neg? %)
-       (dec ((negatable-scale intervals) (int %)))
-       (inc ((negatable-scale intervals) (int %))))
-    ((negatable-scale intervals) %)))
 
 (def major (scale [2 2 1 2 2 2 1]))
 (def blues (scale [3 2 1 1 3 2]))
@@ -118,13 +111,6 @@
 (def repeats (partial mapcat #(apply repeat %)))
 (def runs (partial mapcat run))
 
-(defn accidentals [f [k & ks] integers]
-  (if k
-    (sharpen ks (update-in (vec integers) [k] f))
-    integers))
-(def sharps (partial accidentals #(+ % 1/2)))
-(def flats (partial accidentals #(- % 1/2)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Melody                                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -132,19 +118,19 @@
 (def melody 
   (let [call
           [(repeats [[2 1/4] [1 1/2] [14 1/4] [1 3/2]])
-          (sharps [12] (runs [[0 -1 3 0] [4] [1 8]]))]
+          (runs [[0 -1 3 0] [4] [1 8]])]
         response
           [(repeats [[10 1/4] [1 1/2] [2 1/4] [1 9/4]])
-          (sharps [4] (runs [[7 -1 0] [0 -3]]))]
+          (runs [[7 -1 0] [0 -3]])]
         development
           [(repeats [[1 1] [11 1/4] [1 1/2] [1 1] [1 3/4] [11 1/4] [1 13/4]])
-          (flats [4] (runs [[4] [2 -3] [-1 -2] [0] [3 5] [1] [1 2] [-1 1 -1] [5 0]]))]
+          (runs [[4] [2 -3] [-1 -2] [0] [3 5] [1] [1 2] [-1 1 -1] [5 0]])]
         reprise 
           [(repeats [[15 1/4] [1 10/4] [1 3/4] [7 1/4] [1 1/2] [2 1/4] [1 5/4] [11 1/4] [1 6/4]])
-          (sharps [4 16] (runs [[-1 4] [6 -3] [3 1 7] [0 -1 0] [2 -2 0 -1] [1 -2]]))]
+          (runs [[-1 4] [6 -3] [3 1 7] [0 -1 0] [2 -2 0 -1] [1 -2]])]
         finale 
           [(repeats [[5 1/2] [1 6/4] [1 1/2] [2 1/4] [1 1] [3 1/4] [1 1/2] [1 1/4] [1 1]])
-          (sharps [1 14] (runs [[4 1] [6] [0 -2] [1 -2 -1] [4 3 4]]))]
+          (runs [[4 1] [6] [0 -2] [1 -2 -1] [4 3 4]])]
         [durations pitches] (map concat call response development reprise finale)
         timings (map (partial + 1/2) (accumulate durations))]
     (map vector timings pitches)))
@@ -153,7 +139,7 @@
   (let [triples (partial mapcat #(repeat 3 %))
         crotchets-a
           [(repeats [[8 1] [1 10/4]])
-          (sharps [8] (triples (runs [[-7 -9]])))]
+          (triples (runs [[-7 -9]]))]
         twiddle 
           [(repeats [[2 1/4] [2 1/2]])
           (runs [[-11 -13] [-11]])]
@@ -180,7 +166,10 @@
 ;; Accidentals                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def accidentals {[15/4 3] sharp, [30/4 3] sharp, [32/4 -9] sharp, [56/4 -1] flat})
+(def bass-accidentals {[32/4 -9] sharp, [(+ 28 3/4) -11] sharp, [33 -11] sharp, [43 -11] sharp, [(+ 45 3/4) -11] sharp})
+(def leader-accidentals {[15/4 3] sharp, [30/4 3] sharp, [14 -1] flat, [(+ 25 1/4) 3] sharp, [61/2 3] sharp, [40 3] sharp, [(+ 46 3/4) 3] sharp})
+(def follower-accidentals {[(+ 27 3/4) -4] sharp, [30 -4] sharp, [(+ 34 1/2) -4] sharp, [(+ 38 1/2) -4] sharp, [(+ 40 1/4) -4] sharp, [43 -4] sharp, [(+ 47 1/4) -4] sharp})
+(def accidentals (merge bass-accidentals leader-accidentals follower-accidentals)) 
 
 (defn refine [scale targets [timing pitch :as note]]
   (if-let [refinement (targets note)] 
@@ -211,12 +200,11 @@
 
 (defn canon# [start tempo scale]
   (let [in-time (comp (shift [start 0]) (skew timing tempo))
-        ;in-key (with-accidentals scale accidentals)
-        in-key (skew pitch scale)
+        in-key (with-accidentals scale accidentals)
         play-now# (comp play# in-time in-key)]
 
    (-> bass play-now#)
    (-> melody canone-alla-quarta play-now#)))
 
-;(canon# (now) (bpm 90) (comp G major))
+(canon# (now) (bpm 90) (comp G major))
 ;(canon# (now) (bpm 80) (comp G minor))
