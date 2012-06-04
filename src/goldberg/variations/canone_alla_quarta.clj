@@ -45,11 +45,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn sum-n [series n] (reduce + (take n series)))
+(defn => [value & fs] (reduce #(%2 %1) value fs))
 
 (defn scale [intervals]
   #(if-not (neg? %)
      (sum-n (cycle intervals) %)
-     ((comp - (scale (reverse intervals)) -) %)))
+     (=> % - (scale (reverse intervals)) -)))
 
 (def major (scale [2 2 1 2 2 2 1]))
 (def blues (scale [3 2 1 1 3 2]))
@@ -80,15 +81,11 @@
 ;; Modes                                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn mode [n]
-  (comp
-    #(- % (major n))
-    major 
-    (start-from n)))
+(defn mode [scale n] (comp #(- % (scale n)) scale (start-from n)))
 
 (defs
   [ionian dorian phrygian lydian mixolydian aeolian locrian]
-  (map mode (range)))
+  (map (partial mode major) (range)))
 
 (def minor aeolian)
 
