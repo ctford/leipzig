@@ -155,11 +155,7 @@
         buildup 
           [(repeats [[7 1/4] [1 1/2] [1 3/4] [23 1/4] [2 1/2] [1 3/4]])
           (runs [[-10 -6 -8 -7] [-14] [-9 -6] [-8 -10] [-5] [-12] [-9 -11] [-13] [-10] [-7 -6] [-9] [-11] [-13] [-10 -9 -11 -10] [-13] [-17]])]
-        end
-          [[ 1/4 0  0  1/4 1/4  0   0  1/4 1/4 0  0  1]
-           [-1   0 -3 -7  -2   -6  -3 -1   1   0 -3 -7]]
-        [durations pitches] (map concat crotchets-a twiddle crotchets-b
-                                        elaboration busy buildup end)]
+        [durations pitches] (map concat crotchets-a twiddle crotchets-b elaboration busy buildup)]
     (map vector (accumulate durations) pitches)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -206,5 +202,5 @@
    (-> bass play-now#)
    (-> melody canone-alla-quarta play-now#)))
 
-(canon# (now) (bpm 90) (comp G major))
+;(canon# (now) (bpm 90) (comp G major))
 ;(canon# (now) (bpm 80) (comp G minor))
