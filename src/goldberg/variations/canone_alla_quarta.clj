@@ -72,13 +72,13 @@
   (let [triples (partial mapcat #(repeat 3 %))
         crotchets-a
           [(repeat 9 1)
-          (triples (runs [[-7 -9]]))]
+          (triples (run [-7 -9]))]
         twiddle 
           [(repeats [[1 1/4] [1 5/4] [2 1/4] [2 1/2]])
           (runs [[-10] [-17] [-11 -13] [-11]])]
         crotchets-b
           [(repeat 9 1)
-          (triples (runs [[-12 -10]]))]
+          (triples (run [-12 -10]))]
         elaboration
           [(repeats [[1 3/4] [9 1/4] [1 1/2] [1 1] [2 1/4] [3 1/2] [1 1]])
           (runs [[-7] [-12] [-9 -11] [-9 -13 -12] [-14] [-7 -8 -7] [-9 -8] [-5]])]
