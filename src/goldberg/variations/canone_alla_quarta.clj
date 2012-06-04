@@ -162,9 +162,9 @@
 ;; Accidentals                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def bass-accidentals {[32/4 -9] sharp, [(+ 28 3/4) -11] sharp, [33 -11] sharp, [43 -11] sharp, [(+ 45 3/4) -11] sharp})
-(def leader-accidentals {[15/4 3] sharp, [30/4 3] sharp, [14 -1] flat, [(+ 25 1/4) 3] sharp, [61/2 3] sharp, [40 3] sharp, [(+ 46 3/4) 3] sharp})
-(def follower-accidentals {[(+ 27 3/4) -4] sharp, [30 -4] sharp, [(+ 34 1/2) -4] sharp, [(+ 38 1/2) -4] sharp, [(+ 40 1/4) -4] sharp, [43 -4] sharp, [(+ 47 1/4) -4] sharp})
+(def leader-accidentals {[(+ 3 3/4) 3] sharp, [(+ 7 1/2) 3] sharp, [14 -1] flat, [(+ 25 1/4) 3] sharp, [(+ 30 1/2) 3] sharp, [40 3] sharp, [(+ 46 3/4) 3] sharp})
+(def follower-accidentals {[(+ 27 3/4) -4] sharp, [30 -4] sharp, [(+ 34 1/2) -4] sharp, [(+ 38 1/2) -4] sharp, [(+ 40 1/4) -4] sharp, [44 -4] sharp, [(+ 47 1/4) -4] sharp})
+(def bass-accidentals {[8 -9] sharp, [(+ 28 3/4) -11] sharp, [33 -11] sharp, [43 -11] sharp, [(+ 45 3/4) -11] sharp})
 (def accidentals (merge bass-accidentals leader-accidentals follower-accidentals)) 
 
 (defn refine [scale targets [timing pitch :as note]]
