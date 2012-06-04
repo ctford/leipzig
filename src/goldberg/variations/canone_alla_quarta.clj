@@ -118,13 +118,6 @@
           [(+ 45 3/4) -11] sharp}]
     (merge bass leader follower)))
 
-(defn refine [scale targets [timing pitch duration :as note]]
-  (if-let [refinement (targets note)] 
-    [timing (-> pitch scale refinement) duration]
-    [timing (-> pitch scale) duration]))
-
-(defn with-accidentals [scale accidentals] (partial map (partial refine scale accidentals)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

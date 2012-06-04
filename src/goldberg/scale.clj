@@ -32,3 +32,10 @@
   (map (partial mode major) (range)))
 
 (def minor aeolian)
+
+(defn- refine [scale targets [timing pitch duration :as note]]
+    (if-let [refinement (targets note)] 
+          [timing (-> pitch scale refinement) duration]
+          [timing (-> pitch scale) duration]))
+
+(defn with-accidentals [scale accidentals] (partial map (partial refine scale accidentals)))
