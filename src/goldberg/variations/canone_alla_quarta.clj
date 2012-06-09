@@ -85,7 +85,7 @@
           (runs [[6] [0 -2] [1 -2 -1] [4 3 4]])]
         [durations pitches] (map concat theme response dip development interlude buildup finale)
         timings (map (partial + 1/2) (accumulate durations))]
-    (rollup pitches durations)))
+    (map vector timings pitches durations)))
 
 (def melody2
   (let [theme
@@ -108,7 +108,7 @@
            (runs [[-7] [-5 -12] [-10] [-7] [-5] [-3] [-7 -6] [-8 -7]])]
         [durations pitches] (map concat theme response complicated then blah finale)
         timings (map (partial + 1/2) (accumulate durations))]
-    (rollup pitches durations)))
+    (map vector timings pitches durations)))
 
 (def bass1
   (let [crotchets-a
@@ -133,6 +133,25 @@
         [durations pitches] (map concat crotchets-a twiddle crotchets-b elaboration busy finale)]
     (rollup pitches durations)))
 
+(def bass2
+  (let [intro
+          [(repeats [[3 1] [5 1/2] [2 1/4] [1 1/2] [1 1] [4 1/2] [1 7/2]])
+          (runs [[-10] [-10 -12 -11 -14 -11 -12 -11] [-9] [-13] [-11 -12]])]
+        development 
+          [(repeats [[5 1/2] [24 1/4]])
+          (runs [[-9 -3 -5 -4 -7 -6] [-8 -4 -6 -5] [-8] [-10] [-8] [-12] [-10 -12]])]
+        up-n-down 
+          [(repeats [[8 1/4] [3 1/2] [1 3/4] [7 1/4] [1 1/2] [1 3/4] [7 1/4] [1 1/2] [1 3/4]])
+          (runs [[-9] [-11 -14] [-12] [-9 -10 -9 -11] [-4] [-9 -11 -10 -13 -12] [-5] [-10 -12 -11 -14 -13] [-6]])]
+        down 
+          [(repeats [[27 1/4] [1 5/4] [3 1/4] [1 3/2]])
+          (runs [[-5 -7 -6 -9 -8 -11 -10 -13 -12 -15 -14] [-6 -8 -7 -10 -9 -11] [-9 -10]])]
+        finale 
+          [(repeats [[1 2] [3 1/2] [1 5/4] [3 1/4] [1 1]])
+          (runs [[-13] [-9] [-11 -10] [-14] [-12] [-10] [-8 -7]])]
+        [durations pitches] (map concat intro development up-n-down down finale)]
+    (rollup pitches durations)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Accidentals                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -154,7 +173,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn truncate [n] (partial drop-last n))
-(def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 6) (simple 3))))
+;(def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 6) (simple 3))))
+(def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 4) (simple 3))))
 
 (defn canon# [start tempo scale instrument#]
   (let [in-time (comp (shift [start 0 0]) (skew timing tempo) (skew duration tempo))
@@ -162,10 +182,10 @@
         in-key (skew pitch scale) 
         play-now# (comp (partial play-on# instrument#) in-time in-key)]
 
-  ; (-> bass1 play-now#)
-   ;(-> melody2 canone-alla-quarta play-now#)))
-   (-> melody2 play-now#)))
+   (-> bass2 play-now#)
+   (-> melody2 canone-alla-quarta play-now#)))
+   ;(-> melody2 play-now#)))
 
 ;(canon# (now) (bpm 100) (comp B major) (comp harps# midi->hz))
 ;(canon# (now) (bpm 80) (comp E flat major) (comp sawish# midi->hz))
-(canon# (now) (bpm 90) (comp G major) piano#)
+;(canon# (now) (bpm 90) (comp G major) piano#)
