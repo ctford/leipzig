@@ -57,7 +57,7 @@
 ;; Melody                                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def melody 
+(def melody1 
   (let [theme
           [(=> (repeat 17 1/4) (push 1/2 2) (plus 3/2 17))
            (=> (run [0 -1 3 0 8]) (plus 4 9))]
@@ -83,9 +83,13 @@
         timings (map (partial + 1/2) (accumulate durations))]
     (map vector timings pitches durations)))
 
-(def bass
-  (let [triples (partial mapcat #(repeat 3 %))
-        crotchets-a
+(def triples (partial mapcat #(repeat 3 %)))
+(defn rollup [pitches durations]
+  (map vector (accumulate durations) pitches durations))
+
+
+(def bass1
+  (let [crotchets-a
           [(repeat 9 1)
           (=> (run [-7 -9]) triples)]
         twiddle 
@@ -105,13 +109,13 @@
           (runs [[-10 -6 -8 -7] [-14] [-9 -6] [-8 -10] [-5] [-12] [-9 -11] [-13]
                  [-10] [-7 -6] [-9] [-11] [-13] [-10 -9 -11 -10] [-13] [-17]])]
         [durations pitches] (map concat crotchets-a twiddle crotchets-b elaboration busy finale)]
-    (map vector (accumulate durations) pitches durations)))
+    (rollup pitches durations)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Accidentals                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def accidentals 
+(def accidentals1 
   (let [leader
          {[(+ 3 3/4) 3] sharp, [(+ 7 1/2) 3] sharp, [14 -1] flat, [(+ 25 1/4) 3] sharp,
           [(+ 30 1/2) 3] sharp, [40 3] sharp, [(+ 46 3/4) 3] sharp}
@@ -132,11 +136,11 @@
 
 (defn canon# [start tempo scale instrument#]
   (let [in-time (comp (shift [start 0 0]) (skew timing tempo) (skew duration tempo))
-        in-key (with-accidentals scale accidentals)
+        in-key (with-accidentals scale accidentals1)
         play-now# (comp (partial play-on# instrument#) in-time in-key)]
 
-   (-> bass play-now#)
-   (-> melody canone-alla-quarta play-now#)))
+   (-> bass1 play-now#)
+   (-> melody1 canone-alla-quarta play-now#)))
 
 ;(canon# (now) (bpm 100) (comp B major) (comp harps# midi->hz))
 ;(canon# (now) (bpm 80) (comp E flat major) (comp sawish# midi->hz))
