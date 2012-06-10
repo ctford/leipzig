@@ -197,17 +197,13 @@
         play-now# (comp (partial play-on# instrument#) in-time)
 
         in-key1 (with-accidentals scale accidentals1)
-        canone-alla-quarta1 (trim-follower 6 canone-alla-quarta)
-        rendered-melody1 (-> melody1 canone-alla-quarta1 in-key1)
-        rendered-bass1 (-> bass1 in-key1)
-        all-together1 (concat rendered-bass1 rendered-melody1)
+        canoned-melody1 (=> melody1 (trim-follower 6 canone-alla-quarta))
+        all-together1 (=> (concat bass1 canoned-melody1) in-key1)
         part1 (concat all-together1 ((after 48) all-together1))
 
         in-key2 (with-accidentals scale accidentals2)
-        canone-alla-quarta2 (trim-follower 4 canone-alla-quarta)
-        rendered-melody2 (-> melody2 canone-alla-quarta2 in-key2)
-        rendered-bass2 (-> bass2 in-key2)
-        all-together2 (concat rendered-bass2 rendered-melody2)
+        canoned-melody2 (=> melody2 (trim-follower 4 canone-alla-quarta))
+        all-together2 (=> (concat bass2 canoned-melody2) in-key2)
         part2 ((after 96) all-together2)]
 
    ;(-> bass play-now#)
