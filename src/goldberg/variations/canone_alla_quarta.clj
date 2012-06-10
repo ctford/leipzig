@@ -102,7 +102,7 @@
            (runs [[-1 -3] [-1 -4] [-4 -8 -7]])]
         blah 
           [(repeats [[11 1/4] [1 7/2] [3 1/2] [4 1/4] [4 1/2] [1 3/4] [1 1/4]])
-           (runs [[1 -2 -1 -4 -3 -6 -5] [0 -3] [-5 -4] [-6 -4 -8]])]
+           (runs [[1 -1 0 -3 -2 -5 -4] [0 -3] [-5 -4] [-6 -4 -8]])]
         finale 
           [(repeats [[1 5/4] [11 1/4] [1 1/2] [1 3/4] [1 1/4] [1 1/2] [1 1]])
            (runs [[-7] [-5 -12] [-10] [-7] [-5] [-3] [-7 -6] [-8 -7]])]
@@ -200,7 +200,7 @@
 
    (-> bass2 play-now#)
    (-> melody2 canone-alla-quarta play-now#)))
-   ;(-> melody2 play-now#)))
+;  (-> melody2 play-now#)))
 
 ;(canon# (now) (bpm 100) (comp B major) (comp harps# midi->hz))
 ;(canon# (now) (bpm 80) (comp E flat major) (comp sawish# midi->hz))
