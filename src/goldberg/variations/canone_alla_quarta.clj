@@ -202,6 +202,11 @@
 
    (-> part1 (concat ((after 48) part1)) (concat ((after 96) part2)) play-now#)))
 
+; Synths:
 ;(canon# (now) (bpm 100) (comp B major) (comp harps# midi->hz))
 ;(canon# (now) (bpm 80) (comp E flat major) (comp sawish# midi->hz))
-;(canon# (now) (bpm 90) (comp G major) piano#)
+
+; Piano:
+; Warning: Using the sampled-piano will download and cache 200MB of samples
+;(use 'overtone.inst.sampled-piano)
+;(canon# (now) (bpm 90) (comp G major) sampled-piano)
