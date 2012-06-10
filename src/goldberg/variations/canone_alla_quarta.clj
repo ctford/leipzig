@@ -36,9 +36,10 @@
 (def repeats (partial mapcat #(apply repeat %)))
 (def runs (partial mapcat run))
 
+(defn after [wait] (shift [wait 0 0])) 
 (defn follow [first second]
   (let [[timing _ duration] (last first)
-        shifted ((shift [(+ duration timing) 0 0]) second)]
+        shifted ((after (+ duration timing)) second)]
     (concat first shifted))) 
 
 (defn insert [value n values] (concat (take n values) [value] (drop n values)))
@@ -53,7 +54,6 @@
 (defn rollup [pitches durations]
   (map vector (accumulate durations) pitches durations))
 
-(defn after [wait] (shift [wait 0 0])) 
 ;(defn even-melody [duration] #(map vector (repeat duration) %))
 ;(def theme (=> (run [0 -1 3 0 8]) (even-melody 1/4)
 ;               (push [1/2 0] 2) (plus [1/4 4] 9) (push [3/2 8] 17)))
