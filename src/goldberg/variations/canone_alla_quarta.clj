@@ -53,6 +53,7 @@
 (defn rollup [pitches durations]
   (map vector (accumulate durations) pitches durations))
 
+(defn after [wait] (shift [wait 0 0])) 
 ;(defn even-melody [duration] #(map vector (repeat duration) %))
 ;(def theme (=> (run [0 -1 3 0 8]) (even-melody 1/4)
 ;               (push [1/2 0] 2) (plus [1/4 4] 9) (push [3/2 8] 17)))
@@ -194,13 +195,14 @@
 
 (defn canon# [start tempo scale instrument#]
   (let [in-time (comp (shift [start 0 0]) (skew timing tempo) (skew duration tempo))
-        in-key (with-accidentals scale accidentals2)
-        ;in-key (skew pitch scale) 
-        play-now# (comp (partial play-on# instrument#) in-time in-key)]
+        ;in-key (with-accidentals scale accidentals1)
+        in-key (skew pitch scale)
+        play-now# (comp (partial play-on# instrument#) in-time in-key)
+        bass (concat bass1 ((after 48) bass1) ((after 96) bass2))
+        melody (concat melody1 ((after 48) melody1) ((after 96) melody2))]
 
-   (-> bass2 play-now#)
-   (-> melody2 canone-alla-quarta play-now#)))
-;  (-> melody2 play-now#)))
+   (-> bass play-now#)
+   (-> melody canone-alla-quarta play-now#)))
 
 ;(canon# (now) (bpm 100) (comp B major) (comp harps# midi->hz))
 ;(canon# (now) (bpm 80) (comp E flat major) (comp sawish# midi->hz))
