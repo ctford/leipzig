@@ -183,8 +183,6 @@
           [(+ 37 3/4) -10] sharp,}]
   (merge leader follower bass)))
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -196,19 +194,13 @@
   (let [in-time (comp (shift [start 0 0]) (skew timing tempo) (skew duration tempo))
         play-now# (comp (partial play-on# instrument#) in-time)
 
-        in-key1 (with-accidentals scale accidentals1)
         canoned-melody1 (=> melody1 (trim-follower 6 canone-alla-quarta))
-        all-together1 (=> (concat bass1 canoned-melody1) in-key1)
-        part1 (concat all-together1 ((after 48) all-together1))
+        part1 (=> (concat bass1 canoned-melody1) (with-accidentals scale accidentals1))
 
-        in-key2 (with-accidentals scale accidentals2)
         canoned-melody2 (=> melody2 (trim-follower 4 canone-alla-quarta))
-        all-together2 (=> (concat bass2 canoned-melody2) in-key2)
-        part2 ((after 96) all-together2)]
+        part2 (=> (concat bass2 canoned-melody2) (with-accidentals scale accidentals2))]
 
-   ;(-> bass play-now#)
-   ;(-> melody canone-alla-quarta play-now#)))
-   (play-now# (concat part1 part2))))
+   (=> (concat part1 ((after 48) part1) ((after 96) part2)) play-now#)))
 
 ;(canon# (now) (bpm 100) (comp B major) (comp harps# midi->hz))
 ;(canon# (now) (bpm 80) (comp E flat major) (comp sawish# midi->hz))
