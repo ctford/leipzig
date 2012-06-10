@@ -200,7 +200,7 @@
         canoned-melody2 (=> melody2 (trim-follower 4 canone-alla-quarta))
         part2 (=> (concat bass2 canoned-melody2) (with-accidentals scale accidentals2))]
 
-   (=> (concat part1 ((after 48) part1) ((after 96) part2)) play-now#)))
+   (-> part1 (concat ((after 48) part1)) (concat (after 96) part2) play-now#)))
 
 ;(canon# (now) (bpm 100) (comp B major) (comp harps# midi->hz))
 ;(canon# (now) (bpm 80) (comp E flat major) (comp sawish# midi->hz))
