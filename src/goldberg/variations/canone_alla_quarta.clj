@@ -191,7 +191,7 @@
 (defn trim-follower [n canon] #(concat (canon (drop-last n %)) (take-last n %)))
 
 (defn canon# [start tempo scale instrument#]
-  (let [in-time (comp (shift [start 0 0]) (skew timing tempo) (skew duration tempo))
+  (let [in-time (comp (after start) (skew timing tempo) (skew duration tempo))
         play-now# (comp (partial play-on# instrument#) in-time)
 
         canonised1 (=> melody1 (trim-follower 6 canone-alla-quarta))
