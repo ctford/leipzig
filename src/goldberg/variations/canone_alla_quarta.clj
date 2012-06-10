@@ -209,4 +209,4 @@
 ; Piano:
 ; Warning: Using the sampled-piano will download and cache 200MB of samples
 ;(use 'overtone.inst.sampled-piano)
-;(canon# (now) (bpm 90) (comp G major) sampled-piano)
+(canon# (now) (bpm 140) (comp G major) sampled-piano)
