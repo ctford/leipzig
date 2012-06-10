@@ -194,11 +194,11 @@
   (let [in-time (comp (shift [start 0 0]) (skew timing tempo) (skew duration tempo))
         play-now# (comp (partial play-on# instrument#) in-time)
 
-        canoned-melody1 (=> melody1 (trim-follower 6 canone-alla-quarta))
-        part1 (=> (concat bass1 canoned-melody1) (with-accidentals scale accidentals1))
+        canonised1 (=> melody1 (trim-follower 6 canone-alla-quarta))
+        part1 (=> (concat bass1 canonised1) (with-accidentals scale accidentals1))
 
-        canoned-melody2 (=> melody2 (trim-follower 4 canone-alla-quarta))
-        part2 (=> (concat bass2 canoned-melody2) (with-accidentals scale accidentals2))]
+        canonised2 (=> melody2 (trim-follower 4 canone-alla-quarta))
+        part2 (=> (concat bass2 canonised2) (with-accidentals scale accidentals2))]
 
    (-> part1 (concat ((after 48) part1)) (concat (after 96) part2) play-now#)))
 
