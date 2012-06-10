@@ -99,7 +99,7 @@
           [(repeats [[1 7/2] [2 1/4] [3 1/2] [2 1/4] [1 2]])
            (runs [[-2 -3 -2] [-2] [-2 -4 -3]])]
         then 
-          [(repeats [[1 1] [11 1/4] [1 13/4]])
+          [(repeats [[1 5/4] [11 1/4] [1 13/4]])
            (runs [[-1 -3] [-1 -4] [-4 -8 -7]])]
         blah 
           [(repeats [[11 1/4] [1 7/2] [3 1/2] [4 1/4] [4 1/2] [1 3/4] [1 1/4]])
@@ -152,6 +152,7 @@
           (runs [[-13] [-9] [-11 -10] [-14] [-12] [-10] [-8 -7]])]
         [durations pitches] (map concat intro development up-n-down down finale)]
     (rollup pitches durations)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Accidentals                                  ;;
@@ -209,4 +210,4 @@
 ; Piano:
 ; Warning: Using the sampled-piano will download and cache 200MB of samples
 ;(use 'overtone.inst.sampled-piano)
-(canon# (now) (bpm 140) (comp G major) sampled-piano)
+;(canon# (now) (bpm 90) (comp G major) sampled-piano)
