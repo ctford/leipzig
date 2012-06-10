@@ -189,21 +189,22 @@
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn truncate [n] (partial drop-last n))
-(def canone-alla-quarta1 (canon (comp (interval -3) mirror (truncate 6) (simple 3))))
-(def canone-alla-quarta2 (canon (comp (interval -3) mirror (truncate 4) (simple 3))))
+(def canone-alla-quarta (canon (comp (interval -3) mirror (simple 3))))
+(defn trim-follower [n canon] #(concat (canon (drop-last n %)) (take-last n %)))
 
 (defn canon# [start tempo scale instrument#]
   (let [in-time (comp (shift [start 0 0]) (skew timing tempo) (skew duration tempo))
         play-now# (comp (partial play-on# instrument#) in-time)
 
         in-key1 (with-accidentals scale accidentals1)
+        canone-alla-quarta1 (trim-follower 6 canone-alla-quarta)
         rendered-melody1 (-> melody1 canone-alla-quarta1 in-key1)
         rendered-bass1 (-> bass1 in-key1)
         all-together1 (concat rendered-bass1 rendered-melody1)
         part1 (concat all-together1 ((after 48) all-together1))
 
         in-key2 (with-accidentals scale accidentals2)
+        canone-alla-quarta2 (trim-follower 4 canone-alla-quarta)
         rendered-melody2 (-> melody2 canone-alla-quarta2 in-key2)
         rendered-bass2 (-> bass2 in-key2)
         all-together2 (concat rendered-bass2 rendered-melody2)
