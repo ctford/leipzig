@@ -190,19 +190,28 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn truncate [n] (partial drop-last n))
-;(def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 6) (simple 3))))
-(def canone-alla-quarta (canon (comp (interval -3) mirror (truncate 4) (simple 3))))
+(def canone-alla-quarta1 (canon (comp (interval -3) mirror (truncate 6) (simple 3))))
+(def canone-alla-quarta2 (canon (comp (interval -3) mirror (truncate 4) (simple 3))))
 
 (defn canon# [start tempo scale instrument#]
   (let [in-time (comp (shift [start 0 0]) (skew timing tempo) (skew duration tempo))
-        ;in-key (with-accidentals scale accidentals1)
-        in-key (skew pitch scale)
-        play-now# (comp (partial play-on# instrument#) in-time in-key)
-        bass (concat bass1 ((after 48) bass1) ((after 96) bass2))
-        melody (concat melody1 ((after 48) melody1) ((after 96) melody2))]
+        play-now# (comp (partial play-on# instrument#) in-time)
 
-   (-> bass play-now#)
-   (-> melody canone-alla-quarta play-now#)))
+        in-key1 (with-accidentals scale accidentals1)
+        rendered-melody1 (-> melody1 canone-alla-quarta1 in-key1)
+        rendered-bass1 (-> bass1 in-key1)
+        all-together1 (concat rendered-bass1 rendered-melody1)
+        part1 (concat all-together1 ((after 48) all-together1))
+
+        in-key2 (with-accidentals scale accidentals2)
+        rendered-melody2 (-> melody2 canone-alla-quarta2 in-key2)
+        rendered-bass2 (-> bass2 in-key2)
+        all-together2 (concat rendered-bass2 rendered-melody2)
+        part2 ((after 96) all-together2)]
+
+   ;(-> bass play-now#)
+   ;(-> melody canone-alla-quarta play-now#)))
+   (play-now# (concat part1 part2))))
 
 ;(canon# (now) (bpm 100) (comp B major) (comp harps# midi->hz))
 ;(canon# (now) (bpm 80) (comp E flat major) (comp sawish# midi->hz))
