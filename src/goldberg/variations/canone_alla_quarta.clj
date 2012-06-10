@@ -168,6 +168,21 @@
           [(+ 45 3/4) -11] sharp}]
     (merge bass leader follower)))
 
+(def accidentals2 
+  (let [leader
+         {[(+ 5 1/2) -8] flat, [(+ 6 3/4) -8] flat, [(+ 7 1/4) -10] sharp, [9 -10] sharp, [(+ 9 3/4) -11] sharp
+          [(+ 15 3/4) -3] sharp, [(+ 17 1/2) -3] flat, [(+ 17 3/4) -4] sharp, [18 -3] sharp
+          [(+ 21 1/2) -3] sharp, [(+ 22 1/4) -3] flat, [(+ 22 1/2) -4] sharp, [(+ 22 3/4) -4] flat}
+        follower
+         {[(+ 9 1/2) 5] sharp, [(+ 11 1/2) -4] sharp, [(+ 11 3/4) -3] sharp, [(+ 25 1/2) 0] sharp,
+          [(+ 27 1/2) 0] sharp, [(+ 28 1/4) -1] flat}
+        bass 
+         {[(+ 19 1/2) -10] sharp, [(+ 11 1/2) -11] sharp, [(+ 20 1/2) -12] sharp, [(+ 22 3/4) -10] sharp
+          [(+ 23 1/2) -10] flat, [(+ 29 3/4) -14] sharp}]
+  (merge leader follower)))
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Canone alla quarta - Johann Sebastian Bach   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -178,8 +193,8 @@
 
 (defn canon# [start tempo scale instrument#]
   (let [in-time (comp (shift [start 0 0]) (skew timing tempo) (skew duration tempo))
-        ;in-key (with-accidentals scale accidentals1)
-        in-key (skew pitch scale) 
+        in-key (with-accidentals scale accidentals2)
+        ;in-key (skew pitch scale) 
         play-now# (comp (partial play-on# instrument#) in-time in-key)]
 
    (-> bass2 play-now#)
