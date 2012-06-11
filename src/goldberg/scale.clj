@@ -15,7 +15,7 @@
 (def major (scale [2 2 1 2 2 2 1]))
 (def blues (scale [3 2 1 1 3 2]))
 (def pentatonic (scale [3 2 2 3 2]))
-(def diatonic (scale [1]))
+(def chromatic (scale [1]))
 
 (defn- start-from [base] (partial + base))
 
