@@ -46,17 +46,14 @@
   (=> backing in-time (after start) in-key (partial play-on# (midify shudder#)))
   (=> melody in-time (after start) in-key (partial play-on# (midify sawish#)))))
 
-(def theme (concat
-             (follow
-               (follow ill-run-away 3 ill-get-away)
-               3 my-heart-will-go-west-with-the-sun)))
+(def theme (-> ill-run-away
+             (follow 3 ill-get-away)
+             (follow 3 my-heart-will-go-west-with-the-sun)))
 
-(def reply (follow
-             (follow
-               (follow a-parting-kiss 0
-                       like-fairy-floss) 0
-               dissolves-on-the-tip-of-my-tongue) 0 
-             dissolves-on-the-tip-of-my-tongue))
+(def reply (-> a-parting-kiss
+             (follow 0 like-fairy-floss)
+             (follow 0 dissolves-on-the-tip-of-my-tongue)
+             (follow 0 dissolves-on-the-tip-of-my-tongue)))
 
 (defn times [phrase n] (reduce #(follow %1 0 %2) (repeat n phrase))) 
 (def melody (follow (times theme 2) 0 (times reply 2)))
