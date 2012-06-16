@@ -9,13 +9,12 @@
 (defn => [value & fs] (reduce #(%2 %1) value fs))
 (defn lower [f] (comp #(- % 7) f))
 (def progression (map #(map % seventh) [i (lower v) (lower vi) (lower iii)]))
-(defn with-bass [chords] (map #(conj % (- (first %) 7)) chords))
 
 (def backing
     (map
       #(map (partial vector %1) %2 (repeat 4))
       [0 4 8 12]
-      (with-bass progression)))
+      progression))
 
 (defn after [wait] (shift [wait 0 0])) 
 
@@ -38,12 +37,13 @@
 (def dissolves-on-the-tip-of-my-tongue [[-1/4 4 1/4] [0 6 1/2] [3/4 4 3]])
 
 (defn west#
-  [tempo scale melody backing]
+  [tempo scale melody backing bass]
   (let [start (+ (now) 500)
         in-time (comp (skew timing tempo) (skew duration tempo))
         in-key (skew pitch scale)
         midify (fn [instrument#] (comp instrument# midi->hz))]
   (=> backing in-time (after start) in-key (partial play-on# (midify shudder#)))
+  (=> bass in-time (after start) in-key (partial play-on# (midify groan#)))
   (=> melody in-time (after start) in-key (partial play-on# (midify sawish#)))))
 
 (def theme (-> ill-run-away
@@ -59,5 +59,6 @@
 (def melody (follow (times theme 2) 0 (times reply 2)))
 
 (def accompaniment (times (apply concat backing) 4))
+(def bass ((shift [0 -7 0]) (times (map first backing) 4)))
 
-;(west# (bpm 80) (comp E aeolian) melody accompaniment)
+;(west# (bpm 80) (comp E aeolian) melody accompaniment bass)
