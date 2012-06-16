@@ -8,13 +8,14 @@
 
 (defn => [value & fs] (reduce #(%2 %1) value fs))
 (defn lower [f] (comp #(- % 7) f))
-(def progression (map #(map % triad) [i (lower v) (lower vi) (lower iii)]))
+(def progression (map #(map % seventh) [i (lower v) (lower vi) (lower iii)]))
+(defn with-bass [chords] (map #(conj % (- (first %) 7)) chords))
 
 (def backing
     (map
       #(map (partial vector %1) %2)
       [0 4 8 12]
-      progression))
+      (with-bass progression)))
 
 (defn after [wait] (shift [wait 0 0])) 
 
@@ -45,4 +46,5 @@
              (follow
                (follow ill-run-away 3 ill-get-away)
                3 my-heart-will-go-west-with-the-sun)))
-;(west# (bpm 90) (comp A aeolian) (comp recorder# midi->hz) piece)
+
+;(west# (bpm 90) (comp E aeolian) (comp recorder# midi->hz) piece)

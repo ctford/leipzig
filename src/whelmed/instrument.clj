@@ -3,9 +3,10 @@
     [overtone.live]))
 
 (definst recorder# [freq 440]
-  (let [envelope (env-gen (perc 0.1 1.5) :action FREE)]
+  (let [envelope (env-gen (perc 0.1 5) :action FREE)]
     (*
       envelope
+      (+ 0.7 (* 0.2 (dust)))
       (sin-osc freq))))
 
 (definst sawish# [freq 440 depth 10]
