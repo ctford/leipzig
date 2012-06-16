@@ -12,8 +12,7 @@
 (defn play-on# [instrument# notes]
   (let [play-at# (fn [[timing pitch duration]]
                    (let [id (at timing (instrument# pitch))]
-                     (if duration
-                       (at (+ timing duration) (ctl id :gate 0)))))]
+                       (at (+ timing duration) (ctl id :gate 0))))]
     (->> notes (map play-at#) dorun)))
 
 (defn even-melody# [pitches]

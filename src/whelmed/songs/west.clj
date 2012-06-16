@@ -13,7 +13,7 @@
 
 (def backing
     (map
-      #(map (partial vector %1) %2)
+      #(map (partial vector %1) %2 (repeat 1/2))
       [0 4 8 12]
       (with-bass progression)))
 
@@ -34,17 +34,17 @@
    ])
 
 (defn west#
-  [tempo scale instrument# notes]
+  [tempo scale melody backing]
   (let [start (+ (now) 1000)
-        in-time (skew timing tempo)
+        in-time (comp (skew timing tempo) (skew duration tempo))
         in-key (skew pitch scale)
-        play# (partial play-on# instrument#)]
-  (=> notes in-time (after start) in-key play#)))
+        midify (fn [instrument#] (comp instrument# midi->hz))]
+  (=> backing in-time (after start) in-key (partial play-on# (midify shudder#)))
+  (=> melody in-time (after start) in-key (partial play-on# (midify sawish#)))))
 
-(def piece (concat
-             (apply concat backing)
+(def melody (concat
              (follow
                (follow ill-run-away 3 ill-get-away)
                3 my-heart-will-go-west-with-the-sun)))
 
-;(west# (bpm 90) (comp E aeolian) (comp recorder# midi->hz) piece)
+;(west# (bpm 80) (comp E aeolian) melody (apply concat backing))
