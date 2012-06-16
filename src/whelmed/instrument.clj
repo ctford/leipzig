@@ -10,10 +10,12 @@
       (sin-osc freq))))
 
 (definst sawish# [freq 440]
-  (let [envelope (pluck (env-gen (perc 0.1 1.5) :action FREE))]
+  (let [envelope (pluck (env-gen (perc 0.2 1.5) :action FREE))]
     (*
       envelope
-      (saw freq))))
+      (+
+        (sin-osc freq)
+        (saw freq)))))
 
 (definst sinish# [freq 440]
   (let [envelope (pluck (env-gen (perc 0.1 1.5) :action FREE))]
