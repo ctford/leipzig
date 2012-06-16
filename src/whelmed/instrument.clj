@@ -15,6 +15,12 @@
       envelope
       (saw freq))))
 
+(definst sinish# [freq 440]
+  (let [envelope (pluck (env-gen (perc 0.1 1.5) :action FREE))]
+    (*
+      envelope
+      (sin-osc freq))))
+
 (definst groan# [freq 440 vibrato 8/3]
   (let [envelope (* (sin-osc vibrato) (env-gen (perc 0.1 10) :action FREE))]
     (*

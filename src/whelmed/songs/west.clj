@@ -37,14 +37,13 @@
 (def dissolves-on-the-tip-of-my-tongue [[-1/4 4 1/4] [0 6 1/2] [3/4 4 3]])
 
 (defn west#
-  [tempo scale melody backing bass]
+  [tempo scale parts]
   (let [start (+ (now) 500)
         in-time (comp (skew timing tempo) (skew duration tempo))
         in-key (skew pitch scale)
-        midify (fn [instrument#] (comp instrument# midi->hz))]
-  (=> backing in-time (after start) in-key (partial play-on# (midify shudder#)))
-  (=> bass in-time (after start) in-key (partial play-on# (midify groan#)))
-  (=> melody in-time (after start) in-key (partial play-on# (midify sawish#)))))
+        midify (fn [instrument#] (comp instrument# midi->hz))
+        play-now# #(=> %2 in-time (after start) in-key (partial play-on# (midify %1)))]
+    (dorun (map (partial apply play-now#) parts))))
 
 (def theme (-> ill-run-away
              (follow 3 ill-get-away)
@@ -61,4 +60,10 @@
 (def accompaniment (times (apply concat backing) 4))
 (def bass ((shift [0 -7 0]) (times (map first backing) 4)))
 
-;(west# (bpm 80) (comp E aeolian) melody accompaniment bass)
+(comment
+(west# (bpm 80) (comp E aeolian)
+      {sawish# (times theme 2) 
+       sinish# ((shift [32 0 0]) (times reply 2))
+       groan# bass
+       shudder# accompaniment})
+  )
