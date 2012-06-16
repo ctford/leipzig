@@ -34,7 +34,7 @@
 
 (def a-parting-kiss [[0 4 1/4] [1/4 3 1/4] [1/2 4 1/4] [3/4 6 1/4] [6/4 4 10/4]])
 (def like-fairy-floss (cons [-1/4 3 1/4] a-parting-kiss))
-(def dissolves-on-the-tip-of-my-tongue [[-1/4 4 1/4] [0 6 1/2] [3/4 4 3]])
+(def dissolves-on-the-tip-of-my-tongue [[-1/4 4 1/4] [0 6 1/2] [3/4 4 13/4]])
 
 (defn west#
   [tempo scale parts]
