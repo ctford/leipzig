@@ -7,9 +7,8 @@
     [overtone.live :only [midi->hz now stop]]))
 
 (defn => [value & fs] (reduce #(%2 %1) value fs))
-(def progression (map #(map % triad) [i (lower v) (lower vi) (lower iii)]))
-
 (defn lower [f] (comp #(- % 7) f))
+(def progression (map #(map % triad) [i (lower v) (lower vi) (lower iii)]))
 
 (def backing
     (map
@@ -19,12 +18,31 @@
 
 (defn after [wait] (shift [wait 0 0])) 
 
+(defn follow [first gap second]
+    (let [[timing _ duration] (last first)
+                  shifted ((after (+ duration gap timing)) second)]
+          (concat first shifted))) 
+
+(def ill-run-away [[-1/2 3 1/2] [0 4 1/4] [1/4 3 1/4] [1/2 4 1/2]])
+(def ill-get-away (assoc ill-run-away 2 [1/4 6 1/4]))
+(def my-heart-will-go-west-with-the-sun
+  [[-1/2 3 1/2]
+   [0 4 3/4] [3/4 3 3/4] [3/2 2 1/4]
+   [8/4 4 3/4] [11/4 3 1/4] [14/4 2 1/4]
+   [15/4 -1 4]
+   ])
+
 (defn west#
-  [tempo scale instrument#]
-  (let [start (now)
+  [tempo scale instrument# notes]
+  (let [start (+ (now) 1000)
         in-time (skew timing tempo)
         in-key (skew pitch scale)
         play# (partial play-on# instrument#)]
-  (=> (apply concat backing) in-time (after start) in-key play#)))
+  (=> notes in-time (after start) in-key play#)))
 
-;(west# (bpm 90) (comp A aeolian) (comp recorder# midi->hz))
+(def piece (concat
+             (apply concat backing)
+             (follow
+               (follow ill-run-away 3 ill-get-away)
+               3 my-heart-will-go-west-with-the-sun)))
+;(west# (bpm 90) (comp A aeolian) (comp recorder# midi->hz) piece)
