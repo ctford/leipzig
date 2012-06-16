@@ -1,6 +1,12 @@
-(ns goldberg.instrument
+(ns whelmed.instrument
   (:use
     [overtone.live]))
+
+(definst recorder# [freq 440 depth 10]
+  (let [envelope (env-gen (perc 0.1 1.5) :action FREE)]
+    (*
+      envelope
+      (sin-osc freq))))
 
 (definst sawish# [freq 440 depth 10]
   (let [envelope (env-gen (perc 0.1 0.9) :action FREE)]

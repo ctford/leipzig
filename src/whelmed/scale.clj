@@ -1,4 +1,4 @@
-(ns goldberg.scale)
+(ns whelmed.scale)
 
 (defmacro defs {:private true} [names values]
   `(do ~@(map
@@ -39,3 +39,7 @@
           [timing (-> pitch scale) duration]))
 
 (defn with-accidentals [scale accidentals] (partial map (partial refine scale accidentals)))
+
+(def triad #{0 2 4})
+(def seventh (conj triad 6))
+(defs [i ii iii iv v vi vii] (map start-from (range 0 7)))

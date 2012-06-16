@@ -1,5 +1,5 @@
-(ns goldberg.canon
-  (:use [goldberg.melody]))
+(ns whelmed.canon 
+  (:use [whelmed.melody]))
 
 (defn canon [f] (fn [notes] (concat notes (f notes))))
 
