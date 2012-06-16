@@ -2,7 +2,7 @@
   (:use
     [overtone.live]))
 
-(definst recorder# [freq 440 depth 10]
+(definst recorder# [freq 440]
   (let [envelope (env-gen (perc 0.1 1.5) :action FREE)]
     (*
       envelope
