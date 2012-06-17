@@ -40,7 +40,7 @@
 
 (def consider-this [[-3/2 4 1/2] [-1 9 1/2] [-1/2 8 1/2] [0 7 4]])
 (def consider-that (assoc consider-this 3 [0 6 4])) 
-(def consider-everything (concat (take 3 consider-this) [[0 7 1/2] [4/4 8 1/4] [6/4 7 1/2] [10/4 6 1/4] [14/4 4 7/2]]))
+(def consider-everything (concat (take 3 consider-this) [[0 7 1/2] [4/4 8 1/4] [6/4 7 1/2] [10/4 6 1/4] [14/4 4 9/2]]))
 (def breakdown (-> consider-this (follow consider-that) (follow consider-everything)))
 
 (defn west#
@@ -64,17 +64,18 @@
 (defn times [phrase n] (reduce follow (repeat n phrase))) 
 
 (def melody (follow (times theme 2) (times reply 2)))
-(def accompaniment (times (apply concat backing) 4))
+(def accompaniment (follow (times (apply concat backing) 6) 16 (apply concat backing)))
 (def bass
-  (let [vanilla (times (map first backing) 6)
+  (let [vanilla (times (map first backing) 8)
         low (=> vanilla (shift [0 -7 0]))
-        seventh (=> vanilla (shift [1 -1 0]))]
+        cut (fn [start end] #(concat (take start %) (drop end %)))
+        seventh (=> vanilla (shift [1 -1 0]) (cut 20 28))]
   (concat low seventh)))
 
 (comment
-(west# (bpm 80) (comp E aeolian)
-      {sawish# (times theme 2) 
-       sinish# (concat ((shift [32 0 0]) (times reply 2)) ((shift [64 0 0]) breakdown))
-       groan# bass
+  (west# (bpm 80) (comp E aeolian)
+      {sawish# (=> (times theme 2) (after 32))
+       sinish# (concat ((after 64) (times reply 2)) ((after 96) (times breakdown 2)))
+       groan# (=> bass (after 16))
        shudder# accompaniment})
-  )
+)
