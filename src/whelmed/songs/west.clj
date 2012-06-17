@@ -68,7 +68,7 @@
 (def bass
   (let [vanilla (times (map first backing) 6)
         low (=> vanilla (shift [0 -7 0]))
-        seventh (=> vanilla (shift [0 -1 0]))]
+        seventh (=> vanilla (shift [1 -1 0]))]
   (concat low seventh)))
 
 (comment
