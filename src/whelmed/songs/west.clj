@@ -37,11 +37,18 @@
 (def a-parting-kiss [[0 4 1/4] [1/4 3 1/4] [1/2 4 1/4] [3/4 6 1/4] [6/4 4 10/4]])
 (def like-fairy-floss (cons [-1/4 3 1/4] a-parting-kiss))
 (def dissolves-on-the-tip-of-my-tongue [[-1/4 4 1/4] [0 6 1/2] [3/4 4 13/4]])
+(def reply (reduce follow
+   [a-parting-kiss,
+    like-fairy-floss,
+    dissolves-on-the-tip-of-my-tongue,
+    dissolves-on-the-tip-of-my-tongue]))
+
 
 (def consider-this [[-3/2 4 1/2] [-1 9 1/2] [-1/2 8 1/2] [0 7 4]])
 (def consider-that (assoc consider-this 3 [0 6 4])) 
 (def consider-everything (concat (take 3 consider-this) [[0 7 1/2] [4/4 8 1/4] [6/4 7 1/2] [10/4 6 1/4] [14/4 4 9/2]]))
-(def breakdown (-> consider-this (follow consider-that) (follow consider-everything)))
+(def breakdown (reduce follow
+   [consider-this, consider-that, consider-everything]))
 
 (defn west#
   [tempo scale parts]
@@ -55,11 +62,6 @@
 (def theme (-> ill-run-away
              (follow 3 ill-get-away)
              (follow 3 my-heart-will-go-west-with-the-sun)))
-
-(def reply (-> a-parting-kiss
-             (follow like-fairy-floss)
-             (follow dissolves-on-the-tip-of-my-tongue)
-             (follow dissolves-on-the-tip-of-my-tongue)))
 
 (defn times [phrase n] (reduce follow (repeat n phrase))) 
 
