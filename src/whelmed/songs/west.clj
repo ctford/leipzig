@@ -18,10 +18,12 @@
 
 (defn after [wait] (shift [wait 0 0])) 
 
-(defn follow [first gap second]
+(defn follow
+  ([first second] (follow first 0 second))
+  ([first gap second]
     (let [[timing _ duration] (last first)
                   shifted ((after (+ duration gap timing)) second)]
-          (concat first shifted))) 
+          (concat first shifted))))
 
 (def ill-run-away [[-1/2 3 1/2] [0 4 1/4] [1/4 3 1/4] [1/2 4 1/2]])
 (def ill-get-away (assoc ill-run-away 2 [1/4 6 1/4]))
@@ -39,7 +41,7 @@
 (def consider-this [[-3/2 4 1/2] [-1 9 1/2] [-1/2 8 1/2] [0 7 4]])
 (def consider-that (assoc consider-this 3 [0 6 4])) 
 (def consider-everything (concat (take 3 consider-this) [[0 7 1/2] [4/4 8 1/4] [6/4 7 1/2] [10/4 6 1/4] [14/4 4 7/2]]))
-(def breakdown (-> consider-this (follow 0 consider-that) (follow 0 consider-everything)))
+(def breakdown (-> consider-this (follow consider-that) (follow consider-everything)))
 
 (defn west#
   [tempo scale parts]
@@ -55,12 +57,12 @@
              (follow 3 my-heart-will-go-west-with-the-sun)))
 
 (def reply (-> a-parting-kiss
-             (follow 0 like-fairy-floss)
-             (follow 0 dissolves-on-the-tip-of-my-tongue)
-             (follow 0 dissolves-on-the-tip-of-my-tongue)))
+             (follow like-fairy-floss)
+             (follow dissolves-on-the-tip-of-my-tongue)
+             (follow dissolves-on-the-tip-of-my-tongue)))
 
-(defn times [phrase n] (reduce #(follow %1 0 %2) (repeat n phrase))) 
-(def melody (follow (times theme 2) 0 (times reply 2)))
+(defn times [phrase n] (reduce follow (repeat n phrase))) 
+(def melody (follow (times theme 2) (times reply 2)))
 
 (def accompaniment (times (apply concat backing) 4))
 (def bass ((shift [0 -7 0]) (times (map first backing) 6)))
