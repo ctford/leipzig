@@ -62,10 +62,14 @@
              (follow dissolves-on-the-tip-of-my-tongue)))
 
 (defn times [phrase n] (reduce follow (repeat n phrase))) 
-(def melody (follow (times theme 2) (times reply 2)))
 
+(def melody (follow (times theme 2) (times reply 2)))
 (def accompaniment (times (apply concat backing) 4))
-(def bass ((shift [0 -7 0]) (times (map first backing) 6)))
+(def bass
+  (let [vanilla (times (map first backing) 6)
+        low (=> vanilla (shift [0 -7 0]))
+        seventh (=> vanilla (shift [0 -1 0]))]
+  (concat low seventh)))
 
 (comment
 (west# (bpm 80) (comp E aeolian)
