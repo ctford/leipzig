@@ -12,13 +12,11 @@
 (definst sawish# [freq 440]
   (let [envelope (pluck (env-gen (perc 0.2 1.5) :action FREE))]
     (*
-      0.3
+      0.7
       envelope
       (+
-        (* 3 (saw freq))
-        (sin-osc freq)
-        (* 4 (sin-osc freq))
-        (* 2 (square freq))))))
+        (square (* freq 0.99))
+        (square freq)))))
 
 (definst sinish# [freq 440]
   (let [envelope (env-gen (perc 0.1 1.1) :action FREE)]
