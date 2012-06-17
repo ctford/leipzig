@@ -49,6 +49,8 @@
 (def consider-everything (concat (take 3 consider-this) [[0 7 1/2] [4/4 8 1/4] [6/4 7 1/2] [10/4 6 1/4] [14/4 4 9/2]]))
 (def breakdown (reduce follow
    [consider-this, consider-that, consider-everything]))
+(def breakup (=> breakdown (shift [0 -7 0])))
+(def break (concat breakup breakdown))
 
 (defn west#
   [tempo scale parts]
@@ -77,7 +79,7 @@
 (comment
   (west# (bpm 80) (comp E aeolian)
       {sawish# (=> (times theme 2) (after 32))
-       sinish# (concat ((after 64) (times reply 2)) ((after 96) (times breakdown 2)))
+       sinish# (concat ((after 64) (times reply 2)) ((after 96) (times break 2)))
        groan# (=> bass (after 16))
        shudder# accompaniment})
 )
