@@ -66,8 +66,8 @@
 
 (comment
   (west# (bpm 80) (comp E aeolian)
-      {sawish# (=> (times theme 2) (after 32))
-       sinish# (concat ((after 64) (times reply 2)) ((after 96) (times break 2)))
-       groan# (=> bass (after 16))
-       shudder# accompaniment})
+      [[sawish# (=> (times theme 2) (after 32))]
+       [sinish# (concat ((after 64) (times reply 2)) ((after 96) (times break 2)))]
+       [groan# (=> bass (after 16))]
+       [shudder# accompaniment]])
 )
