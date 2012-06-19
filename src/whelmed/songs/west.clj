@@ -1,7 +1,6 @@
 (ns whelmed.songs.west
   (:use
     [whelmed.scale]
-    [whelmed.canon]
     [whelmed.melody]
     [whelmed.instrument]
     [overtone.live :only [midi->hz now stop]]))
@@ -15,15 +14,6 @@
       #(map (partial vector %1) %2 (repeat 4))
       [0 4 8 12]
       progression))
-
-(defn after [wait] (shift [wait 0 0])) 
-
-(defn follow
-  ([first second] (follow first 0 second))
-  ([first gap second]
-    (let [[timing _ duration] (last first)
-                  shifted ((after (+ duration gap timing)) second)]
-          (concat first shifted))))
 
 (def ill-run-away [[-1/2 3 1/2] [0 4 1/4] [1/4 3 1/4] [1/2 4 1/2]])
 (def ill-get-away (assoc ill-run-away 2 [1/4 6 1/4]))
@@ -64,8 +54,6 @@
 (def theme (-> ill-run-away
              (follow 3 ill-get-away)
              (follow 3 my-heart-will-go-west-with-the-sun)))
-
-(defn times [phrase n] (reduce follow (repeat n phrase))) 
 
 (def melody (follow (times theme 2) (times reply 2)))
 (def accompaniment (follow (times (apply concat backing) 6) 16 (apply concat backing)))
