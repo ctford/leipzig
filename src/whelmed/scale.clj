@@ -1,4 +1,6 @@
-(ns whelmed.scale)
+(ns whelmed.scale
+    (:use
+          [overtone.live :only [at ctl midi->hz now]]))
 
 (defmacro defs {:private true} [names values]
   `(do ~@(map

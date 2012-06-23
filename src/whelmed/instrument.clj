@@ -33,7 +33,3 @@
         (* (sin-osc 0.5) (+ 0.1 (saw freq)))
         (* (sin-osc 0.8) (+ -0.03 (square freq)))
         (+ -0.04 (sin-osc freq))))))
-
-(definst crack# []
-  (let [envelope (decay (t2a (demand (impulse:kr) 0 (dseq [1] INF))) 0.7)]
-    (* (* envelope 17) (saw (* envelope 50)))))

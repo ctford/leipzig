@@ -1,7 +1,7 @@
 (ns whelmed.songs.west
   (:use
-    [whelmed.scale]
     [whelmed.melody]
+    [whelmed.scale]
     [whelmed.instrument]
     [overtone.live :only [midi->hz now stop]]))
 
@@ -64,7 +64,7 @@
         seventh (=> vanilla (shift [1 -1 0]) (cut 32 40))]
   (concat low seventh)))
 
-(comment
+(defn west-with-the-sun# []
   (west# (bpm 80) (comp E aeolian)
       [[sawish# (=> (times theme 2) (after 32))]
        [sinish# ((after 64) (times reply 2))]
@@ -72,5 +72,5 @@
        [sinish# ((after 128) (times break 2))]
        [sawish# (=> (times theme 2) (after 160))]
        [groan# (=> bass (after 16))]
-       [shudder# accompaniment]])
-)
+       [shudder# accompaniment]]))
+
