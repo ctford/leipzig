@@ -24,6 +24,15 @@
    [15/4 -1 17/4]
    ])
 
+(def west-with-the-west-with-the 
+  [[-1/2 3 1/2]
+   [0 4 3/4] [3/4 3 3/4] [3/2 2 1/4]
+   [2 4 3/4] [11/4 3 3/4] [7/2 2 1/4]
+   [4 4 3/4] [19/4 3 3/4] [11/2 2 1/4]
+   [6 4 3/4] [27/4 3 3/4] [15/2 2 1/4]
+   [8 7 17/4]
+   ])
+
 (def a-parting-kiss [[0 4 1/4] [1/4 3 1/4] [1/2 4 1/4] [3/4 6 1/4] [6/4 4 10/4]])
 (def like-fairy-floss (cons [-1/4 3 1/4] a-parting-kiss))
 (def dissolves-on-the-tip-of-my-tongue [[-1/4 4 1/4] [0 6 1/2] [3/4 4 13/4]])
@@ -57,6 +66,10 @@
 
 (def half-theme (-> ill-run-away (follow 3 ill-get-away)))
 
+(def spilling-theme (-> ill-run-away
+             (follow 3 ill-get-away)
+             (follow 3 west-with-the-west-with-the)))
+
 (def accompaniment (follow (times (apply concat backing) 6) 16 (times (apply concat backing) 6)))
 (def bass
   (let [vanilla (times (map first backing) 13)
@@ -70,10 +83,11 @@
       [[sawish# (=> (times theme 2) (after 32))]
        [sinish# ((after 64) (times reply 2))]
        [sinish# ((after 96) (times break 2))]
-       [sawish# (=> (times theme 2) (after 128))]
+       [sawish# (=> (times theme 1) (after 128))]
+       [sawish# (=> (times spilling-theme 1) (after 144))]
        [sinish# ((after 160) (times reply 2))]
        [sinish# ((after 176) (times break 1))]
-       [sawish# (=> half-theme (after 192))]
-       [sawish# (=> half-theme (after 200))]
+       [sawish# (=> half-theme (after 192.5))]
+       [sawish# (=> half-theme (after 200.5))]
        [groan# (=> bass (after 16))]
        [shudder# accompaniment]]))
