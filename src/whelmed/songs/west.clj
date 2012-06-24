@@ -55,22 +55,21 @@
              (follow 3 ill-get-away)
              (follow 3 my-heart-will-go-west-with-the-sun)))
 
-(def melody (follow (times theme 2) (times reply 2)))
-(def accompaniment (follow (times (apply concat backing) 6) 48 (times (apply concat backing) 3)))
+(def accompaniment (follow (times (apply concat backing) 6) 16 (times (apply concat backing) 5)))
 (def bass
-  (let [vanilla (times (map first backing) 14)
+  (let [vanilla (times (map first backing) 12)
         low (=> vanilla (shift [0 -7 0]))
         cut (fn [start end] #(concat (take start %) (drop end %)))
-        seventh (=> vanilla (shift [1 -1 0]) (cut 32 40))]
+        seventh (=> vanilla (shift [1 -1 0]) (cut 20 28))]
   (concat low seventh)))
 
 (defn west-with-the-sun# []
   (west# (bpm 80) (comp E aeolian)
       [[sawish# (=> (times theme 2) (after 32))]
        [sinish# ((after 64) (times reply 2))]
-       [sawish# (=> (times theme 2) (after 96))]
-       [sinish# ((after 128) (times break 2))]
-       [sawish# (=> (times theme 2) (after 160))]
+       [sinish# ((after 96) (times break 2))]
+       [sawish# (=> (times theme 2) (after 128))]
+       [sinish# ((after 160) (times reply 2))]
+       [sinish# ((after 176) (times break 1))]
        [groan# (=> bass (after 16))]
        [shudder# accompaniment]]))
-
