@@ -33,10 +33,6 @@
         wests (times west-with-the 4)]
      (reduce follow [[[-1/2 3 1/2]] wests [[0 7 1/4]]])))
 
-west-with-the-west-with-the
-
-
-
 (def a-parting-kiss
   (phrase
     [1/4 1/4 1/4 3/4 10/4]
