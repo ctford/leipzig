@@ -15,39 +15,60 @@
       [0 4 8 12]
       progression))
 
-(def ill-run-away [[-1/2 3 1/2] [0 4 1/4] [1/4 3 1/4] [1/2 4 1/2]])
-(def ill-get-away (assoc ill-run-away 2 [1/4 6 1/4]))
+(def ill-run-away
+  ((after -1/2)
+     (phrase
+       [1/2 1/4 1/4 1/2]
+       [  3   4   3   4])))
+(def ill-get-away (assoc (vec ill-run-away) 2 [1/4 6 1/4]))
+
 (def my-heart-will-go-west-with-the-sun
-  [[-1/2 3 1/2]
-   [0 4 3/4] [3/4 3 3/4] [3/2 2 1/4]
-   [8/4 4 3/4] [11/4 3 1/4] [14/4 2 1/4]
-   [15/4 -1 17/4]
-   ])
+  ((after -1/2)
+     (phrase
+       [1/2 3/4 3/4 2/4 3/4 3/4 1/4 17/4]
+       [  3   4   3   2   4   3   2   -1])))
 
 (def west-with-the-west-with-the 
-  [[-1/2 3 1/2]
-   [0 4 3/4] [3/4 3 3/4] [3/2 2 1/4]
-   [2 4 3/4] [11/4 3 3/4] [7/2 2 1/4]
-   [4 4 3/4] [19/4 3 3/4] [11/2 2 1/4]
-   [6 4 3/4] [27/4 3 3/4] [15/2 2 1/4]
-   [8 7 17/4]
-   ])
+  (let [west-with-the (subvec (vec my-heart-will-go-west-with-the-sun) 1 4)
+        wests (times west-with-the 4)]
+     (reduce follow [[[-1/2 3 1/2]] wests [[0 7 1/4]]])))
 
-(def a-parting-kiss [[0 4 1/4] [1/4 3 1/4] [1/2 4 1/4] [3/4 6 1/4] [6/4 4 10/4]])
+west-with-the-west-with-the
+
+
+
+(def a-parting-kiss
+  (phrase
+    [1/4 1/4 1/4 3/4 10/4]
+    [  4   3   4   6    4]))
 (def like-fairy-floss (cons [-1/4 3 1/4] a-parting-kiss))
-(def dissolves-on-the-tip-of-my-tongue [[-1/4 4 1/4] [0 6 1/2] [3/4 4 13/4]])
+
+(def dissolves-on-the-tip-of-my-tongue
+  (phrase
+    [1/4 3/4 12/4]
+    [  4   6    4]))
+
 (def reply (reduce follow
    [a-parting-kiss,
     like-fairy-floss,
     dissolves-on-the-tip-of-my-tongue,
     dissolves-on-the-tip-of-my-tongue]))
 
+(def consider-this
+  ((after -3/2)
+     (phrase
+       [1/2 1/2 1/2 8/2]
+       [  4   9   8   7])))
+(def consider-that (assoc (vec consider-this) 3 [0 6 4])) 
 
-(def consider-this [[-3/2 4 1/2] [-1 9 1/2] [-1/2 8 1/2] [0 7 4]])
-(def consider-that (assoc consider-this 3 [0 6 4])) 
-(def consider-everything (concat (take 3 consider-this) [[0 7 1/2] [4/4 8 1/4] [6/4 7 1/2] [10/4 6 1/4] [14/4 4 9/2]]))
-(def breakdown (reduce follow
-   [consider-this, consider-that, consider-everything]))
+(def consider-everything
+  (follow
+    (take 3 consider-this)
+    (phrase
+      [2/2 1/2 2/2 2/2 9/2]
+      [  7   8   7   6   4])))
+
+(def breakdown (reduce follow [consider-this, consider-that, consider-everything]))
 (def breakup (=> breakdown (shift [0 -7 0])))
 (def break (concat breakup breakdown))
 

@@ -4,6 +4,11 @@
 
 (defn bpm [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
 
+(defn sum-n [series n] (reduce + (take n series)))
+(defn phrase [durations pitches]
+  (let [timings (map (partial sum-n durations) (range (count durations)))]
+    (map vector timings pitches durations)))
+
 (def timing 0)
 (def pitch 1)
 (def duration 2)
