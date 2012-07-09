@@ -70,7 +70,7 @@ west-with-the-west-with-the
 
 (def breakdown (reduce follow [consider-this, consider-that, consider-everything]))
 (def breakup (=> breakdown (shift [0 -7 0])))
-(def break (concat breakup breakdown))
+(def break (accompany breakup breakdown))
 
 (defn west#
   [tempo scale parts]
@@ -97,7 +97,7 @@ west-with-the-west-with-the
         low (=> vanilla (shift [0 -7 0]))
         cut (fn [start end] #(concat (take start %) (drop end %)))
         seventh (=> vanilla (shift [1 -1 0]) (cut 20 28))]
-  (concat low seventh)))
+  (accompany low seventh)))
 
 (defn west-with-the-sun# []
   (west# (bpm 80) (comp E aeolian)

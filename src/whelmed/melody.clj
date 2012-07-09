@@ -31,3 +31,12 @@
 
 (defn times [phrase n] (reduce follow (repeat n phrase)))
 
+(defn before? [[time-a _ _] [time-b _ _]] (<= time-a time-b))
+(defn accompany [[a & other-as :as as] [b & other-bs :as bs]]
+  (if (empty? as)
+    bs
+    (if (empty? bs)
+      as
+      (if (before? a b)
+        (cons a (accompany other-as bs))
+        (cons b (accompany as other-bs)))))) 
