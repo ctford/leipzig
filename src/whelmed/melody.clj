@@ -23,10 +23,11 @@
 
 (defn after [wait] (shift [wait 0 0]))
 (defn follow
-    ([first second] (follow first 0 second))
-    ([first gap second]
-         (let [[timing _ duration] (last first)
-                                 shifted ((after (+ duration gap timing)) second)]
-                     (concat first shifted))))
+  ([first gap second] (follow first ((after gap) second)))
+  ([first second]
+    (let [[timing _ duration] (last first)
+          shifted ((after (+ duration timing)) second)]
+      (concat first shifted))))
+
 (defn times [phrase n] (reduce follow (repeat n phrase)))
 
