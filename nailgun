@@ -1,4 +1,0 @@
-#!/bin/sh
-
-java -Xmx512M -cp ".:src:test:resources:classes:lib/*:lib/dev/*:bin" vimclojure.nailgun.NGServer 127.0.0.1
-
