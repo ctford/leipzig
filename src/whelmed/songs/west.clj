@@ -10,17 +10,19 @@
 (def progression (map #(map % seventh) [i (lower v) (lower vi) (lower iii)]))
 
 (def backing
+  (let [render-chord (fn [start notes] (map #(identity {:time start :duration 4 :pitch %}) notes))]
     (map
-      #(map (partial vector %1) %2 (repeat 4))
+      render-chord
       [0 4 8 12]
-      progression))
+      progression)))
 
 (def ill-run-away
   ((after -1/2)
      (phrase
        [1/2 1/4 1/4 1/2]
        [  3   4   3   4])))
-(def ill-get-away (assoc (vec ill-run-away) 2 [1/4 6 1/4]))
+
+(def ill-get-away (assoc (vec ill-run-away) 2 {:time 1/4 :pitch 6 :duration 1/4}))
 
 (def my-heart-will-go-west-with-the-sun
   ((after -1/2)
@@ -31,13 +33,17 @@
 (def west-with-the-west-with-the 
   (let [west-with-the (subvec (vec my-heart-will-go-west-with-the-sun) 1 4)
         wests (times west-with-the 4)]
-     (reduce follow [[[-1/2 3 1/2]] wests [[0 7 1/4]]])))
+     (reduce follow
+             [[{:time -1/2 :pitch 3 :duration 1/2}]
+              wests
+              [{:time 0 :pitch 7 :duration 1/4}]])))
 
 (def a-parting-kiss
   (phrase
     [1/4 1/4 1/4 3/4 10/4]
     [  4   3   4   6    4]))
-(def like-fairy-floss (cons [-1/4 3 1/4] a-parting-kiss))
+
+(def like-fairy-floss (cons {:time -1/4 :pitch 3 :duration 1/4} a-parting-kiss))
 
 (def dissolves-on-the-tip-of-my-tongue
   (phrase
@@ -55,7 +61,8 @@
      (phrase
        [1/2 1/2 1/2 8/2]
        [  4   9   8   7])))
-(def consider-that (assoc (vec consider-this) 3 [0 6 4])) 
+
+(def consider-that (assoc (vec consider-this) 3 {:time 0 :pitch 6 :duration 4})) 
 
 (def consider-everything
   (follow
@@ -65,7 +72,8 @@
       [  7   8   7   6   4])))
 
 (def breakdown (reduce follow [consider-this, consider-that, consider-everything]))
-(def breakup (=> breakdown (shift [0 -7 0])))
+
+(def breakup (=> breakdown (shift {:time 0 :pitch -7})))
 (def break (accompany breakup breakdown))
 
 (defn west#
@@ -87,12 +95,16 @@
              (follow 3 ill-get-away)
              (follow 3 west-with-the-west-with-the)))
 
-(def accompaniment (follow (times (apply concat backing) 6) 16 (times (apply concat backing) 6)))
+(def accompaniment (follow
+                     (times (apply concat backing) 6)
+                     16
+                     (times (apply concat backing) 6)))
+
 (def bass
   (let [vanilla (times (map first backing) 13)
-        low (=> vanilla (shift [0 -7 0]))
+        low (=> vanilla (shift {:time 0 :pitch -7}))
         cut (fn [start end] #(concat (take start %) (drop end %)))
-        seventh (=> vanilla (shift [1 -1 0]) (cut 20 28))]
+        seventh (=> vanilla (shift {:time 1 :pitch -1}) (cut 20 28))]
   (accompany low seventh)))
 
 (defn west-with-the-sun# []
@@ -108,3 +120,4 @@
        [sawish# (=> half-theme (after 200.5))]
        [groan# (=> bass (after 16))]
        [shudder# accompaniment]]))
+

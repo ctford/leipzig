@@ -7,31 +7,37 @@
 (defn sum-n [series n] (reduce + (take n series)))
 (defn phrase [durations pitches]
   (let [timings (map (partial sum-n durations) (range (count durations)))]
-    (map vector timings pitches durations)))
+    (map #(zipmap [:time :pitch :duration] [%1 %2 %3]) timings pitches durations)))
 
-(def timing 0)
-(def pitch 1)
-(def duration 2)
+(def timing :time)
+(def pitch :pitch)
+(def duration :duration)
 (defn skew [k f] (fn [points] (map #(update-in % [k] f) points)))
-(defn shift [point] (fn [points] (map #(->> % (map + point) vec) points)))
+(defn shift [{t :time p :pitch}] (fn [points]
+                                  (map
+                                    (fn [point]
+                                      (-> point 
+                                       (update-in [:time] #(+ t %))
+                                       (update-in [:pitch] #(+ p %))))
+                                    points)))
 
 (defn play-on# [instrument# notes]
-  (let [play-at# (fn [[timing pitch duration]]
+  (let [play-at# (fn [{timing :time pitch :pitch duration :duration}]
                    (let [id (at timing (instrument# pitch))]
                        (at (+ timing duration) (ctl id :gate 0))))]
     (->> notes (map play-at#) dorun)))
 
-(defn after [wait] (shift [wait 0 0]))
+(defn after [wait] (shift {:time wait :pitch 0}))
 (defn follow
   ([first gap second] (follow first ((after gap) second)))
   ([first second]
-    (let [[timing _ duration] (last first)
+    (let [{timing :time duration :duration} (last first)
           shifted ((after (+ duration timing)) second)]
       (concat first shifted))))
 
 (defn times [phrase n] (reduce follow (repeat n phrase)))
 
-(defn before? [[time-a _ _] [time-b _ _]] (<= time-a time-b))
+(defn before? [a b] (<= (:time a) (:time b)))
 (defn accompany [[a & other-as :as as] [b & other-bs :as bs]]
   (if (empty? as)
     bs

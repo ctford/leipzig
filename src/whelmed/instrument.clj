@@ -1,5 +1,6 @@
 (ns whelmed.instrument
   (:use
+    [overtone.inst.sampled-piano]
     [overtone.live]))
 
 (definst shudder# [freq 440 vibrato 6]
@@ -33,3 +34,5 @@
         (* (sin-osc 0.5) (+ 0.1 (saw freq)))
         (* (sin-osc 0.8) (+ -0.03 (square freq)))
         (+ -0.04 (sin-osc freq))))))
+
+(def piano# sampled-piano)
