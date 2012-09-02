@@ -31,19 +31,24 @@
 (defn triad-from [degree] (map #(+ degree %) triad))
 (def chords (map triad-from [0 5]))
 
-(defmulti play :part)
-(defmethod play :melody [note] (play-on# (comp sinish# midi->hz) [note]))
-(defmethod play :rhythm [note] (play-on# (comp #(groan# % 10) midi->hz) [note]))
-(defmethod play :bass [note] (play-on# (comp sinish# midi->hz) [note]))
+(def rhythm
+  (let [chord (fn [degree] (map #(zipmap [:time :duration :pitch] [0 2 %]) (triad-from degree)))]
+  ((after 1) (follow (times (chord 14) 2) (times (chord 12) 2)))))
 
-(defn in-key [k] (skew pitch k))
-(defn in-time [t] (skew timing t))
+(defmulti play :part)
+;(defmethod play :melody [note] (play-on# (comp sinish# midi->hz) [note]))
+;(defmethod play :rhythm [note] (play-on# (comp #(groan# % 10) midi->hz) [note]))
+;(defmethod play :bass [note] (play-on# (comp sinish# midi->hz) [note]))
+(defmethod play :default [note] (play-on# piano# [note]))
+
 (def lower #(- % 7))
 
 (defn all [f] #(dorun (map f %)))
 
-(=> (times (concat bass rhythm) 4)
-  (in-key (comp E minor lower lower))
-  (in-time (bpm 140))
-  (in-time #(+ % (now)))
+(=>
+  (times (concat rhythm bass) 4)
+  (skew :pitch (comp E minor lower lower))
+  (skew :time (bpm 150))
+  (skew :duration (bpm 150))
+  (skew :time #(+ % (now)))
   (all play))

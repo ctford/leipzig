@@ -9,8 +9,6 @@
   (let [timings (map (partial sum-n durations) (range (count durations)))]
     (map #(zipmap [:time :pitch :duration] [%1 %2 %3]) timings pitches durations)))
 
-(def timing :time)
-(def pitch :pitch)
 (def duration :duration)
 (defn skew [k f] (fn [points] (map #(update-in % [k] f) points)))
 (defn shift [{t :time p :pitch}] (fn [points]
