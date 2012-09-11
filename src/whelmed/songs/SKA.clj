@@ -3,52 +3,65 @@
         [whelmed.melody]
         [whelmed.scale]
         [whelmed.instrument]
-        [overtone.live :only [midi->hz now stop]]))
+        [overtone.live :only [ctl at midi->hz now stop]]))
 
-(defn => [value & fs] (reduce #(%2 %1) value fs))
-
-(defn arrange [notes part] (map #(assoc % :part part) notes))
+(defn with [k v notes] (map #(assoc % k v) notes))
 
 (def bass
-  (arrange
+  (->>
+    (phrase
+      [3/2 1 1/2 1]
+      [0   0   2 4])
     (follow
       (phrase
         [3/2 1 1/2 1]
-        [0   0   2 4])
-      (phrase
-        [3/2 1 1/2 1]
         [5   5   4 2]))
-  :bass))
+    (with :part :bass)))
 
 (def rhythm
-  (arrange
-      (phrase
-        [2 6]
-        [14 18])
-    :rhythm))
+  (->>
+    (phrase
+      [2 6]
+      [14 18])
+    (with :part :rhythm)))
 
-
-(defn triad-from [degree] (map #(+ degree %) triad))
-(def chords (map triad-from [0 5]))
+(def chords (map triad [0 5]))
 
 (def rhythm
-  (let [chord (fn [degree] (map #(zipmap [:time :duration :pitch] [0 2 %]) (triad-from degree)))]
-  ((after 1) (follow (times (chord 14) 2) (times (chord 12) 2)))))
+  (let [chord (fn [degree] (map #(zipmap [:time :duration :pitch] [0 2 %]) (triad degree)))]
+    (->>
+      (times 2 (chord 14))
+      (after 1)
+      (follow (times 2 (chord 12))))))
 
-(defmulti play :part)
+(def variation 
+  (let [chord (fn [degree] (map #(zipmap [:time :duration :pitch] [0 4 %]) (triad degree)))]
+  (follow (chord 15) (chord 12))))
+
+(defmulti play-note :part)
 ;(defmethod play :melody [note] (play-on# (comp sinish# midi->hz) [note]))
 ;(defmethod play :rhythm [note] (play-on# (comp #(groan# % 10) midi->hz) [note]))
 ;(defmethod play :bass [note] (play-on# (comp sinish# midi->hz) [note]))
-(defmethod play :default [note] (play-on# piano# [note]))
+(defmethod play-note :default [{:keys [pitch time duration]}]
+ (let [id (at time (piano# pitch))]
+   (at (+ time duration) (ctl id :gate 0))))
 
-(def lower #(- % 7))
+(def low #(- % 7))
 
-(defn all [f] #(dorun (map f %)))
+(def ska
+  (->>
+    bass
+    (accompany rhythm)
+    (times 4)
+    (skew :pitch (comp low low low low E minor))
+    (skew :time (bpm 150))
+    (skew :duration (bpm 200))))
 
-(=>
-  (times (concat rhythm bass) 4)
-  (skew :pitch (comp E minor lower lower))
-  (skew :time (bpm 150))
-  (skew :duration (bpm 150))
-  (skew :time #(+ % (now)))
-  (all play))
+(defn play [notes] 
+    (->>
+      notes
+      (after (now))
+      (map (fn [{:keys [time] :as note}] (at time (play-note note))))
+      dorun))
+
+(play ska)

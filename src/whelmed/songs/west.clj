@@ -79,8 +79,8 @@
 (defn west#
   [tempo scale parts]
   (let [start (+ (now) 500)
-        in-time (comp (skew timing tempo) (skew duration tempo))
-        in-key (skew pitch scale)
+        in-time (comp (skew :timing tempo) (skew :duration tempo))
+        in-key (skew :pitch scale)
         midify (fn [instrument#] (comp instrument# midi->hz))
         play-now# #(=> %2 in-time (after start) in-key (partial play-on# (midify %1)))]
     (dorun (map (partial apply play-now#) parts))))
@@ -109,15 +109,18 @@
 
 (defn west-with-the-sun# []
   (west# (bpm 80) (comp E aeolian)
-      [[sawish# (=> (times theme 2) (after 32))]
-       [sinish# ((after 64) (times reply 2))]
-       [sinish# ((after 96) (times break 2))]
-       [sawish# (=> (times theme 1) (after 128))]
-       [sawish# (=> (times spilling-theme 1) (after 144))]
-       [sinish# ((after 160) (times reply 2))]
-       [sinish# ((after 176) (times break 1))]
-       [sawish# (=> half-theme (after 192.5))]
-       [sawish# (=> half-theme (after 200.5))]
-       [groan# (=> bass (after 16))]
-       [shudder# accompaniment]]))
+      [
+       ;[sawish# (=> (times theme 2) (after 32))]
+;       [sinish# ((after 64) (times reply 2))]
+;       [sinish# ((after 96) (times break 2))]
+;       [sawish# (=> (times theme 1) (after 128))]
+;       [sawish# (=> (times spilling-theme 1) (after 144))]
+;       [sinish# ((after 160) (times reply 2))]
+;       [sinish# ((after 176) (times break 1))]
+;       [sawish# (=> half-theme (after 192.5))]
+;       [sawish# (=> half-theme (after 200.5))]
+;       [groan# (=> bass (after 16))]
+       [shudder# accompaniment]
+       ]))
 
+(west-with-the-sun#)

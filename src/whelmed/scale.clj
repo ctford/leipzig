@@ -35,13 +35,16 @@
 
 (def minor aeolian)
 
-(defn- refine [scale targets [timing pitch duration :as note]]
-    (if-let [refinement (targets note)] 
-          [timing (-> pitch scale refinement) duration]
-          [timing (-> pitch scale) duration]))
+(defn jazz
+  ([] (map #(* 2 %) (range)))
+  ([root] (map #(+ root %) (jazz))))
 
-(defn with-accidentals [scale accidentals] (partial map (partial refine scale accidentals)))
+(def triad
+  (comp
+    (partial take 3)
+    jazz))
 
-(def triad #{0 2 4})
-(def seventh (conj triad 6))
-(defs [i ii iii iv v vi vii] (map start-from (range 0 7)))
+(def seventh 
+  (comp
+    (partial take 4)
+    jazz))
