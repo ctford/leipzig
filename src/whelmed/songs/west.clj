@@ -59,7 +59,7 @@
    (follow like-fairy-floss)
    (follow dissolves-on-the-tip-of-my-tongue) 
    (follow dissolves-on-the-tip-of-my-tongue)
-   (with :part :response))) 
+   (with :part ::response))) 
 
 (def consider-this
   (after -3/2
@@ -87,34 +87,34 @@
 (def break
   (->>
     (accompany breakup breakdown)
-    (with :part :break)))
+    (with :part ::break)))
 
 (def theme
   (->>
     ill-run-away
     (follow (after 3 ill-get-away))
     (follow (after 3 my-heart-will-go-west-with-the-sun))
-    (with :part :lead)))
+    (with :part ::lead)))
 
 (def half-theme
   (->>
     ill-run-away
     (follow (after 3 ill-get-away))
-    (with :part :lead)))
+    (with :part ::lead)))
 
 (def spilling-theme
   (->>
     ill-run-away
     (follow (after 3 ill-get-away))
     (follow (after 3 west-with-the-west-with-the))
-    (with :part :lead)))
+    (with :part ::lead)))
 
 (def accompaniment
   (->>
     (apply concat backing)
     (times 6)
     (follow (after 16 (times 6 (apply concat backing))))
-    (with :part :accompaniment)))
+    (with :part ::accompaniment)))
 
 (def bass
   (let [vanilla
@@ -126,7 +126,7 @@
   (->>
     lowered
    (accompany seventh)
-   (with :part :bass)))) 
+   (with :part ::bass)))) 
 
 (def west-with-the-sun
   (->>
@@ -146,8 +146,8 @@
     (skew :time (bpm 80))
     (skew :duration (bpm 80))))
 
-(defmethod play-note :bass [{:keys [pitch]}] (-> pitch midi->hz groan))
-(defmethod play-note :accompaniment [{:keys [pitch]}] (-> pitch midi->hz shudder))
-(defmethod play-note :lead [{:keys [pitch]}] (-> pitch midi->hz sawish))
-(defmethod play-note :response [{:keys [pitch]}] (-> pitch midi->hz sinish))
-(defmethod play-note :break [{:keys [pitch]}] (-> pitch midi->hz sinish))
+(defmethod play-note ::bass [{:keys [pitch]}] (-> pitch midi->hz groan))
+(defmethod play-note ::accompaniment [{:keys [pitch]}] (-> pitch midi->hz shudder))
+(defmethod play-note ::lead [{:keys [pitch]}] (-> pitch midi->hz sawish))
+(defmethod play-note ::response [{:keys [pitch]}] (-> pitch midi->hz sinish))
+(defmethod play-note ::break [{:keys [pitch]}] (-> pitch midi->hz sinish))

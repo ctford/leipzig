@@ -14,14 +14,14 @@
       (phrase
         [3/2 1 1/2 1]
         [5   5   4 2]))
-    (with :part :bassline)))
+    (with :part ::bass)))
 
 (def rhythm
   (->>
     (phrase
       [2 6]
       [14 18])
-    (with :part :rhythm)))
+    (with :part ::rhythm)))
 
 (def chords (map triad [0 5]))
 
