@@ -1,7 +1,7 @@
 (ns whelmed.melody
   (:use
-    [overtone.inst.sampled-piano]
-    [overtone.live :only [at ctl midi->hz now]]))
+    [overtone.live :only [at ctl midi->hz now]]
+    [overtone.inst.sampled-piano :only [sampled-piano]]))
 
 (defn bpm [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
 

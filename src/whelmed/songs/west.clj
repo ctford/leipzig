@@ -2,8 +2,7 @@
   (:use
     [whelmed.melody]
     [whelmed.scale]
-    [whelmed.instrument]
-    [overtone.live :only [at ctl midi->hz now stop]]))
+    [whelmed.instrument]))
 
 (def progression (map seventh [0 (low 4) (low 5) (low 2)]))
 
