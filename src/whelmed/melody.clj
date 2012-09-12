@@ -1,5 +1,6 @@
 (ns whelmed.melody
   (:use
+    [overtone.inst.sampled-piano]
     [overtone.live :only [at ctl midi->hz now]]))
 
 (defn bpm [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
@@ -31,10 +32,14 @@
         (cons a (accompany other-as bs))
         (cons b (accompany as other-bs)))))) 
 
-;(defmulti play-note :part)
-;(defn play [notes] 
-;  (->>
-;    notes
-;    (after (now))
-;    (map (fn [{:keys [time] :as note}] (at time (play-note note))))
-;    dorun))
+(defmulti play-note :part)
+(defmethod play-note :default [{:keys [pitch time duration]}]
+   (let [id (at time (sampled-piano pitch))]
+        (at (+ time duration) (ctl id :gate 0))))
+
+(defn play [notes] 
+  (->>
+    notes
+    (after (now))
+    (map (fn [{:keys [time] :as note}] (at time (play-note note))))
+    dorun))

@@ -36,16 +36,6 @@
   (let [chord (fn [degree] (map #(zipmap [:time :duration :pitch] [0 4 %]) (triad degree)))]
   (follow (chord 15) (chord 12))))
 
-(defmulti play-note :part)
-;(defmethod play :melody [note] (play-on# (comp sinish# midi->hz) [note]))
-;(defmethod play :rhythm [note] (play-on# (comp #(groan# % 10) midi->hz) [note]))
-;(defmethod play :bass [note] (play-on# (comp sinish# midi->hz) [note]))
-(defmethod play-note :default [{:keys [pitch time duration]}]
- (let [id (at time (piano# pitch))]
-   (at (+ time duration) (ctl id :gate 0))))
-
-(def low #(- % 7))
-
 (def ska
   (->>
     bass
@@ -54,12 +44,5 @@
     (skew :pitch (comp low low low low E minor))
     (skew :time (bpm 150))
     (skew :duration (bpm 200))))
-
-(defn play [notes] 
-    (->>
-      notes
-      (after (now))
-      (map (fn [{:keys [time] :as note}] (at time (play-note note))))
-      dorun))
 
 (play ska)

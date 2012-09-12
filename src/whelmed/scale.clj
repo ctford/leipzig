@@ -48,3 +48,5 @@
   (comp
     (partial take 4)
     jazz))
+
+(def low #(- % 7))

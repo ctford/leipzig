@@ -5,19 +5,6 @@
     [whelmed.instrument]
     [overtone.live :only [at ctl midi->hz now stop]]))
 
-(defmulti play-note :part)
-(defmethod play-note :default [{:keys [pitch time duration]}]
- (let [id (at time (piano# pitch))]
-   (at (+ time duration) (ctl id :gate 0))))
-
-(defn play [notes]
-  (->>
-    notes
-    (after (now))
-    (map (fn [{:keys [time] :as note}] (at time (play-note note))))
-    dorun))
-
-(def low #(- % 7))
 (def progression (map seventh [0 (low 4) (low 5) (low 2)]))
 
 (def backing
