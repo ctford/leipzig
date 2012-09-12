@@ -1,23 +1,37 @@
 (ns whelmed.core
   (:use
-    [overtone.live :only []]
+    [overtone.live :only [recording-start recording-stop]]
     [whelmed.melody :only [play follow after]]
     [whelmed.songs.west :only [west-with-the-sun]]
     [whelmed.songs.SKA :only [ska]]))
 
 (def tracks
   (sorted-map
-    "ska" ska,
+    "ska" ska
     "west" west-with-the-sun))
 
 (defn -main
 
-  ([track] (->>
-             (tracks track)
-             play))
+  ([trackname filename]
+   (recording-start filename)
+   (-main trackname)
+   (->>
+     trackname
+     tracks
+     last
+     ((fn [{:keys [time duration]}] (+ time duration)))
+     Thread/sleep)
+   (recording-stop))
 
-  ([]      (->>
-             tracks
-             (map second)
-             (reduce #(follow (after 2000 %2) %1))
-             play)))
+  ([trackname]
+    (->>
+      trackname
+      tracks
+      play))
+
+  ([]
+    (->>
+      tracks
+      (map second)
+      (reduce #(follow (after 2000 %2) %1))
+       play)))
