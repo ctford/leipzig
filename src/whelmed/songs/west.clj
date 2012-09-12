@@ -46,9 +46,11 @@
 (def like-fairy-floss (cons {:time -1/4 :pitch 3 :duration 1/4} a-parting-kiss))
 
 (def dissolves-on-the-tip-of-my-tongue
-  (phrase
-    [1/4 3/4 12/4]
-    [  4   6    4]))
+  (->>
+    (phrase
+      [1/4 3/4 13/4]
+      [  4   6    4])
+    (after -1/4)))
 
 (def reply
  (->>
