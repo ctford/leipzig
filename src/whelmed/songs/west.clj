@@ -107,6 +107,9 @@
     (with :part :accompaniment)))
 
 (defn cut [start end notes] (->> notes (take end) (drop start)))
+(defn except [start end notes] (concat
+                                 (take start notes)
+                                 (drop end notes)))
 
 (def bass
   (let [vanilla
@@ -114,7 +117,7 @@
             (map first backing)
             (times 13))
         lowered (skew :pitch low vanilla)
-        seventh (->> vanilla (skew :time inc) (skew :pitch dec) (cut 20 28))]
+        seventh (->> vanilla (skew :time inc) (skew :pitch dec) (except 20 28))]
   (->>
     lowered
    (accompany seventh)
