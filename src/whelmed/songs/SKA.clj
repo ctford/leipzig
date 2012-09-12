@@ -44,5 +44,3 @@
     (skew :pitch (comp low low low low E minor))
     (skew :time (bpm 150))
     (skew :duration (bpm 200))))
-
-(play ska)

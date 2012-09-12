@@ -126,8 +126,9 @@
    (with :part :bass)))) 
 
 (def west-with-the-sun
-  (apply concat
-      [
+  (->>
+    (apply concat
+       [accompaniment
        (->> theme (times 2) (after 32))
        (->> reply (times 2) (after 64))
        (->> break (times 2) (after 96))
@@ -137,14 +138,7 @@
        (->> break (after 176))
        (->> half-theme (after 192.5))
        (->> half-theme (after 200.5))
-       (->> bass (after 16))
-       accompaniment
-       ]))
-
-(->>
-  west-with-the-sun
-  (skew :pitch (comp E minor))
-  (skew :time (bpm 90))
-  (skew :duration (bpm 90))
-  play)
-
+       (->> bass (after 16))])
+    (skew :pitch (comp E minor))
+    (skew :time (bpm 90))
+    (skew :duration (bpm 90))))
