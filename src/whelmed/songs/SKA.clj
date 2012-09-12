@@ -14,7 +14,7 @@
       (phrase
         [3/2 1 1/2 1]
         [5   5   4 2]))
-    (with :part :bass)))
+    (with :part :bassline)))
 
 (def rhythm
   (->>

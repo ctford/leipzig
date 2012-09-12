@@ -2,7 +2,8 @@
   (:use
     [whelmed.melody]
     [whelmed.scale]
-    [whelmed.instrument]))
+    [whelmed.instrument]
+    [overtone.live :only [stop midi->hz]]))
 
 (def progression (map seventh [0 (low 4) (low 5) (low 2)]))
 
@@ -17,8 +18,7 @@
    (phrase
      [1/2 1/4 1/4 1/2]
      [  3   4   3   4])
-  (after -1/2)
-  (with :part :lead)))
+  (after -1/2)))
 
 
 (def ill-get-away (assoc (vec ill-run-away) 2 {:time 1/4 :pitch 6 :duration 1/4}))
@@ -30,12 +30,14 @@
        [  3   4   3   2   4   3   2   -1])))
 
 (def west-with-the-west-with-the 
-  (let [west-with-the (subvec (vec my-heart-will-go-west-with-the-sun) 1 4)
-        wests (times 4 west-with-the)]
-     (reduce follow
-             [[{:time -1/2 :pitch 3 :duration 1/2}]
-              wests
-              [{:time 0 :pitch 7 :duration 1/4}]])))
+  (let [west-with-the (->>
+                        my-heart-will-go-west-with-the-sun
+                        (cut 1 4)
+                        (times 4))]
+  (->>
+    [{:time -1/2 :pitch 3 :duration 1/2}]
+    (follow west-with-the)
+    (follow [{:time 0 :pitch 7 :duration 1/4}]))))
 
 (def a-parting-kiss
   (phrase
@@ -56,7 +58,8 @@
    a-parting-kiss
    (follow like-fairy-floss)
    (follow dissolves-on-the-tip-of-my-tongue) 
-   (follow dissolves-on-the-tip-of-my-tongue))) 
+   (follow dissolves-on-the-tip-of-my-tongue)
+   (with :part :response))) 
 
 (def consider-this
   (after -3/2
@@ -81,24 +84,30 @@
    (follow consider-everything)))
 
 (def breakup (skew :pitch low breakdown))
-(def break (accompany breakup breakdown))
+(def break
+  (->>
+    (accompany breakup breakdown)
+    (with :part :break)))
 
 (def theme
   (->>
     ill-run-away
     (follow (after 3 ill-get-away))
-    (follow (after 3 my-heart-will-go-west-with-the-sun))))
+    (follow (after 3 my-heart-will-go-west-with-the-sun))
+    (with :part :lead)))
 
 (def half-theme
   (->>
     ill-run-away
-    (follow (after 3 ill-get-away))))
+    (follow (after 3 ill-get-away))
+    (with :part :lead)))
 
 (def spilling-theme
   (->>
     ill-run-away
     (follow (after 3 ill-get-away))
-    (follow (after 3 west-with-the-west-with-the))))
+    (follow (after 3 west-with-the-west-with-the))
+    (with :part :lead)))
 
 (def accompaniment
   (->>
@@ -106,11 +115,6 @@
     (times 6)
     (follow (after 16 (times 6 (apply concat backing))))
     (with :part :accompaniment)))
-
-(defn cut [start end notes] (->> notes (take end) (drop start)))
-(defn except [start end notes] (concat
-                                 (take start notes)
-                                 (drop end notes)))
 
 (def bass
   (let [vanilla
@@ -139,5 +143,11 @@
        (->> half-theme (after 200.5))
        (->> bass (after 16))])
     (skew :pitch (comp E minor))
-    (skew :time (bpm 90))
-    (skew :duration (bpm 90))))
+    (skew :time (bpm 80))
+    (skew :duration (bpm 80))))
+
+(defmethod play-note :bass [{:keys [pitch]}] (-> pitch midi->hz groan))
+(defmethod play-note :accompaniment [{:keys [pitch]}] (-> pitch midi->hz shudder))
+(defmethod play-note :lead [{:keys [pitch]}] (-> pitch midi->hz sawish))
+(defmethod play-note :response [{:keys [pitch]}] (-> pitch midi->hz sinish))
+(defmethod play-note :break [{:keys [pitch]}] (-> pitch midi->hz sinish))

@@ -43,3 +43,9 @@
     (after (now))
     (map (fn [{:keys [time] :as note}] (at time (play-note note))))
     dorun))
+
+(defn cut [start end notes] (->> notes (take end) (drop start)))
+(defn except [start end notes]
+    (concat
+          (take start notes)
+          (drop end notes)))
