@@ -5,8 +5,6 @@
         [whelmed.instrument]
         [overtone.live :only [ctl at midi->hz now stop]]))
 
-(defn with [k v notes] (map #(assoc % k v) notes))
-
 (def bass
   (->>
     (phrase

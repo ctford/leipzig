@@ -11,6 +11,7 @@
 
 (defn skew [k f notes] (map #(update-in % [k] f) notes))
 (defn after [wait notes] (skew :time #(+ wait %) notes))
+(defn with [k v notes] (map #(assoc % k v) notes))
 
 (defn follow
   [second first]
