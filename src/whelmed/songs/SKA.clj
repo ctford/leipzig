@@ -55,12 +55,21 @@
       (after 4)))
     (with :part ::rhythm)))
 
+(def variation
+  (->>
+    (map #(zipmap [:time :duration :pitch] [0 4 %]) [0.5 3 5]) 
+    (then (chord -2 4))
+    (then (chord 0 4))
+    (with :part ::rhythm)))
+
 (def ska
   (->>
     (->> bass (times 2))
     (then (->> bass (accompany rhythm) (times 2)
             (accompany melody)
             (times 2)))
+    (then variation)
+    (then (->> bass (times 2) (after -4)))
     (skew :pitch (comp E minor))
     (skew :time (bpm 150))
     (skew :duration (bpm 200))))

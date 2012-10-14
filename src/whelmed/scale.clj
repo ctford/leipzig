@@ -1,6 +1,7 @@
 (ns whelmed.scale
     (:use
-          [overtone.live :only [at ctl midi->hz now]]))
+       [clojure.math.numeric-tower :only [floor]]
+       [overtone.live :only [at ctl midi->hz now]]))
 
 (defmacro defs {:private true} [names values]
   `(do ~@(map
@@ -9,10 +10,21 @@
 
 (defn- sum-n [series n] (reduce + (take n series)))
 
-(defn scale [intervals]
-   #(if-not (neg? %)
-     (sum-n (cycle intervals) %)
-     ((comp - (scale (reverse intervals)) -) %)))
+(defn- number-class [number]
+  (cond 
+    (not= number (floor number)) :fraction
+    (< number 0)                 :negative
+    :otherwise                   :natural))
+
+(defmulti scale-of (fn [_ degree] (number-class degree)))
+(defn scale [intervals] (partial scale-of intervals))
+
+(defmethod scale-of :natural [intervals degree]
+  (sum-n (cycle intervals) degree))
+(defmethod scale-of :negative [intervals degree]
+  (->> degree - (scale-of (reverse intervals)) -))
+(defmethod scale-of :fraction [intervals degree]
+  (->> degree floor (scale-of intervals) inc))
 
 (def major (scale [2 2 1 2 2 2 1]))
 (def blues (scale [3 2 1 1 3 2]))
