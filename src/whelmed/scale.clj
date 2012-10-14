@@ -8,15 +8,15 @@
      (fn [name value] `(def ~name ~value))
      names (eval values))))
 
-(defn- sum-n [series n] (reduce + (take n series)))
+(defn- sum-n [series n] (apply + (take n series)))
 
-(defn- number-class [number]
-  (cond 
-    (not= number (floor number)) :fraction
-    (< number 0)                 :negative
-    :otherwise                   :natural))
+(defmulti scale-of
+  (fn [intervals degree]
+    (cond 
+      (not= degree (floor degree)) :fraction
+      (neg? degree)                :negative
+      :otherwise                   :natural)))
 
-(defmulti scale-of (fn [_ degree] (number-class degree)))
 (defn scale [intervals] (partial scale-of intervals))
 
 (defmethod scale-of :natural [intervals degree]
