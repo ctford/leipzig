@@ -28,6 +28,15 @@
     (with :part ::bass)
     (skew :pitch (comp lower lower))))
 
+(def fallbass
+  (->> (take 4 bass)
+    (then (phrase [4] [(lower -3.5)]))
+    (skew :pitch (comp E minor))))
+
+(def fallchords [])
+
+(def fallback (accompany fallchords fallbass))
+
 (def wish-you-were-here-again 
   (->>
       (phrase
@@ -87,20 +96,32 @@
       (cluster 4
         (-> (triad -2) (update-in [:iii] #(+ % 1/2)) vals)))))
 
+(def mid-section
+  (->> and-if-you-lived-here 
+    (times 4)
+    (skew :pitch lower)
+    (skew :pitch (comp B flat major))))
+
+(def first-section
+  (->> 
+    (->> bass (accompany rhythm) (times 2)
+         (accompany wish-you-were-here-again)
+         (times 2))
+    (then (accompany oooh suns-on-the-rise))
+    (then (->> bass (times 2) (after -4)))
+    (skew :pitch (comp E minor))))
+
+(def intro (->> bass (times 2) (skew :pitch (comp E minor))))
+
 (def ska
   (->>
-    (->> bass
-      (times 2)
-      (then (->> bass (accompany rhythm) (times 2)
-            (accompany wish-you-were-here-again)
-            (times 2)))
-      (then (accompany oooh suns-on-the-rise))
-      (then (->> bass (times 2) (after -4)))
-      (skew :pitch (comp E minor)))
-    (then (->> and-if-you-lived-here 
-      (times 4)
-      (skew :pitch lower)
-      (skew :pitch (comp B flat major))))
+    intro
+    (then first-section)
+    (then intro)
+    (then first-section)
+    (then mid-section)
+    (then (->> fallback (times 4)))
+    (then first-section)
     (skew :time (bpm 150))
     (skew :duration (bpm 200))))
 
