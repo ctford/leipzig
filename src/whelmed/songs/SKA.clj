@@ -7,12 +7,14 @@
 
 (def then follow)
 
-(defn demo [notes]
-  (->> notes
-    (skew :time (bpm 90))
-    (skew :duration (bpm 90))
-    (skew :pitch (comp C minor))
-    play))
+(defn demo
+  ([notes] (demo notes major))
+  ([notes scale]
+    (->> notes
+      (skew :time (bpm 90))
+      (skew :duration (bpm 90))
+      (skew :pitch (comp C scale))
+      play)))
 
 (def bass
   (->>
@@ -38,11 +40,15 @@
     (skew :pitch raise)
     (with :part ::melody)))
 
+(defn cluster [duration pitches]
+  (map
+    #(zipmap
+       [:time :duration :pitch]
+       [0 duration %])
+    pitches))
+
 (defn chord [degree duration]
-  (->> (triad degree)
-    (map #(zipmap
-            [:time :duration :pitch]
-            [0 duration %]))))
+  (->> (triad degree) vals (cluster duration)))
 
 (def rhythm
   (->>
@@ -57,7 +63,7 @@
 
 (def suns-on-the-rise 
   (->>
-    (map #(zipmap [:time :duration :pitch] [0 4 %]) [0.5 3 5]) 
+    (->> [(triad 1)] (skew :i #(+ % 1/2)) (skew :v #(+ % 1/2)) (mapcat vals) (cluster 4))
     (then (chord -2 4))
     (then (chord 0 4))
     (with :part ::rhythm)))
@@ -70,6 +76,17 @@
     (skew :pitch raise)
     (with :part ::melody)))
 
+(def and-if-you-lived-here
+  (->>
+    (chord 0 4)
+    (then (chord -3 4))
+    (then
+      (cluster 4
+        (-> (triad 1) (update-in [:iii] #(+ % 1/2)) vals)))
+    (then
+      (cluster 4
+        (-> (triad -2) (update-in [:iii] #(+ % 1/2)) vals)))))
+
 (def ska
   (->>
     (->> bass
@@ -80,8 +97,10 @@
       (then (accompany oooh suns-on-the-rise))
       (then (->> bass (times 2) (after -4)))
       (skew :pitch (comp E minor)))
-    (then (->> []
-      (skew :pitch (comp E minor))))
+    (then (->> and-if-you-lived-here 
+      (times 4)
+      (skew :pitch lower)
+      (skew :pitch (comp B flat major))))
     (skew :time (bpm 150))
     (skew :duration (bpm 200))))
 

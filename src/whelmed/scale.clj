@@ -53,11 +53,13 @@
 
 (def triad
   (comp
+    (partial zipmap [:i :iii :v])
     (partial take 3)
     jazz))
 
-(def seventh 
+(def seventh
   (comp
+    (partial zipmap [:i :iii :v :vii])
     (partial take 4)
     jazz))
 
