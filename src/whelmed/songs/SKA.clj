@@ -5,42 +5,64 @@
         [whelmed.instrument]
         [overtone.live :only [ctl at midi->hz now stop]]))
 
+(def then follow)
+
+(defn demo [notes]
+  (->> notes
+    (skew :time (bpm 90))
+    (skew :duration (bpm 90))
+    (skew :pitch (comp C minor))
+    play))
+
 (def bass
   (->>
-    (phrase
-      [3/2 1 1/2 1]
-      [0   0   2 4])
-    (follow
+      (phrase
+        [3/2 1 1/2 1]
+        [0   0   2 4])
+    (then
       (phrase
         [3/2 1 1/2 1]
         [5   5   4 2]))
-    (with :part ::bass)))
+    (with :part ::bass)
+    (skew :pitch (comp lower lower))))
+
+(def melody
+  (->>
+      (phrase
+        [2/3 1/3 3/3 3/3 2/3 13/3]
+        [0 1 0 4 0 0])
+    (then
+      (phrase
+        [2/3 1/3 3/3 3/3 3/3 2/3 1/3 2/3 3/3 4/3]
+        [0 1 0 4 0 2 3 2 1 0]))
+    (skew :pitch raise)
+    (with :part ::melody)))
+
+(defn chord [degree duration]
+  (->> (triad degree)
+    (map #(zipmap
+            [:time :duration :pitch]
+            [0 duration %]))))
 
 (def rhythm
   (->>
-    (phrase
-      [2 6]
-      [14 18])
-    (with :part ::rhythm)))
-
-(def chords (map triad [0 5]))
-
-(def rhythm
-  (let [chord (fn [degree] (map #(zipmap [:time :duration :pitch] [0 2 %]) (triad degree)))]
-    (->>
-      (times 2 (chord 14))
+    (->> (chord 0 1)
       (after 1)
-      (follow (times 2 (chord 12))))))
-
-(def variation 
-  (let [chord (fn [degree] (map #(zipmap [:time :duration :pitch] [0 4 %]) (triad degree)))]
-  (follow (chord 15) (chord 12))))
+      (times 2))
+    (accompany (->> (chord -2 1)
+      (after 1)
+      (times 2)
+      (after 4)))
+    (with :part ::rhythm)))
 
 (def ska
   (->>
-    bass
-    (accompany rhythm)
-    (times 4)
-    (skew :pitch (comp low low low low E minor))
+    (->> bass (times 2))
+    (then (->> bass (accompany rhythm) (times 2)
+            (accompany melody)
+            (times 2)))
+    (skew :pitch (comp E minor))
     (skew :time (bpm 150))
     (skew :duration (bpm 200))))
+
+;(play ska)

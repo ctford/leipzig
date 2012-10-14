@@ -50,3 +50,5 @@
     jazz))
 
 (def low #(- % 7))
+(def lower low)
+(def raise #(+ % 7))
