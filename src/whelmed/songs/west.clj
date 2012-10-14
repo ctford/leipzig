@@ -11,6 +11,7 @@
   (let [render-chord (fn [start notes] (map #(identity {:time start :duration 4 :pitch %}) notes))]
     (->>
       progression
+      (map vals)
       (map render-chord [0 4 8 12]))))
 
 (def ill-run-away
