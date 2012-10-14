@@ -26,7 +26,7 @@
     (with :part ::bass)
     (skew :pitch (comp lower lower))))
 
-(def melody
+(def wish-you-were-here-again 
   (->>
       (phrase
         [2/3 1/3 3/3 3/3 2/3 13/3]
@@ -55,22 +55,33 @@
       (after 4)))
     (with :part ::rhythm)))
 
-(def variation
+(def suns-on-the-rise 
   (->>
     (map #(zipmap [:time :duration :pitch] [0 4 %]) [0.5 3 5]) 
     (then (chord -2 4))
     (then (chord 0 4))
     (with :part ::rhythm)))
 
+(def oooh
+  (->>
+    (phrase
+      [3 1/3 2/3 3 2/3 1/3 3]
+      [3 4 3 2 0 -1 0]) 
+    (skew :pitch raise)
+    (with :part ::melody)))
+
 (def ska
   (->>
-    (->> bass (times 2))
-    (then (->> bass (accompany rhythm) (times 2)
-            (accompany melody)
+    (->> bass
+      (times 2)
+      (then (->> bass (accompany rhythm) (times 2)
+            (accompany wish-you-were-here-again)
             (times 2)))
-    (then variation)
-    (then (->> bass (times 2) (after -4)))
-    (skew :pitch (comp E minor))
+      (then (accompany oooh suns-on-the-rise))
+      (then (->> bass (times 2) (after -4)))
+      (skew :pitch (comp E minor)))
+    (then (->> []
+      (skew :pitch (comp E minor))))
     (skew :time (bpm 150))
     (skew :duration (bpm 200))))
 
