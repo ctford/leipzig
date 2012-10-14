@@ -30,12 +30,7 @@
 
 (def fallbass
   (->> (take 4 bass)
-    (then (phrase [4] [(lower -3.5)]))
-    (skew :pitch (comp E minor))))
-
-(def fallchords [])
-
-(def fallback (accompany fallchords fallbass))
+    (then (phrase [4] [(lower -3.5)]))))
 
 (def wish-you-were-here-again 
   (->>
@@ -69,6 +64,16 @@
       (times 2)
       (after 4)))
     (with :part ::rhythm)))
+
+(def fallchords
+  (->> (take 6 rhythm)
+    (then (after 2 (chord -3.5 2)))))
+
+(def fallback
+  (->> fallbass
+    (accompany fallchords)
+    (times 4)
+    (skew :pitch (comp E minor))))
 
 (def suns-on-the-rise 
   (->>
@@ -125,7 +130,7 @@
     (then intro)
     (then first-section)
     (then mid-section)
-    (then (->> fallback (times 4)))
+    (then fallback)
     (then (->> first-section (in-time #(* % 4/3))))
     (in-time (bpm 180))))
 
