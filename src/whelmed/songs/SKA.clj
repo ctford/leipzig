@@ -113,6 +113,11 @@
 
 (def intro (->> bass (times 2) (skew :pitch (comp E minor))))
 
+(defn in-time [signature notes]
+  (->> notes
+    (skew :time signature)
+    (skew :duration signature)))
+
 (def ska
   (->>
     intro
@@ -121,8 +126,7 @@
     (then first-section)
     (then mid-section)
     (then (->> fallback (times 4)))
-    (then first-section)
-    (skew :time (bpm 150))
-    (skew :duration (bpm 200))))
+    (then (->> first-section (in-time #(* % 4/3))))
+    (in-time (bpm 180))))
 
 ;(play ska)
