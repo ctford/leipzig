@@ -97,7 +97,12 @@
       (->> fallbass
         (wi fallchords)
         (wi (after 6 fallb))))
-    (times 2)
+    (then
+      (->> fallbass
+        (wi fallchords)
+        (wi (after 6 falla))))
+    (then (take 5 fallbass))
+    (then (after -4 (phrase (repeat 6 2/3) [3.5 3 2.5 2 1 0.5])))
     (where :pitch (comp E minor))))
 
 (def suns-on-the-rise 
@@ -179,4 +184,3 @@
     (in-time (bpm 180))))
 
 ;(play ska)
-
