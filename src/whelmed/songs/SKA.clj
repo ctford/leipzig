@@ -43,7 +43,6 @@
       (phrase
         [2/3 1/3 3/3 3/3 2/3 13/3]
         [0 1 0 4 0 0])
-    (after 1)
     (then
       (phrase
         [2/3 1/3 3/3 3/3 3/3 2/3 1/3 2/3 3/3 4/3]
@@ -128,9 +127,11 @@
         (-> (triad -2) (update-in [:iii] #(+ % 1/2)) vals)))))
 
 (def youd-be-home-by-now
-  (phrase
-    [2/3 4/3 4/3 4/3 4/3 4/3 4 2/3 4]
-    [2 2 1 -1 -2 -1 -2 -3 -2]))
+  (->>
+    (phrase
+      [1/3 2/3 1 1 1 1 1 10/3 2/3 4]
+      [-3 2 2 1 -1 -2 -1 -2 -3 -2])
+    (after 5/3)))
 
 (def right-now
   (wi and-if-you-lived-here youd-be-home-by-now)) 
@@ -159,12 +160,12 @@
 (def ska
   (->>
     intro
-    (then first-section)
-    (then intro)
-    (then first-section)
+;    (then first-section)
+;    (then intro)
+;    (then first-section)
     (then mid-section)
-    (then fallback)
-    (then (->> first-section (in-time #(* % 4/3))))
+;    (then fallback)
+;    (then (->> first-section (in-time #(* % 4/3))))
     (in-time (bpm 180))))
 
 ;(play ska)
