@@ -5,15 +5,19 @@
         [whelmed.instrument]
         [overtone.live :only [ctl at midi->hz now stop]]))
 
+(def wi accompany)
 (def then follow)
+(def where skew)
+(def high raise)
+(defn is [x] (fn [_] x))
 
 (defn demo
   ([notes] (demo notes major))
   ([notes scale]
     (->> notes
-      (skew :time (bpm 90))
-      (skew :duration (bpm 90))
-      (skew :pitch (comp C scale))
+      (where :time (bpm 90))
+      (where :duration (bpm 90))
+      (where :pitch (comp C scale))
       play)))
 
 (def bass
@@ -25,12 +29,14 @@
       (phrase
         [3/2 1 1/2 1]
         [5   5   4 2]))
-    (with :part ::bass)
-    (skew :pitch (comp lower lower))))
+    (where :part (is ::bass))
+    (where :pitch (comp low low))))
 
 (def fallbass
-  (->> (take 4 bass)
-    (then (phrase [4] [(lower -3.5)]))))
+  (->>
+      (take 4 bass)
+    (then
+      (phrase [4] [(low -3.5)]))))
 
 (def wish-you-were-here-again 
   (->>
@@ -41,8 +47,8 @@
       (phrase
         [2/3 1/3 3/3 3/3 3/3 2/3 1/3 2/3 3/3 4/3]
         [0 1 0 4 0 2 3 2 1 0]))
-    (skew :pitch raise)
-    (with :part ::melody)))
+    (where :pitch high)
+    (where :part (is ::melody))))
 
 (defn cluster [duration pitches]
   (map
@@ -59,28 +65,47 @@
     (->> (chord 0 1)
       (after 1)
       (times 2))
-    (accompany (->> (chord -2 1)
+    (wi (->> (chord -2 1)
       (after 1)
       (times 2)
       (after 4)))
-    (with :part ::rhythm)))
+    (where :part (is ::rhythm))))
 
 (def fallchords
   (->> (take 6 rhythm)
-    (then (after 2 (chord -3.5 2)))))
+    (then
+      (->>
+        (-> (triad 3.5) (update-in [:iii] #(+ % 0.5)) vals)
+        (cluster 2)
+        (after 2)))))
+
+(def falla
+  (phrase
+    [1/3 1/3 1/3 2/3 1/3]
+    [0.5 3.5 6 5 3.5]))
+
+(def fallb
+  (phrase
+    [1/3 1/3 1/3 1/3 1/3 1/3]
+    [6 5 3.5 6 5 3.5]))
 
 (def fallback
   (->> fallbass
-    (accompany fallchords)
-    (times 4)
-    (skew :pitch (comp E minor))))
+    (wi fallchords)
+    (wi (after 6 falla))
+    (then
+      (->> fallbass
+        (wi fallchords)
+        (wi (after 6 fallb))))
+    (times 2)
+    (where :pitch (comp E minor))))
 
 (def suns-on-the-rise 
   (->>
     (->> [(triad 1)] (skew :i #(+ % 1/2)) (skew :v #(+ % 1/2)) (mapcat vals) (cluster 4))
     (then (chord -2 4))
     (then (chord 0 4))
-    (with :part ::rhythm)))
+    (where :part (is ::rhythm))))
 
 (def oooh
   (->>
@@ -88,7 +113,7 @@
       [3 1/3 2/3 3 2/3 1/3 3]
       [3 4 3 2 0 -1 0]) 
     (skew :pitch raise)
-    (with :part ::melody)))
+    (where :part (is ::melody))))
 
 (def and-if-you-lived-here
   (->>
@@ -101,11 +126,18 @@
       (cluster 4
         (-> (triad -2) (update-in [:iii] #(+ % 1/2)) vals)))))
 
+(def youd-be-home-by-now
+  (phrase
+    [2/3 4/3 4/3 4/3 4/3 4/3 4 2/3 4]
+    [2 2 1 -1 -2 -1 -2 -3 -2]))
+
+(def right-now
+  (wi and-if-you-lived-here youd-be-home-by-now)) 
+
 (def mid-section
-  (->> and-if-you-lived-here 
+  (->> right-now 
     (times 4)
-    (skew :pitch lower)
-    (skew :pitch (comp B flat major))))
+    (where :pitch (comp low B flat major))))
 
 (def first-section
   (->> 
@@ -114,14 +146,14 @@
          (times 2))
     (then (accompany oooh suns-on-the-rise))
     (then (->> bass (times 2) (after -4)))
-    (skew :pitch (comp E minor))))
+    (where :pitch (comp E minor))))
 
 (def intro (->> bass (times 2) (skew :pitch (comp E minor))))
 
 (defn in-time [signature notes]
   (->> notes
-    (skew :time signature)
-    (skew :duration signature)))
+    (where :time signature)
+    (where :duration signature)))
 
 (def ska
   (->>
