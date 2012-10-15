@@ -133,13 +133,23 @@
       [-3 2 2 1 -1 -2 -1 -2 -3 -2])
     (after 5/3)))
 
+(def youd-be-home-right-now
+  (->>
+    youd-be-home-by-now
+    (drop-last 2)
+    (then
+      (phrase [2/3 4] [1 0.5]))))
+
 (def right-now
   (wi and-if-you-lived-here youd-be-home-by-now)) 
 
 (def mid-section
-  (->> right-now 
-    (times 4)
-    (where :pitch (comp low B flat major))))
+  (->> and-if-you-lived-here 
+    (wi youd-be-home-by-now) 
+    (then (->>
+      and-if-you-lived-here
+      (wi youd-be-home-right-now)))
+    (times 2)))
 
 (def first-section
   (->> 
@@ -160,12 +170,13 @@
 (def ska
   (->>
     intro
-;    (then first-section)
-;    (then intro)
-;    (then first-section)
-    (then mid-section)
-;    (then fallback)
-;    (then (->> first-section (in-time #(* % 4/3))))
+    (then first-section)
+    (then intro)
+    (then first-section)
+    (then (where :pitch (comp low B flat major)  mid-section))
+    (then fallback)
+    (then (->> first-section (in-time #(* % 4/3))))
     (in-time (bpm 180))))
 
 ;(play ska)
+
