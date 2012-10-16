@@ -9,7 +9,6 @@
 (def then follow)
 (def where skew)
 (def high raise)
-(defn is [x] (fn [_] x))
 
 (defn demo
   ([notes] (demo notes major))
@@ -29,7 +28,7 @@
       (phrase
         [3/2 1 1/2 1]
         [5   5   4 2]))
-    (where :part (is ::bass))
+    (where :part (constantly ::bass))
     (where :pitch (comp low low))))
 
 (def fallbass
@@ -48,7 +47,7 @@
         [2/3 1/3 3/3 3/3 3/3 2/3 1/3 2/3 3/3 4/3]
         [0 1 0 4 0 2 3 2 1 0]))
     (where :pitch high)
-    (where :part (is ::melody))))
+    (where :part (constantly ::melody))))
 
 (defn cluster [duration pitches]
   (map
@@ -69,7 +68,7 @@
       (after 1)
       (times 2)
       (after 4)))
-    (where :part (is ::rhythm))))
+    (where :part (constantly ::rhythm))))
 
 (def fallchords
   (->> (take 6 rhythm)
@@ -110,7 +109,7 @@
     (->> [(triad 1)] (skew :i #(+ % 1/2)) (skew :v #(+ % 1/2)) (mapcat vals) (cluster 4))
     (then (chord -2 4))
     (then (chord 0 4))
-    (where :part (is ::rhythm))))
+    (where :part (constantly ::rhythm))))
 
 (def oooh
   (->>
@@ -118,7 +117,7 @@
       [3 1/3 2/3 3 2/3 1/3 3]
       [3 4 3 2 0 -1 0]) 
     (skew :pitch raise)
-    (where :part (is ::melody))))
+    (where :part (constantly ::melody))))
 
 (def and-if-you-lived-here
   (->>
