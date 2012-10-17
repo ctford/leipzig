@@ -1,7 +1,7 @@
 (ns whelmed.core
   (:use
     [overtone.live :only [recording-start recording-stop]]
-    [whelmed.melody :only [play follow after]]
+    [whelmed.melody :only [play then after]]
     [whelmed.songs.west :only [west-with-the-sun]]
     [whelmed.songs.SKA :only [ska]]))
 
@@ -33,5 +33,5 @@
     (->>
       tracks
       (map second)
-      (reduce #(follow (after 2000 %2) %1))
+      (reduce #(then (after 2000 %2) %1))
        play)))

@@ -37,8 +37,8 @@
                         (times 4))]
   (->>
     [{:time -1/2 :pitch 3 :duration 1/2}]
-    (follow west-with-the)
-    (follow [{:time 0 :pitch 7 :duration 1/4}]))))
+    (then west-with-the)
+    (then [{:time 0 :pitch 7 :duration 1/4}]))))
 
 (def a-parting-kiss
   (phrase
@@ -57,10 +57,10 @@
 (def reply
  (->>
    a-parting-kiss
-   (follow like-fairy-floss)
-   (follow dissolves-on-the-tip-of-my-tongue) 
-   (follow dissolves-on-the-tip-of-my-tongue)
-   (with :part ::response))) 
+   (then like-fairy-floss)
+   (then dissolves-on-the-tip-of-my-tongue) 
+   (then dissolves-on-the-tip-of-my-tongue)
+   (where :part (constantly ::response))))
 
 (def consider-this
   (after -3/2
@@ -73,7 +73,7 @@
 (def consider-everything
   (->>
     (take 3 consider-this)
-    (follow
+    (then
       (phrase
         [2/2 1/2 2/2 2/2 9/2]
         [  7   8   7   6   4]))))
@@ -81,53 +81,53 @@
 (def breakdown
  (->>
    consider-this
-   (follow consider-that)
-   (follow consider-everything)))
+   (then consider-that)
+   (then consider-everything)))
 
-(def breakup (skew :pitch low breakdown))
+(def breakup (where :pitch low breakdown))
 (def break
   (->>
-    (accompany breakup breakdown)
-    (with :part ::break)))
+    (with breakup breakdown)
+    (where :part (constantly ::break))))
 
 (def theme
   (->>
     ill-run-away
-    (follow (after 3 ill-get-away))
-    (follow (after 3 my-heart-will-go-west-with-the-sun))
-    (with :part ::lead)))
+    (then (after 3 ill-get-away))
+    (then (after 3 my-heart-will-go-west-with-the-sun))
+    (where :part (constantly ::lead))))
 
 (def half-theme
   (->>
     ill-run-away
-    (follow (after 3 ill-get-away))
-    (with :part ::lead)))
+    (then (after 3 ill-get-away))
+    (where :part (constantly ::lead))))
 
 (def spilling-theme
   (->>
     ill-run-away
-    (follow (after 3 ill-get-away))
-    (follow (after 3 west-with-the-west-with-the))
-    (with :part ::lead)))
+    (then (after 3 ill-get-away))
+    (then (after 3 west-with-the-west-with-the))
+    (where :part (constantly ::lead))))
 
 (def accompaniment
   (->>
     (apply concat backing)
     (times 6)
-    (follow (after 16 (times 6 (apply concat backing))))
-    (with :part ::accompaniment)))
+    (then (after 16 (times 6 (apply concat backing))))
+    (where :part (constantly ::accompaniment))))
 
 (def bass
   (let [vanilla
           (->> 
             (map first backing)
             (times 13))
-        lowered (skew :pitch low vanilla)
-        seventh (->> vanilla (skew :time inc) (skew :pitch dec) (except 20 28))]
+        lowered (where :pitch low vanilla)
+        seventh (->> vanilla (where :time inc) (where :pitch dec) (except 20 28))]
   (->>
     lowered
-   (accompany seventh)
-   (with :part ::bass)))) 
+   (with seventh)
+   (where :part (constantly ::bass)))))
 
 (def west-with-the-sun
   (->>
@@ -143,9 +143,9 @@
        (->> half-theme (after 192.5))
        (->> half-theme (after 200.5))
        (->> bass (after 16))])
-    (skew :pitch (comp E minor))
-    (skew :time (bpm 80))
-    (skew :duration (bpm 80))))
+    (where :pitch (comp E minor))
+    (where :time (bpm 80))
+    (where :duration (bpm 80))))
 
 (defmethod play-note ::bass [{:keys [pitch]}] (-> pitch midi->hz groan))
 (defmethod play-note ::accompaniment [{:keys [pitch]}] (-> pitch midi->hz shudder))

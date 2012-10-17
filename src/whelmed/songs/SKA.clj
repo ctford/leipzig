@@ -5,11 +5,6 @@
         [whelmed.instrument]
         [overtone.live :only [ctl at midi->hz now stop]]))
 
-(def wi accompany)
-(def then follow)
-(def where skew)
-(def high raise)
-
 (defn demo
   ([notes] (demo notes major))
   ([notes scale]
@@ -64,7 +59,7 @@
     (->> (chord 0 1)
       (after 1)
       (times 2))
-    (wi (->> (chord -2 1)
+    (with (->> (chord -2 1)
       (after 1)
       (times 2)
       (after 4)))
@@ -90,23 +85,27 @@
 
 (def fallback
   (->> fallbass
-    (wi fallchords)
-    (wi (after 6 falla))
+    (with fallchords)
+    (with (after 6 falla))
     (then
       (->> fallbass
-        (wi fallchords)
-        (wi (after 6 fallb))))
+        (with fallchords)
+        (with (after 6 fallb))))
     (then
       (->> fallbass
-        (wi fallchords)
-        (wi (after 6 falla))))
+        (with fallchords)
+        (with (after 6 falla))))
     (then (take 5 fallbass))
     (then (after -4 (phrase (repeat 6 2/3) [3.5 3 2.5 2 1 0.5])))
     (where :pitch (comp E minor))))
 
 (def suns-on-the-rise 
   (->>
-    (->> [(triad 1)] (skew :i #(+ % 1/2)) (skew :v #(+ % 1/2)) (mapcat vals) (cluster 4))
+    (->> [(triad 1)]
+      (where :i #(+ % 1/2))
+      (where :v #(+ % 1/2))
+      (mapcat vals)
+      (cluster 4))
     (then (chord -2 4))
     (then (chord 0 4))
     (where :part (constantly ::rhythm))))
@@ -116,7 +115,7 @@
     (phrase
       [3 1/3 2/3 3 2/3 1/3 3]
       [3 4 3 2 0 -1 0]) 
-    (skew :pitch raise)
+    (where :pitch high)
     (where :part (constantly ::melody))))
 
 (def and-if-you-lived-here
@@ -145,26 +144,26 @@
       (phrase [2/3 4] [1 0.5]))))
 
 (def right-now
-  (wi and-if-you-lived-here youd-be-home-by-now)) 
+  (with and-if-you-lived-here youd-be-home-by-now)) 
 
 (def mid-section
   (->> and-if-you-lived-here 
-    (wi youd-be-home-by-now) 
+    (with youd-be-home-by-now) 
     (then (->>
       and-if-you-lived-here
-      (wi youd-be-home-right-now)))
+      (with youd-be-home-right-now)))
     (times 2)))
 
 (def first-section
   (->> 
-    (->> bass (accompany rhythm) (times 2)
-         (accompany wish-you-were-here-again)
+    (->> bass (with rhythm) (times 2)
+         (with wish-you-were-here-again)
          (times 2))
-    (then (accompany oooh suns-on-the-rise))
+    (then (with oooh suns-on-the-rise))
     (then (->> bass (times 2) (after -4)))
     (where :pitch (comp E minor))))
 
-(def intro (->> bass (times 2) (skew :pitch (comp E minor))))
+(def intro (->> bass (times 2) (where :pitch (comp E minor))))
 
 (defn in-time [signature notes]
   (->> notes
