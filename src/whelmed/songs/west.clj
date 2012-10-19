@@ -131,7 +131,7 @@
 
 (def west-with-the-sun
   (->>
-    (apply concat
+    (reduce with 
        [accompaniment
        (->> theme (times 2) (after 32))
        (->> reply (times 2) (after 64))
