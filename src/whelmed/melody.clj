@@ -37,10 +37,19 @@
    (let [id (at time (sampled-piano pitch))]
         (at (+ time duration) (ctl id :gate 0))))
 
+(defn- trickle [notes]
+  (if-let [{:keys [time] :as note} (first notes)]
+    (cons note
+      (lazy-seq
+        (do
+          (Thread/sleep (max 0 (- time (+ 1000 (now))))) 
+          (trickle (rest notes)))))))
+
 (defn play [notes] 
   (->>
     notes
     (after (now))
+    trickle
     (map (fn [{:keys [time] :as note}] (at time (play-note note))))
     dorun))
 
