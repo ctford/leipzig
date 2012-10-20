@@ -119,8 +119,9 @@
 
 (def bass
   (let [vanilla
-          (->> 
-            (map first backing)
+          (->>
+            (map :i progression)
+            (phrase (repeat 4 4))
             (times 13))
         lowered (where :pitch low vanilla)
         seventh (->> vanilla (where :time inc) (where :pitch dec) (except 20 28))]
