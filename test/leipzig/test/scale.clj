@@ -8,3 +8,7 @@
 (fact
   (map (comp D minor) (range 0 8)) =>
   [62 64 65 67 69 70 72 74])
+
+(fact
+  (map (comp E blues) (range 0 7)) =>
+  [64 67 69 70 71 74 76])
