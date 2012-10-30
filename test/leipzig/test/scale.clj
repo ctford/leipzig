@@ -20,3 +20,7 @@
 (fact
   (map (comp A dorian) (range 0 8)) =>
   [69 71 72 74 76 78 79 81])
+
+(fact
+  (map (comp B mixolydian) (range 0 8)) =>
+  [71 73 75 76 78 80 81 83])
