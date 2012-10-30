@@ -1,4 +1,4 @@
-(defproject whelmed "0.1.0-SNAPSHOT"
+(defproject leipzig "0.1.0-SNAPSHOT"
   :description "A composition library for Overtone."
   :dependencies	[
     [org.clojure/clojure "1.4.0"]
