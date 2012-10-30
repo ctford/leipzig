@@ -12,3 +12,7 @@
 (fact
   (map (comp E blues) (range 0 7)) =>
   [64 67 69 70 71 74 76])
+
+(fact
+  (map (comp G pentatonic) (range 0 6)) =>
+  [67 70 72 74 77 79])
