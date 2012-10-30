@@ -1,4 +1,4 @@
-(ns whelmed.melody
+(ns leipzig.melody
   (:use
     [overtone.live :only [at ctl midi->hz now]]
     [overtone.inst.sampled-piano :only [sampled-piano]]))

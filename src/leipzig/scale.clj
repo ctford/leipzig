@@ -1,7 +1,7 @@
-(ns whelmed.scale
+(ns leipzig.scale 
     (:use
        [clojure.math.numeric-tower :only [floor]]
-       [overtone.live :only [at ctl midi->hz now]]))
+       [overtone.live :only [at]]))
 
 (defmacro defs {:private true} [names values]
   `(do ~@(map
