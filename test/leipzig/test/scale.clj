@@ -16,3 +16,7 @@
 (fact
   (map (comp G pentatonic) (range 0 6)) =>
   [67 70 72 74 77 79])
+
+(fact
+  (map (comp A dorian) (range 0 8)) =>
+  [69 71 72 74 76 78 79 81])
