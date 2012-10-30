@@ -14,17 +14,17 @@
   [64 67 69 70 71 74 76])
 
 (fact
-  (map (comp F chromatic) (range 0 12)) =>
-  (range 65 77))
+  (map (comp F flat chromatic) (range 0 12)) =>
+  (range 64 76))
 
 (fact
-  (map (comp G pentatonic) (range 0 6)) =>
-  [67 70 72 74 77 79])
+  (map (comp G sharp pentatonic) (range 0 6)) =>
+  [68 71 73 75 78 80])
 
 (fact
-  (map (comp A dorian) (range 0 8)) =>
-  [69 71 72 74 76 78 79 81])
+  (map (comp A dorian low) (range 0 8)) =>
+  [57 59 60 62 64 66 67 69])
 
 (fact
-  (map (comp B mixolydian) (range 0 8)) =>
-  [71 73 75 76 78 80 81 83])
+  (map (comp B mixolydian high) (range 0 8)) =>
+  [83 85 87 88 90 92 93 95])
