@@ -14,6 +14,10 @@
   [64 67 69 70 71 74 76])
 
 (fact
+  (map (comp F chromatic) (range 0 12)) =>
+  (range 65 77))
+
+(fact
   (map (comp G pentatonic) (range 0 6)) =>
   [67 70 72 74 77 79])
 
