@@ -47,13 +47,11 @@
   "Accompanies two melodies with each other.
   e.g. (->> melody (with bass))"
   [[a & other-as :as as] [b & other-bs :as bs]]
-  (if (empty? as)
-    bs
-    (if (empty? bs)
-      as
-      (if (before? a b)
-        (cons a (with other-as bs))
-        (cons b (with as other-bs)))))) 
+  (cond
+    (empty? as) bs
+    (empty? bs) as
+    (before? a b) (cons a (with other-as bs))
+    :otherwise    (cons a (with other-as bs))))
 
 (defmulti play-note
   "Plays a note according to its :part."
