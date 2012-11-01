@@ -33,8 +33,8 @@
   "Sequences second after first.
   e.g. (->> call (then response))"
   [second first]
-    (let [{timing :time duration :duration} (last first)
-          shifted (after (+ duration timing) second)]
+    (let [{time :time duration :duration} (last first)
+          shifted (after (+ duration time) second)]
       (concat first shifted)))
 
 (defn times
@@ -51,19 +51,17 @@
     (empty? as) bs
     (empty? bs) as
     (before? a b) (cons a (with other-as bs))
-    :otherwise    (cons a (with other-as bs))))
+    :otherwise    (cons b (with as other-bs))))
 
 (defmulti play-note
   "Plays a note according to its :part."
   :part)
 
 (defn- trickle [notes]
-  (if-let [{ms :time :as note} (first notes)]
-    (cons note
-      (lazy-seq
-        (do
-          (Thread/sleep (max 0 (- ms (+ 1000 (now))))) 
-          (trickle (rest notes)))))))
+  (if-let [{epoch :time} (first notes)]
+    (Thread/sleep (max 0 (- epoch (+ 100 (now))))) 
+    (cons (first notes) 
+      (lazy-seq (trickle (rest notes))))))
 
 (defn play
   "Plays notes now.
@@ -73,5 +71,5 @@
     notes
     (after (now))
     trickle
-    (map (fn [{epoch :time :as note}] (at epoch (play-note note))))
+    (map (fn [{:keys [time] :as note}] (at time (play-note note))))
     dorun))
