@@ -23,9 +23,10 @@
 
 (defn row-row [speed key]
   (->> melody
+    (times 2)
     (canon (simple 4))
     (where :time speed)
-    (where :pitch  key)
+    (where :pitch key)
     play))
 
 ;(row-row (bpm 120) (comp C flat major))
