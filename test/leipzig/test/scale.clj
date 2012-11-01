@@ -2,6 +2,10 @@
   (:use midje.sweet leipzig.scale))
 
 (fact
+  (map (comp B lydian low) (range 0 8)) =>
+  [59 61 63 65 66 68 70 71])
+
+(fact
   (map (comp C major) (range 0 8)) =>
   [60 62 64 65 67 69 71 72])
 
@@ -22,9 +26,13 @@
   [68 71 73 75 78 80])
 
 (fact
-  (map (comp A dorian low) (range 0 8)) =>
-  [57 59 60 62 64 66 67 69])
+  (map (comp A dorian) (range 0 8)) =>
+  [69 71 72 74 76 78 79 81])
 
 (fact
-  (map (comp B mixolydian high) (range 0 8)) =>
-  [83 85 87 88 90 92 93 95])
+  (map (comp B mixolydian) (range 0 -8 -1)) =>
+  [71 69 68 66 64 63 61 59])
+
+(fact
+  (map (comp C phrygian high) (range 0.5 8.5)) =>
+  [73 74 76 78 80 81 83 85])
