@@ -30,3 +30,8 @@
     [{:time 0 :duration 2 :pitch 1}
      {:time 1 :duration 1 :pitch 2}
      {:time 2 :duration 2 :pitch 3}])
+
+(defmethod play-note :foo [note] :bar)
+(fact
+  (-> {:part :foo} play-note) =>
+    :bar)
