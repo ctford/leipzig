@@ -12,6 +12,7 @@
          timings pitches durations)))
 
 (defn where [k f notes] (map #(update-in % [k] f) notes))
+(def is constantly)
 (defn after [wait notes] (where :time #(+ wait %) notes))
 
 (defn then 
