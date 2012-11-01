@@ -58,10 +58,11 @@
   :part)
 
 (defn- trickle [notes]
-  (if-let [{epoch :time} (first notes)]
-    (Thread/sleep (max 0 (- epoch (+ 100 (now))))) 
-    (cons (first notes) 
-      (lazy-seq (trickle (rest notes))))))
+  (if-let [{epoch :time :as note} (first notes)]
+    (do
+      (Thread/sleep (max 0 (- epoch (+ 100 (now))))) 
+      (cons note 
+        (lazy-seq (trickle (rest notes)))))))
 
 (defn play
   "Plays notes now.
@@ -71,5 +72,5 @@
     notes
     (after (now))
     trickle
-    (map (fn [{:keys [time] :as note}] (at time (play-note note))))
+    (map (fn [{epoch :time :as note}] (at epoch (play-note note))))
     dorun))
