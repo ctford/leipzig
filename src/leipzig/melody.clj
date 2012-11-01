@@ -54,7 +54,8 @@
     :otherwise    (cons b (with as other-bs))))
 
 (defmulti play-note
-  "Plays a note according to its :part."
+  "Plays a note according to its :part.
+  e.g. (play-note {:part :bass :time _})"
   :part)
 
 (defn- trickle [notes]
