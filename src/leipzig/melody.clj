@@ -12,7 +12,6 @@
 
 (defn where [k f notes] (map #(update-in % [k] f) notes))
 (defn after [wait notes] (where :time #(+ wait %) notes))
-(defn with [k v notes] (map #(assoc % k v) notes))
 
 (defn then 
   [second first]
