@@ -1,4 +1,4 @@
-(ns leipzig.test.scale
+(ns leipzig.test.canon
   (:use midje.sweet leipzig.canon))
 
 (fact
