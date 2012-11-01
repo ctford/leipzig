@@ -47,21 +47,5 @@
 
 (def minor aeolian)
 
-(defn jazz
-  ([] (map #(* 2 %) (range)))
-  ([root] (map #(+ root %) (jazz))))
-
-(def triad
-  (comp
-    (partial zipmap [:i :iii :v])
-    (partial take 3)
-    jazz))
-
-(def seventh
-  (comp
-    (partial zipmap [:i :iii :v :vii])
-    (partial take 4)
-    jazz))
-
 (def low #(- % 7))
 (def high #(+ % 7))
