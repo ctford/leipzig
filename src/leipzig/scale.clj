@@ -31,15 +31,15 @@
 (def pentatonic (scale [3 2 2 3 2]))
 (def chromatic (scale [1]))
 
-(defn- start-from [base] (partial + base))
+(defn- from [base] (partial + base))
 
 (defs [sharp flat] [inc dec])
 (defs [C D E F G A B]
   (map
-    (comp start-from (start-from 60) major)
+    (comp from (from 60) major)
     (range)))
 
-(defn mode [scale n] (comp #(- % (scale n)) scale (start-from n)))
+(defn mode [scale n] (comp #(- % (scale n)) scale (from n)))
 
 (defs
   [ionian dorian phrygian lydian mixolydian aeolian locrian]

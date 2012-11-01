@@ -27,7 +27,12 @@
   e.g. (->> notes (where :part (is :bass)))" 
   constantly)
 
-(defn after [wait notes] (where :time #(+ wait %) notes))
+(defn- from [base] (partial + base))
+
+(defn after
+  "Delay notes by wait.
+  e.g. (->> melody (after 3))"
+  [wait notes] (where :time (from wait) notes))
 
 (defn then 
   "Sequences second after first.
