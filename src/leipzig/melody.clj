@@ -1,6 +1,6 @@
 (ns leipzig.melody
   (:use
-    [overtone.live :only [at ctl midi->hz now]]
+    [overtone.live :only [at ctl now]]
     [overtone.inst.sampled-piano :only [sampled-piano]]))
 
 (defn bpm [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
@@ -8,7 +8,8 @@
 (defn- sum-n [series n] (reduce + (take n series)))
 (defn phrase [durations pitches]
   (let [timings (map (partial sum-n durations) (range (count durations)))]
-    (map #(zipmap [:time :pitch :duration] [%1 %2 %3]) timings pitches durations)))
+    (map #(zipmap [:time :pitch :duration] [%1 %2 %3])
+         timings pitches durations)))
 
 (defn where [k f notes] (map #(update-in % [k] f) notes))
 (defn after [wait notes] (where :time #(+ wait %) notes))
@@ -32,9 +33,6 @@
         (cons b (with as other-bs)))))) 
 
 (defmulti play-note :part)
-(defmethod play-note :default [{:keys [pitch time duration]}]
-   (let [id (at time (sampled-piano pitch))]
-        (at (+ time duration) (ctl id :gate 0))))
 
 (defn- trickle [notes]
   (if-let [{:keys [time] :as note} (first notes)]
