@@ -7,6 +7,8 @@
 
 (defmethod play-note :default
   [{midi :pitch}] (sampled-piano midi))
+(defmethod play-note :follower
+  [{midi :pitch}] (sampled-piano (+ midi 12)))
 
 (def melody
   (->> (phrase [3/3 3/3 2/3 1/3 3/3]
@@ -24,7 +26,8 @@
 (defn row-row [speed key]
   (->> melody
     (times 2)
-    (canon (simple 4))
+    (canon (comp (simple 4)
+                 (partial where :part (is :follower))))
     (where :time speed)
     (where :pitch key)
     play))
