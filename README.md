@@ -1,7 +1,6 @@
-A composition library for Overtone by @ctford.
-
-* https://github.com/ctford/leipzig
-* https://github.com/overtone/overtone
+[Leipzig](https://github.com/ctford/leipzig)
+=========
+A composition library for [Overtone](https://github.com/overtone/overtone) by [https://github.com/ctford](@ctford).
 
 For examples, see [Row, row, row your boat](src/leipzig/example/row_row_row_your_boat.clj) or [whelmed](https://github.com/ctford/whelmed).
 
