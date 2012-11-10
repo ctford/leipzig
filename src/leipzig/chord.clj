@@ -1,5 +1,17 @@
 (ns leipzig.chord)
 
+(defn- mapval [m f]
+  ((fn updates [m [k & ks]]
+     (if k
+       (updates (update-in m [k] f) ks)
+       m))
+     m (keys m)))
+
+(defn root
+  "Translates a chord so that it's root is at tonic.
+  e.g. (-> triad (root 4))" 
+  [chord tonic] (-> chord (mapval #(+ % tonic)))) 
+
 (defn triad
   "Returns a triad from the specified root.
   e.g. (triad 0)" 

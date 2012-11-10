@@ -12,3 +12,7 @@
 (fact
   (ninth 5) =>
   {:i 5, :iii 7, :v 9, :vii 11, :ix 13})
+
+(fact
+  (-> (triad 0) (root 3)) =>
+  {:i 3, :iii 5, :v 7})
