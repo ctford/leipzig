@@ -8,21 +8,18 @@
      m (keys m) f))
 
 (defn root
-  "Translates a chord so that it's root is at tonic.
+  "Translates a chord so that its root is at tonic.
   e.g. (-> triad (root 4))" 
   [chord tonic] (-> chord (mapval #(+ % tonic)))) 
 
-(defn triad
-  "Returns a triad from the specified root.
-  e.g. (triad 0)" 
-  [root] {:i root, :iii (+ root 2), :v (+ root 4)})
+(def triad
+  "A three-tone chord."
+  {:i 0, :iii 2, :v 4})
 
-(defn seventh
-  "Returns a seventh chord from the specified root.
-  e.g. (seventh 4)" 
-  [root] (-> root triad (assoc :vii (+ root 6))))
+(def seventh 
+  "A four-tone chord."
+  (-> triad (assoc :vii 6)))
 
-(defn ninth
-  "Returns a ninth chord from the specified root.
-  e.g. (ninth 5)" 
-  [root] (-> root seventh (assoc :ix (+ root 8))))
+(def ninth 
+  "A five-tone chord."
+  (-> seventh (assoc :ix 8)))
