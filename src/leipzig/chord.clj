@@ -1,11 +1,11 @@
 (ns leipzig.chord)
 
 (defn- mapval [m f]
-  ((fn updates [m [k & ks]]
+  ((fn update-all [m [k & ks] f]
      (if k
-       (updates (update-in m [k] f) ks)
+       (-> m (update-in [k] f) (update-all ks f))
        m))
-     m (keys m)))
+     m (keys m) f))
 
 (defn root
   "Translates a chord so that it's root is at tonic.
