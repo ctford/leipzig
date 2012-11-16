@@ -55,8 +55,8 @@
   (cond
     (empty? as) bs
     (empty? bs) as
-    (before? a b) (cons a (with other-as bs))
-    :otherwise    (cons b (with as other-bs))))
+    (before? a b) (cons a (lazy-seq (with other-as bs)))
+    :otherwise    (cons b (lazy-seq (with as other-bs)))))
 
 (defmulti play-note
   "Plays a note according to its :part.
