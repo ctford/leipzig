@@ -2,15 +2,19 @@
   (:use
     leipzig.melody
     leipzig.scale
-    leipzig.canon
-    overtone.inst.sampled-piano))
+    leipzig.canon)
+  (:require [overtone.live :as o]))
+
+(definst beep [frequency 440 duration 1]                       
+  (let [envelope (o/line 1 0 duration :action o/FREE)]
+    (* envelope (o/sin-osc frequency))))
 
 (defmethod play-note :leader
-  [{midi :pitch}] (sampled-piano midi))
+  [{midi :pitch}] (-> midi o/midi->hz beep))
 (defmethod play-note :follower
-  [{midi :pitch}] (sampled-piano (+ midi 12)))
+  [{midi :pitch}] (-> midi (+ 12) o/midi->hz beep))
 (defmethod play-note :bass
-  [{midi :pitch}] (sampled-piano (- midi 12)))
+  [{midi :pitch}] (-> midi (- 12) o/midi->hz beep))
 
 (def melody
   (->> (phrase [3/3 3/3 2/3 1/3 3/3]
