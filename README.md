@@ -10,4 +10,4 @@ Using it
 --------
 Include it as a dependency in your project.clj:
 
-    [leipzig "0.1.0-SNAPSHOT"]
+    [leipzig "0.1.0"]

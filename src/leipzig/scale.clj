@@ -1,7 +1,6 @@
 (ns leipzig.scale 
     (:use
-       [clojure.math.numeric-tower :only [floor]]
-       [overtone.live :only [at]]))
+       [clojure.math.numeric-tower :only [floor]]))
 
 (defmacro defs {:private true} [names values]
   `(do ~@(map
