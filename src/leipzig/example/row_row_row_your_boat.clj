@@ -17,15 +17,19 @@
   [{midi :pitch}] (-> midi (- 12) o/midi->hz beep))
 
 (def melody
+               ; Row, row, row your boat,
   (->> (phrase [3/3 3/3 2/3 1/3 3/3]
                [  0   0   0   1   2])
     (then
+               ; Gently down the stream,
        (phrase [2/3 1/3 2/3 1/3 6/3]
                [  2   1   2   3   4]))
     (then
+               ; Merrily, merrily, merrily, merrily,
        (phrase (repeat 12 1/3) 
                (mapcat (partial repeat 3) [7 4 2 0])))
     (then
+               ; Life is but a dream!
        (phrase [2/3 1/3 2/3 1/3 6/3] 
                [  4   3   2   1   0]))
     (where :part (is :leader))))
