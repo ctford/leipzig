@@ -5,7 +5,7 @@
     leipzig.canon)
   (:require [overtone.live :as o]))
 
-(definst beep [frequency 440 duration 1]                       
+(o/definst beep [frequency 440 duration 1]                       
   (let [envelope (o/line 1 0 duration :action o/FREE)]
     (* envelope (o/sin-osc frequency))))
 
@@ -46,5 +46,7 @@
     (where :pitch key)
     play))
 
-;(row-row (bpm 120) (comp C flat major))
-;(row-row (bpm 90) (comp B flat minor))
+(comment
+  (row-row (bpm 120) (comp C flat major))
+  (row-row (bpm 90) (comp B flat minor))
+)
