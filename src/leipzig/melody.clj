@@ -1,7 +1,6 @@
 (ns leipzig.melody
   (:use
-    [overtone.live :only [at ctl now]]
-    [overtone.inst.sampled-piano :only [sampled-piano]]))
+    [overtone.live :only [at now]]))
 
 (defn bpm
   "Returns a function that translates a beat number into milliseconds.
