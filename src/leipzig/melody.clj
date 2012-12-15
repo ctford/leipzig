@@ -12,7 +12,7 @@
   "Translates a sequence of durations and pitches into a melody.
   e.g. (phrase [1 1 2] [7 6 4])" 
   [durations pitches]
-  (let [timings (map (partial sum-n durations) (range (count durations)))]
+  (let [timings (map (partial sum-n durations) (range))]
     (map #(zipmap [:time :pitch :duration] [%1 %2 %3])
          timings pitches durations)))
 
