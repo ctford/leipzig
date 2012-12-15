@@ -31,12 +31,8 @@
      {:time 1 :duration 1 :pitch 2}
      {:time 2 :duration 2 :pitch 3}])
 
-(fact "phrase is lazy on durations."
-  (phrase (repeat 2) [1]) =>
-    [{:time 0 :duration 2 :pitch 1}])
-
-(fact "phrase is lazy on pitches."
-  (phrase [2] (repeat 1)) =>
+(fact "phrase is lazy."
+  (->> (phrase (repeat 2) (repeat 1)) (take 1)) =>
     [{:time 0 :duration 2 :pitch 1}])
 
 (fact "with is lazy."
