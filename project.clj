@@ -1,4 +1,4 @@
-(defproject leipzig "0.2.0"
+(defproject leipzig "0.3.0-SNAPSHOT"
   :description "A composition library for Overtone."
   :url "http://github.com/ctford/leipzig"
   :license {:name "The MIT License"
