@@ -26,7 +26,9 @@ You can create a melody with the phrase function. Here's the first few notes of 
   (phrase [3/3 3/3 2/3 1/3 3/3]
           [  0   0   0   1   2])
 
-To play a melody, put it into a particular key and time and pass it to play:
+To play a melody, define a default arrangement, put the melody into a particular key and time and then pass it to play:
+
+  (defmethod play-note :default [{midi :pitch}] (sampled-piano midi))
 
   (->> melody
     (where :time (bpm 90))
