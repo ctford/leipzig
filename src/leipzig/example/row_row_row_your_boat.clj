@@ -8,10 +8,17 @@
 
 (strings/gen-stringed-synth ektara 1 true)
 
-(defmethod play-note :default
-  [{midi :pitch, start :time, length :duration}]
-    (let [synth-id (overtone/at start (ektara midi :gate 1))]
+(defn pick [distort amp {midi :pitch, start :time, length :duration}] 
+    (let [synth-id (overtone/at start
+                     (ektara midi :distort distort :amp amp :gate 1))]
       (overtone/at (+ start length) (overtone/ctl synth-id :gate 0))))
+
+(defmethod play-note :leader [note]
+  (pick 0.7 1.0 note))
+(defmethod play-note :follower [note]
+  (pick 0.3 1.0 note))
+(defmethod play-note :bass [note]
+  (pick 0.9 0.2 (update-in note [:pitch] #(- % 12))))
 
 (def melody
                ; Row, row, row your boat,
@@ -50,5 +57,5 @@
 
 (comment
   (row-row (bpm 120) (comp C sharp major))
-  (row-row (bpm 90) (comp B flat minor))
+  (row-row (bpm 90) (comp B flat low low minor))
 )
