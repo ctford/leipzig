@@ -73,9 +73,10 @@
   "Plays notes now.
   e.g. (->> melody play)"
   [notes] 
-  (->>
-    notes
-    (after (now))
-    trickle
-    (map (fn [{epoch :time :as note}] (at epoch (play-note note))))
-    dorun))
+  (future
+    (->>
+      notes
+      (after (now))
+      trickle
+      (map (fn [{epoch :time :as note}] (->> note play-note (at epoch))))
+      dorun)))
