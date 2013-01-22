@@ -33,19 +33,6 @@
   e.g. (->> melody (after 3))"
   [wait notes] (where :time (from wait) notes))
 
-(defn then 
-  "Sequences second after first.
-  e.g. (->> call (then response))"
-  [second first]
-    (let [{time :time duration :duration} (last first)
-          shifted (after (+ duration time) second)]
-      (concat first shifted)))
-
-(defn times
-  "Repeats notes n times.
-  e.g. (->> bassline (times 4))"
-  [n notes] (reduce then (repeat n notes)))
-
 (defn- before? [a b] (<= (:time a) (:time b)))
 (defn with
   "Accompanies two melodies with each other.
@@ -56,6 +43,19 @@
     (empty? bs) as
     (before? a b) (cons a (lazy-seq (with other-as bs)))
     :otherwise    (cons b (lazy-seq (with as other-bs)))))
+
+(defn then 
+  "Sequences second after first.
+  e.g. (->> call (then response))"
+  [second first]
+    (let [{time :time duration :duration} (last first)
+          shifted (after (+ duration time) second)]
+      (with first shifted)))
+
+(defn times
+  "Repeats notes n times.
+  e.g. (->> bassline (times 4))"
+  [n notes] (reduce then (repeat n notes)))
 
 (defmulti play-note
   "Plays a note according to its :part.

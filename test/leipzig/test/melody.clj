@@ -21,6 +21,12 @@
      {:time 1 :duration 3 :pitch 4}])
 
 (fact
+  (->> (phrase [1] [2]) (then (after -2 (phrase [3 1] [4 5])))) =>
+    [{:time -1 :duration 3 :pitch 4}
+     {:time 0 :duration 1 :pitch 2}
+     {:time 2 :duration 1 :pitch 5}])
+
+(fact
   (->> (phrase [2] [1]) (times 2)) =>
     [{:time 0 :duration 2 :pitch 1}
      {:time 2 :duration 2 :pitch 1}])
