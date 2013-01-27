@@ -10,7 +10,7 @@ Using it
 --------
 Include it as a dependency in your project.clj:
 
-    [leipzig "0.2.0"]
+    [leipzig "0.3.0"]
 
 Design
 ------
