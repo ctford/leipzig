@@ -7,6 +7,6 @@
             :comments "Same as Overtone"}
   :dependencies	[
     [org.clojure/clojure "1.4.0"]
-    [overtone "0.8.0-RC16"]
+    [overtone "0.8.0"]
     [midje "1.4.0"]
     [org.clojure/math.numeric-tower "0.0.1"]])
