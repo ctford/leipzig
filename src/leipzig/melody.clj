@@ -8,13 +8,16 @@
   [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
 
 (defn- sum-n [series n] (reduce + (take n series)))
+(defn- rhythm 
+  [durations]
+  (let [timings (map (partial sum-n durations) (range))]
+    (map #(zipmap [:time :duration] [%1 %2]) timings durations)))
+
 (defn phrase
   "Translates a sequence of durations and pitches into a melody.
   e.g. (phrase [1 1 2] [7 6 4])" 
   [durations pitches]
-  (let [timings (map (partial sum-n durations) (range))]
-    (map #(zipmap [:time :pitch :duration] [%1 %2 %3])
-         timings pitches durations)))
+  (map #(assoc %1 :pitch %2) (rhythm durations) pitches))
 
 (defn where
   "Applies f to the k key of each note in notes.
