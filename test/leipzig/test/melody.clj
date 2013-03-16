@@ -10,6 +10,12 @@
   (->> [{}] (where :part (is :bass))) =>
     [{:part :bass}])
 
+(fact "wherever can be used to provide default values to keys."
+  (->> [{:time 0} {:time 1, :part :piano}]
+    (wherever (comp not :part), :part (is :bass))) =>
+    [{:time 0, :part :bass}
+     {:time 1, :part :piano}])
+
 (fact
   (phrase [1 2] [3 4]) =>
     [{:time 0 :duration 1 :pitch 3}

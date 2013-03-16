@@ -19,15 +19,25 @@
   [durations pitches]
   (map #(assoc %1 :pitch %2) (rhythm durations) pitches))
 
-(defn where
-  "Applies f to the k key of each note in notes.
-  e.g. (->> notes (where :time (bpm 90)))"
-  [k f notes] (map #(update-in % [k] f) notes))
-
 (def is
   "Synonym for constantly.
   e.g. (->> notes (where :part (is :bass)))" 
   constantly)
+
+(defn- if-applicable [condition? f] (fn [x] (if (condition? x) (f x) x)))
+(defn wherever
+  "Applies f to the k key of each note wherever condition? returns true.
+  e.g. (->> notes (wherever (comp not :part), :part (is :piano))"
+  [condition? k f notes]
+  (map
+    (if-applicable condition? #(update-in % [k] f))
+    notes))
+
+(defn where
+  "Applies f to the k key of each note in notes.
+  e.g. (->> notes (where :time (bpm 90)))"
+  [k f notes]
+  (wherever (is true), k f notes))
 
 (defn- from [base] (partial + base))
 
