@@ -17,13 +17,13 @@
   [interval] (partial where :pitch (from interval)))
 
 (def mirror
-  "Returns a transformation that reflects a melody over pitch."
+  "A transformation that reflects a melody over pitch."
   (fn [notes] (->> notes (where :pitch -))))
 
 (def crab
-  "Returns a transformation that reflects a melody over time."
+  "A transformation that reflects a melody over time."
   (fn [notes] (->> notes (where :time -))))
 
 (def table
-  "Returns a transformation that reflects a melody over time and pitch."
+  "A transformation that reflects a melody over time and pitch."
   (comp mirror crab))
