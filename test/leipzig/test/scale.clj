@@ -33,6 +33,10 @@
   (map (comp B mixolydian) (range 0 -8 -1)) =>
   [71 69 68 66 64 63 61 59])
 
-(fact
-  (map (comp C phrygian high) (range 0.5 8.5)) =>
-  [73 74 76 78 80 81 83 85])
+(fact "Fractional degrees represent accidentals."
+  (map (comp C phrygian high) [0 1 3/2 2 5/2 3 7/2 4 5 11/2 6 13/2 7]) =>
+  (range 72 85))
+
+(fact "Fractional degrees are linearly interpolated."
+  (map blues [0 1/3 2/3 1 3/2 2 3 4 13/3 14/3 5 11/2 6]) =>
+  (range 13))

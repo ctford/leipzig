@@ -1,6 +1,6 @@
 (ns leipzig.scale 
     (:use
-       [clojure.math.numeric-tower :only [floor]]))
+       [clojure.math.numeric-tower :only [floor ceil]]))
 
 (defmacro defs {:private true} [names values]
   `(do ~@(map
@@ -23,7 +23,10 @@
 (defmethod scale-of :negative [intervals degree]
   (->> degree - (scale-of (reverse intervals)) -))
 (defmethod scale-of :fraction [intervals degree]
-  (->> degree floor (scale-of intervals) inc))
+  (let [lower (->> degree floor (scale-of intervals)) 
+        upper (->> degree ceil (scale-of intervals))
+        fraction (- degree (floor degree))]
+  (+ lower (* fraction (- upper lower)))))
 
 (def major (scale [2 2 1 2 2 2 1]))
 (def blues (scale [3 2 1 1 3 2]))
