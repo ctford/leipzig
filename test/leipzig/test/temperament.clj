@@ -1,6 +1,10 @@
 (ns leipzig.test.temperament
   (:use midje.sweet [leipzig.temperament :as temperament]))
 
+(fact "Concert A is 440 Hz."
+  (temperament/equal 69)       => 440.0
+  (temperament/pythagorean 69) => 440)
+
 (fact "Raising an octave doubles the frequency."
   (temperament/equal 69)        => (roughly 440)
   (temperament/equal (+ 69 12)) => (roughly 880) 
@@ -26,7 +30,8 @@
   (/ (temperament/equal 69) (temperament/equal 68)) =>
     (roughly (java.lang.Math/pow 2 1/12)))
 
-(fact "Just temperament has perfect fifths, fourths and octaves."
+(fact "Just temperament has exact fifths, fourths and octaves."
   (/ (temperament/pythagorean (+ 69 6)) (temperament/pythagorean 69)) => 3/2
+  (/ (temperament/pythagorean (+ 69 4)) (temperament/pythagorean 69)) => 4/3 
   (/ (temperament/pythagorean (- 69 5)) (temperament/pythagorean 69)) => 3/4 
   (/ (temperament/pythagorean 69) (temperament/pythagorean (+ 69 11))) => 1/2)
