@@ -9,9 +9,16 @@
 (fact "A perfect fifth is flat by about two cents."
   (let [cent (java.lang.Math/pow 2 1/1200)]
     (/ (* 3/2 (temperament/equal 69)) (temperament/equal (+ 69 7)))
-      => (roughly (* cent cent))
+      => (roughly (java.lang.Math/pow cent 1.96))
     (/ (temperament/equal (- 69 7)) (* 2/3 (temperament/equal 69)))
-      => (roughly (* cent cent))))
+      => (roughly (java.lang.Math/pow cent 1.96))))
+
+(fact "A major third is sharp by about 14 cents."
+  (let [cent (java.lang.Math/pow 2 1/1200)]
+    (/ (temperament/equal (+ 69 4)) (* 5/4 (temperament/equal 69)))
+      => (roughly (java.lang.Math/pow cent 13.69))
+    (/ (* 4/5  (temperament/equal 69)) (temperament/equal (- 69 4)))
+      => (roughly (java.lang.Math/pow cent 13.69))))
 
 (fact "A semitone is the twelfth root of two."
   (/ (temperament/equal 70) (temperament/equal 69)) =>
