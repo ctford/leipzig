@@ -25,3 +25,8 @@
     (roughly (java.lang.Math/pow 2 1/12))
   (/ (temperament/equal 69) (temperament/equal 68)) =>
     (roughly (java.lang.Math/pow 2 1/12)))
+
+(fact "Just temperament has perfect fifths, fourths and octaves."
+  (/ (temperament/pythagorean (+ 69 6)) (temperament/pythagorean 69)) => 3/2
+  (/ (temperament/pythagorean (- 69 5)) (temperament/pythagorean 69)) => 3/4 
+  (/ (temperament/pythagorean 69) (temperament/pythagorean (+ 69 11))) => 1/2)
