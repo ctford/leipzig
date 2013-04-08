@@ -12,8 +12,8 @@
               (take 11)
               (map (fn normalise [r] (if (< r 2) r (normalise (/ r 2))))) 
               sort)
-          concert (- midi (dec base))]
+          normal (- midi (dec base))]
       (cond
-        (< concert 0) (* 1/2 (temper (+ midi 11)))
-        (> concert 10) (* 2 (temper (- midi 11)))
-        :otherwise (* (/ 440 (nth ratios (inc (- 69 base)))) (nth ratios concert))))))
+        (< normal 0) (* 1/2 (temper (+ midi 11)))
+        (> normal 10) (* 2 (temper (- midi 11)))
+        :otherwise (* (/ 440 (nth ratios (inc (- 69 base)))) (nth ratios normal))))))
