@@ -18,11 +18,11 @@
   (fn temper [midi]
     (let [ratios
             (->> (iterate (partial * 3/2) 1)
-              (take 11)
+              (take 12)
               (map (fn normalise [r] (if (< r 2) r (normalise (/ r 2))))) 
               sort)
-          normal (- midi (dec root))]
+          normal (- midi root 1)]
       (cond
-        (< normal 0) (* 1/2 (temper (+ midi 11)))
-        (> normal 10) (* 2 (temper (- midi 11)))
-        :otherwise (* (/ concert-a (nth ratios (inc (- 69 root)))) (nth ratios normal))))))
+        (< normal 0) (* 1/2 (temper (+ midi 12)))
+        (> normal 11) (* 2 (temper (- midi 12)))
+        :otherwise (* 440 (nth ratios normal))))))
