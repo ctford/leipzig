@@ -3,9 +3,8 @@
 
 (fact "Concert A is 440 Hz."
   (temperament/equal 69)            => 440.0
-;  ((temperament/pythagorean 69) 69) => 440
-;  ((temperament/pythagorean 70) 69) => 440
-) 
+  ((temperament/pythagorean 69) 69) => 440
+  ((temperament/pythagorean 70) 69) => 440) 
 
 (fact "An equal temperament octave (roughly) doubles the frequency."
   (temperament/equal (+ 69 12)) => (roughly 880) 
