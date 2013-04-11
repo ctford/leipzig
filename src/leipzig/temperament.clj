@@ -1,6 +1,6 @@
 (ns leipzig.temperament)
 
-(def concert-a 440)
+(def ^{:private true} concert-a 440)
 
 (defn equal
   "Converts midi to hertz using equal temperament.

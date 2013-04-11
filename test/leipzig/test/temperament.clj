@@ -2,14 +2,15 @@
   (:use midje.sweet [leipzig.temperament :as temperament]))
 
 (defn- ratio-of [tuning base interval] (/ (tuning (+ base interval)) (tuning base)))
+(defmacro def- [sym init] `(def ^{:private true} ~sym ~init))
 
-(def octave 12)
-(def fifth 7)
-(def fourth 5)
-(def major-third 4)
-(def semitone 1)
+(def- octave 12)
+(def- fifth 7)
+(def- fourth 5)
+(def- major-third 4)
+(def- semitone 1)
 
-(def exp #(java.lang.Math/pow %1 %2))
+(def- exp #(java.lang.Math/pow %1 %2))
 (defn- cent [r] (exp 2 (/ r 1200)))
 
 (fact "Concert A is 440 Hz, regardless of tuning."
