@@ -12,7 +12,7 @@
 (def exp #(java.lang.Math/pow %1 %2))
 (defn- cent [r] (exp (exp 2 1/1200) r))
 
-(fact "Concert A is 440 Hz."
+(fact "Concert A is 440 Hz, regardless of tuning."
   (temperament/equal 69)            => 440.0
   ((temperament/pythagorean 69) 69) => 440
   ((temperament/pythagorean 70) 69) => 440
