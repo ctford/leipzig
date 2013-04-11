@@ -4,7 +4,9 @@
 (fact "Concert A is 440 Hz."
   (temperament/equal 69)            => 440.0
   ((temperament/pythagorean 69) 69) => 440
-  ((temperament/pythagorean 70) 69) => 440) 
+  ((temperament/pythagorean 70) 69) => 440
+  ((temperament/meantone 69) 69) => 440
+  ((temperament/meantone 70) 69) => 440.0) 
 
 (fact "An equal temperament octave (roughly) doubles the frequency."
   (temperament/equal (+ 69 12)) => (roughly 880) 
@@ -30,10 +32,16 @@
   (/ (temperament/equal 69) (temperament/equal 68)) =>
     (roughly (java.lang.Math/pow 2 1/12)))
 
-(fact "Pythagorean temperament has ideal fifths, fourths and octaves."
+(fact "Pythagorean temperament has pure fifths, fourths and octaves."
   (/ ((temperament/pythagorean 69) (+ 69 7))  ((temperament/pythagorean 69) 69)) => 3/2
   (/ ((temperament/pythagorean 69) (- 69 5))  ((temperament/pythagorean 69) 69)) => 3/4
   (/ ((temperament/pythagorean 69) (+ 69 5))  ((temperament/pythagorean 69) 69)) => 4/3 
   (/ ((temperament/pythagorean 69) (- 69 7))  ((temperament/pythagorean 69) 69)) => 2/3 
   (/ ((temperament/pythagorean 69) (+ 69 12)) ((temperament/pythagorean 69) 69)) => 2/1
   (/ ((temperament/pythagorean 69) (- 69 12)) ((temperament/pythagorean 69) 69)) => 1/2)
+
+(fact "Meantone temperament has pure thirds and octaves."
+  (/ ((temperament/meantone 69) (+ 69 4))  ((temperament/meantone 69) 69)) => (roughly 1.25) 
+  (/ ((temperament/meantone 69) (- 69 4))  ((temperament/meantone 69) 69)) => (roughly 0.8) 
+  (/ ((temperament/meantone 69) (+ 69 12)) ((temperament/meantone 69) 69)) => 2 
+  (/ ((temperament/meantone 69) (- 69 12)) ((temperament/meantone 69) 69)) => 1/2)
