@@ -2,6 +2,8 @@
 
 (def ^{:private true} concert-a 440)
 
+(defn- align [tuning] (comp (partial * ( / 440 (tuning 69))) tuning))
+
 (defn equal
   "Converts midi to hertz using equal temperament.
   e.g. (equal 69)"
@@ -29,7 +31,7 @@
                     (< normal 0) (* 1/2 (temper (+ midi 12)))
                     (> normal 11) (* 2 (temper (- midi 12)))
                     :otherwise (nth ratios normal))))]
-    (comp (partial * ( / 440 (scale 69))) scale)))
+    (align scale)))
 
 (defn meantone 
   "Returns a function that converts midi to hertz using quarter-comma meantone tuning,
@@ -51,4 +53,4 @@
                     (< normal 0) (* 1/2 (temper (+ midi 12)))
                     (> normal 11) (* 2 (temper (- midi 12)))
                     :otherwise (nth ratios normal))))]
-    (comp (partial * (/ 440 (scale 69))) scale)))
+    (align scale)))
