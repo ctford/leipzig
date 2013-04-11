@@ -10,7 +10,7 @@
 (def semitone 1)
 
 (def exp #(java.lang.Math/pow %1 %2))
-(defn- cent [r] (exp (exp 2 1/1200) r))
+(defn- cent [r] (exp 2 (/ r 1200)))
 
 (fact "Concert A is 440 Hz, regardless of tuning."
   (temperament/equal 69)            => 440.0
