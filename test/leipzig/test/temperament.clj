@@ -9,7 +9,8 @@
 (def major-third 4)
 (def semitone 1)
 
-(def cent (java.lang.Math/pow 2 1/1200))
+(def exp #(java.lang.Math/pow %1 %2))
+(defn- cent [r] (exp (exp 2 1/1200) r))
 
 (fact "Concert A is 440 Hz."
   (temperament/equal 69)            => 440.0
@@ -23,20 +24,16 @@
   (ratio-of temperament/equal 69 (- octave)) => 0.5)
 
 (fact "An equal temperament perfect fifth is flat by about two cents."
-  (/ (* 3/2 (temperament/equal 69)) (temperament/equal (+ 69 fifth)))
-    => (roughly (java.lang.Math/pow cent 1.96))
-  (/ (temperament/equal (- 69 fifth)) (* 2/3 (temperament/equal 69)))
-    => (roughly (java.lang.Math/pow cent 1.96)))
+  (* (cent 1.96) (ratio-of temperament/equal 69 fifth))      => (roughly 3/2)
+  (* (cent 1.96) (ratio-of temperament/equal 69 (- fourth))) => (roughly 3/4))
 
 (fact "An equal temperament major third is sharp by about 14 cents."
-  (/ (temperament/equal (+ 69 major-third)) (* 5/4 (temperament/equal 69)))
-    => (roughly (java.lang.Math/pow cent 13.69))
-  (/ (* 4/5  (temperament/equal 69)) (temperament/equal (- 69 major-third)))
-    => (roughly (java.lang.Math/pow cent 13.69)))
+  (/ (ratio-of temperament/equal 69 major-third) (cent 13.69))     => (roughly 5/4)
+  (* (ratio-of temperament/equal 69 (- major-third)) (cent 13.69)) => (roughly 4/5))
 
 (fact "An equal temperament semitone is the twelfth root of two."
-  (ratio-of temperament/equal 69 semitone) => (roughly (java.lang.Math/pow 2 1/12))
-  (ratio-of temperament/equal 68 semitone) => (roughly (java.lang.Math/pow 2 1/12)))
+  (ratio-of temperament/equal 69 semitone) => (roughly (exp 2 1/12))
+  (ratio-of temperament/equal 68 semitone) => (roughly (exp 2 1/12)))
 
 (fact "Pythagorean temperament has pure fifths, fourths and octaves."
   (ratio-of (temperament/pythagorean 69) 69 fifth)      => 3/2
