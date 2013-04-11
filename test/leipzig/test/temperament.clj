@@ -14,15 +14,15 @@
 (defn- cent [r] (exp 2 (/ r 1200)))
 
 (fact "Concert A is 440 Hz, regardless of tuning."
-  (temperament/equal 69)            => 440.0
+  (temperament/equal 69)            => 440
   ((temperament/pythagorean 69) 69) => 440
   ((temperament/pythagorean 70) 69) => 440
   ((temperament/meantone 69) 69)    => 440
   ((temperament/meantone 70) 69)    => 440.0) 
 
 (fact "Equal temperament has pure octaves."
-  (ratio-of temperament/equal 69 octave)     => 2.0 
-  (ratio-of temperament/equal 69 (- octave)) => 0.5)
+  (ratio-of temperament/equal 69 octave)     => 2/1 
+  (ratio-of temperament/equal 69 (- octave)) => 1/2)
 
 (fact "An equal temperament perfect fifth is flat by about two cents."
   (* (cent 1.96) (ratio-of temperament/equal 69 fifth))      => (roughly 3/2)

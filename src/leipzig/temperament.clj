@@ -2,12 +2,6 @@
 
 (defn- align [tuning] (comp (partial * ( / 440 (tuning 69))) tuning))
 
-(defn equal
-  "Converts midi to hertz using equal temperament.
-  e.g. (equal 69)"
-  [midi]
-  ((align #(java.lang.Math/pow 2 (/ % 12))) midi))
-
 (defn- tune 
   [root raw-ratios] 
   (let [ratios (->> raw-ratios
@@ -22,6 +16,11 @@
                     (> normal 11) (* 2 (temper (- midi 12)))
                     :otherwise (nth ratios normal))))]
     (align scale)))
+
+(def equal
+  "Converts midi to hertz using equal temperament.
+  e.g. (equal 69)"
+  (tune 69 (repeat 11 (java.lang.Math/pow 2 1/12))))
 
 (defn pythagorean
   "Returns a function that converts midi to hertz using Pythagorean tuning, measuring
