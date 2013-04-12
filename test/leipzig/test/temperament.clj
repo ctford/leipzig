@@ -1,5 +1,6 @@
 (ns leipzig.test.temperament
-  (:use midje.sweet [leipzig.temperament :as temperament]))
+  (:use midje.sweet) 
+  (:require [leipzig.temperament :as temperament]))
 
 (defn- ratio-of [tuning base interval] (/ (tuning (+ base interval)) (tuning base)))
 (defmacro def- [sym init] `(def ^{:private true} ~sym ~init))
