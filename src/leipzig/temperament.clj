@@ -69,6 +69,19 @@
                                                      wide-fifth narrow-fifth])]
     (tune root ratios)))
 
+(defn werckmeister-iii 
+  "Returns a function that converts midi to hertz using Werckmeister's well-temperament
+  based on 1/4 comma divisions (Werckmeister III). Ratios are relative to root.
+  e.g. ((werckmeister-iii 61) 69)"
+  [root] 
+   (let [pure-fifth 3/2
+         narrow-fifth (/ pure-fifth (java.lang.Math/pow pythagorean-comma 1/4)) 
+         wide-fifth (* pure-fifth (java.lang.Math/pow pythagorean-comma 1/4)) 
+         ratios (mapcat repeat [2 2 2 2 1 2] [pure-fifth narrow-fifth
+                                              pure-fifth narrow-fifth
+                                              wide-fifth pure-fifth])] 
+     (tune root ratios)))  
+
 (def well
   "Returns a function that converts midi to hertz using Werckmeister I well-temperament.
   See werckmeister-i.

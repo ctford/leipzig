@@ -11,21 +11,24 @@
 (def- fourth 5)
 (def- major-third 4)
 (def- minor-third 3)
+(def- tone 2)
 (def- semitone 1)
 
 (def- exp #(java.lang.Math/pow %1 %2))
 (defn- cent [r] (exp 2 (/ r 1200)))
 
 (fact "Concert A is 440 hertz, regardless of tuning."
-  (temperament/equal 69)                => 440
-  ((temperament/pythagorean 69) 69)     => 440
-  ((temperament/pythagorean 70) 69)     => 440
-  ((temperament/meantone 69) 69)        => 440
-  ((temperament/meantone 70) 69)        => 440.0
-  ((temperament/werckmeister-i 69) 69)  => 440
-  ((temperament/werckmeister-i 70) 69)  => 440.0
-  ((temperament/werckmeister-ii 69) 69) => 440
-  ((temperament/werckmeister-ii 70) 69) => 440.0) 
+  (temperament/equal 69)                 => 440
+  ((temperament/pythagorean 69) 69)      => 440
+  ((temperament/pythagorean 70) 69)      => 440
+  ((temperament/meantone 69) 69)         => 440
+  ((temperament/meantone 70) 69)         => 440.0
+  ((temperament/werckmeister-i 69) 69)   => 440
+  ((temperament/werckmeister-i 70) 69)   => 440.0
+  ((temperament/werckmeister-ii 69) 69)  => 440
+  ((temperament/werckmeister-ii 70) 69)  => 440.0
+  ((temperament/werckmeister-iii 69) 69) => 440
+  ((temperament/werckmeister-iii 70) 69) => 440.0) 
 
 (fact "Equal temperament has pure octaves."
   (ratio-of temperament/equal 69 octave)     => 2/1 
@@ -65,3 +68,7 @@
 (fact "Werckmeister II has pure fourths." 
   (ratio-of (temperament/werckmeister-ii 69) 69 minor-third)  => (roughly 32/27) 
   (ratio-of (temperament/werckmeister-ii 69) 69 fourth)       => (roughly 4/3))
+
+(fact "Werckmeister III has pure fifths and seconds." 
+  (ratio-of (temperament/werckmeister-iii 69) 69 tone)  => (roughly 9/8) 
+  (ratio-of (temperament/werckmeister-iii 69) 69 fifth) => (roughly 3/2))
