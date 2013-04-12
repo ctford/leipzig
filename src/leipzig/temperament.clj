@@ -28,10 +28,10 @@
   ratios relative to root. The wolf tone is the fifth from one midi above root.
   e.g. ((pythagorean 61) 69)"
   [root] 
-  (let [pure-fifth 3/2 
-        wolf (/ pure-fifth pythagorean-comma)
-        ratios (mapcat repeat [7 1 3] [pure-fifth wolf pure-fifth])]
-    (tune root ratios)))
+  (let [pure 3/2 
+        wolf (/ pure pythagorean-comma)
+        fifths (mapcat repeat [7 1 3] [pure wolf pure])]
+    (tune root fifths)))
 
 (defn meantone 
   "Returns a function that converts midi to hertz using quarter-comma meantone tuning,
@@ -39,48 +39,42 @@
   many wolf tones.
   e.g. ((meantone 61) 69)"
   [root] 
-  (let [impure-fifth (java.lang.Math/pow 5 1/4)
-        wolf (* impure-fifth 128/125)
-        ratios (mapcat repeat [7 1 3] [impure-fifth wolf impure-fifth])]
-    (tune root ratios)))
+  (let [narrow (java.lang.Math/pow 5 1/4)
+        wolf (* narrow 128/125)
+        fifths (mapcat repeat [7 1 3] [narrow wolf narrow])]
+    (tune root fifths)))
 
 (defn werckmeister-i
   "Returns a function that converts midi to hertz using Werckmeister's well-temperament
   based on 1/4 comma divisions (Werkmeister I). Ratios are relative to root.
   e.g. ((werckmeister-i 61) 69)"
   [root] 
-  (let [pure-fifth 3/2
-        narrow-fifth (/ pure-fifth (java.lang.Math/pow pythagorean-comma 1/4)) 
-        ratios (mapcat repeat [3 2 1 5] [narrow-fifth pure-fifth narrow-fifth pure-fifth])]
-    (tune root ratios)))
+  (let [pure 3/2
+        narrow (/ pure (java.lang.Math/pow pythagorean-comma 1/4)) 
+        fifths [narrow narrow narrow pure pure narrow pure pure pure pure pure]]
+    (tune root fifths)))
 
 (defn werckmeister-ii
   "Returns a function that converts midi to hertz using Werckmeister's well-temperament
   based on 1/3 comma divisions (Werckmeister II). Ratios are relative to root.
   e.g. ((werckmeister-ii 61) 69)"
   [root] 
-  (let [pure-fifth 3/2
-        narrow-fifth (/ pure-fifth (java.lang.Math/pow pythagorean-comma 1/3)) 
-        wide-fifth (* pure-fifth (java.lang.Math/pow pythagorean-comma 1/3)) 
-        ratios (mapcat repeat [1 1 1 1 1 1 1 1 2 1] [narrow-fifth pure-fifth
-                                                     narrow-fifth pure-fifth
-                                                     narrow-fifth pure-fifth
-                                                     narrow-fifth pure-fifth
-                                                     wide-fifth narrow-fifth])]
-    (tune root ratios)))
+  (let [pure 3/2
+        narrow (/ pure (java.lang.Math/pow pythagorean-comma 1/3)) 
+        wide (* pure (java.lang.Math/pow pythagorean-comma 1/3)) 
+        fifths [narrow pure narrow pure narrow pure narrow pure wide wide narrow]]
+    (tune root fifths)))
 
 (defn werckmeister-iii 
   "Returns a function that converts midi to hertz using Werckmeister's well-temperament
   based on 1/4 comma divisions (Werckmeister III). Ratios are relative to root.
   e.g. ((werckmeister-iii 61) 69)"
   [root] 
-   (let [pure-fifth 3/2
-         narrow-fifth (/ pure-fifth (java.lang.Math/pow pythagorean-comma 1/4)) 
-         wide-fifth (* pure-fifth (java.lang.Math/pow pythagorean-comma 1/4)) 
-         ratios (mapcat repeat [2 2 2 2 1 2] [pure-fifth narrow-fifth
-                                              pure-fifth narrow-fifth
-                                              wide-fifth pure-fifth])] 
-     (tune root ratios)))  
+   (let [pure 3/2
+         narrow (/ pure (java.lang.Math/pow pythagorean-comma 1/4)) 
+         wide (* pure (java.lang.Math/pow pythagorean-comma 1/4)) 
+         fifths [pure pure narrow narrow pure pure narrow narrow wide pure pure]] 
+     (tune root fifths)))  
 
 (def well
   "Returns a function that converts midi to hertz using Werckmeister I well-temperament.
