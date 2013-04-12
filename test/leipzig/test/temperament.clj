@@ -17,11 +17,15 @@
 (defn- cent [r] (exp 2 (/ r 1200)))
 
 (fact "Concert A is 440 hertz, regardless of tuning."
-  (temperament/equal 69)            => 440
-  ((temperament/pythagorean 69) 69) => 440
-  ((temperament/pythagorean 70) 69) => 440
-  ((temperament/meantone 69) 69)    => 440
-  ((temperament/meantone 70) 69)    => 440.0) 
+  (temperament/equal 69)                => 440
+  ((temperament/pythagorean 69) 69)     => 440
+  ((temperament/pythagorean 70) 69)     => 440
+  ((temperament/meantone 69) 69)        => 440
+  ((temperament/meantone 70) 69)        => 440.0
+  ((temperament/werckmeister-i 69) 69)  => 440
+  ((temperament/werckmeister-i 70) 69)  => 440.0
+  ((temperament/werckmeister-ii 69) 69) => 440
+  ((temperament/werckmeister-ii 70) 69) => 440.0) 
 
 (fact "Equal temperament has pure octaves."
   (ratio-of temperament/equal 69 octave)     => 2/1 
@@ -58,6 +62,6 @@
   (ratio-of (temperament/werckmeister-i 69) 69 minor-third)   => (roughly 32/27) 
   (ratio-of (temperament/werckmeister-i 69) 69 major-seventh) => (roughly 16/9))
 
-(fact "Werckmeister II has pure fourths."
+(fact "Werckmeister II has pure fourths." 
   (ratio-of (temperament/werckmeister-ii 69) 69 minor-third)  => (roughly 32/27) 
   (ratio-of (temperament/werckmeister-ii 69) 69 fourth)       => (roughly 4/3))
