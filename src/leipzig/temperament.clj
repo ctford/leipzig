@@ -46,7 +46,7 @@
 
 (defn werckmeister-i
   "Returns a function that converts midi to hertz using Werckmeister's well-temperament
-  based on 1/4 comma divisions, measuring ratios relative to root.
+  based on 1/4 comma divisions (Werkmeister I). Ratios are relative to root.
   e.g. ((werckmeister-i 61) 69)"
   [root] 
   (let [pure-fifth 3/2
@@ -56,7 +56,7 @@
 
 (defn werckmeister-ii
   "Returns a function that converts midi to hertz using Werckmeister's well-temperament
-  based on 1/3 comma divisions, measuring ratios relative to root.
+  based on 1/3 comma divisions (Werckmeister II). Ratios are relative to root.
   e.g. ((werckmeister-ii 61) 69)"
   [root] 
   (let [pure-fifth 3/2
@@ -68,3 +68,9 @@
                                                      narrow-fifth pure-fifth
                                                      wide-fifth narrow-fifth])]
     (tune root ratios)))
+
+(def well
+  "Returns a function that converts midi to hertz using Werckmeister I well-temperament.
+  See werckmeister-i.
+  e.g. ((well 61) 69)" 
+  werckmeister-i)
