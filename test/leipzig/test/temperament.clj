@@ -6,6 +6,7 @@
 (defmacro def- [sym init] `(def ^{:private true} ~sym ~init))
 
 (def- octave 12)
+(def- major-seventh 10)
 (def- fifth 7)
 (def- fourth 5)
 (def- major-third 4)
@@ -14,7 +15,7 @@
 (def- exp #(java.lang.Math/pow %1 %2))
 (defn- cent [r] (exp 2 (/ r 1200)))
 
-(fact "Concert A is 440 Hz, regardless of tuning."
+(fact "Concert A is 440 hertz, regardless of tuning."
   (temperament/equal 69)            => 440
   ((temperament/pythagorean 69) 69) => 440
   ((temperament/pythagorean 70) 69) => 440
@@ -50,3 +51,7 @@
   (ratio-of (temperament/meantone 69) 69 (- major-third)) => (roughly 4/5) 
   (ratio-of (temperament/meantone 69) 69 octave)          => 2/1 
   (ratio-of (temperament/meantone 69) 69 (- octave))      => 1/2)
+
+(fact "Werckmeister I has pure fourths and dominant sevenths."
+  (ratio-of (temperament/werckmeister-i 69) 69 fourth)        => (roughly 4/3) 
+  (ratio-of (temperament/werckmeister-i 69) 69 major-seventh) => (roughly 16/9))

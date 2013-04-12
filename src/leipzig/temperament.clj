@@ -42,3 +42,13 @@
         wolf (* impure-fifth 128/125)
         ratios (mapcat repeat [7 1 3] [impure-fifth wolf impure-fifth])]
     (tune root ratios)))
+
+(defn werckmeister-i 
+  "Returns a function that converts midi to hertz using Werckmeister's well-temperament
+  based on 1/4 comma divisions, measuring ratios relative to root.
+  e.g. ((werckmeister-i 61) 69)"
+  [root] 
+  (let [pure-fifth 3/2
+        impure-fifth (* 8/9 (java.lang.Math/pow 8 1/4))
+        ratios (mapcat repeat [3 2 1 5] [impure-fifth pure-fifth impure-fifth pure-fifth])]
+    (tune root ratios)))
