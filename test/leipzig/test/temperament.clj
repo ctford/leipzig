@@ -10,6 +10,7 @@
 (def- fifth 7)
 (def- fourth 5)
 (def- major-third 4)
+(def- minor-third 3)
 (def- semitone 1)
 
 (def- exp #(java.lang.Math/pow %1 %2))
@@ -54,4 +55,9 @@
 
 (fact "Werckmeister I has pure fourths and dominant sevenths."
   (ratio-of (temperament/werckmeister-i 69) 69 fourth)        => (roughly 4/3) 
+  (ratio-of (temperament/werckmeister-i 69) 69 minor-third)   => (roughly 32/27) 
   (ratio-of (temperament/werckmeister-i 69) 69 major-seventh) => (roughly 16/9))
+
+(fact "Werckmeister II has pure fourths."
+  (ratio-of (temperament/werckmeister-ii 69) 69 minor-third)  => (roughly 32/27) 
+  (ratio-of (temperament/werckmeister-ii 69) 69 fourth)       => (roughly 4/3))
