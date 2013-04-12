@@ -1,20 +1,21 @@
 (ns leipzig.temperament)
 
-(defn- align-concert-a [tuning] (comp (partial * ( / 440 (tuning 69))) tuning))
+(defn- align-concert-a [tuning] (fn [midi] (-> midi tuning (* (/ 440 (tuning 69))))))
+(def ^{:private true} geometric-progression (partial reductions * 1))
 
 (defn- tune 
-  [root raw-ratios] 
-  (let [ratios (->> raw-ratios
-          (reductions * 1)
-          (map (fn normalise [r] (if (< r 2) r (normalise (/ r 2))))) 
-          sort) 
-        scale (fn temper [midi]
+  [root incremental-ratios] 
+  (let [ratios (->>
+                 (geometric-progression incremental-ratios) 
+                 (map (fn normalise [ratio] (if (< ratio 2) ratio (normalise (/ ratio 2))))) 
+                 sort) 
+        tuning (fn temper [midi]
                 (let [normal (- midi root)]
                   (cond
                     (< normal 0) (* 1/2 (temper (+ midi 12)))
                     (> normal 11) (* 2 (temper (- midi 12)))
                     :otherwise (nth ratios normal))))]
-    (align-concert-a scale)))
+    (align-concert-a tuning)))
 
 (def equal
   "Converts midi to hertz using equal temperament.
