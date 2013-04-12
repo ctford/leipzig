@@ -1,5 +1,6 @@
 (ns leipzig.test.temperament
-  (:use midje.sweet [leipzig.temperament :as temperament]))
+  (:use midje.sweet) 
+  (:require [leipzig.temperament :as temperament]))
 
 (defn- ratio-of [tuning base interval] (/ (tuning (+ base interval)) (tuning base)))
 (defmacro def- [sym init] `(def ^{:private true} ~sym ~init))
@@ -15,8 +16,8 @@
 
 (fact "Concert A is 440 Hz, regardless of tuning."
   (temperament/equal 69)            => 440
-  ((temperament/pythagorean 69) 69) => 440
-  ((temperament/pythagorean 70) 69) => 440
+  ((temperament/just 69) 69) => 440
+  ((temperament/just 70) 69) => 440
   ((temperament/meantone 69) 69)    => 440
   ((temperament/meantone 70) 69)    => 440.0) 
 
@@ -37,12 +38,12 @@
   (ratio-of temperament/equal 68 semitone) => (roughly (exp 2 1/12)))
 
 (fact "Pythagorean temperament has pure fifths, fourths and octaves."
-  (ratio-of (temperament/pythagorean 69) 69 fifth)      => 3/2
-  (ratio-of (temperament/pythagorean 69) 69 (- fourth)) => 3/4
-  (ratio-of (temperament/pythagorean 69) 69 fourth)     => 4/3
-  (ratio-of (temperament/pythagorean 69) 69 (- fifth))  => 2/3
-  (ratio-of (temperament/pythagorean 69) 69 octave)     => 2/1
-  (ratio-of (temperament/pythagorean 69) 69 (- octave)) => 1/2)
+  (ratio-of (temperament/just 69) 69 fifth)      => 3/2
+  (ratio-of (temperament/just 69) 69 (- fourth)) => 3/4
+  (ratio-of (temperament/just 69) 69 fourth)     => 4/3
+  (ratio-of (temperament/just 69) 69 (- fifth))  => 2/3
+  (ratio-of (temperament/just 69) 69 octave)     => 2/1
+  (ratio-of (temperament/just 69) 69 (- octave)) => 1/2)
 
 (fact "Meantone temperament has pure major thirds and octaves."
   (ratio-of (temperament/meantone 69) 69 major-third)     => (roughly 5/4) 
