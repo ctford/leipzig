@@ -50,8 +50,3 @@
 (fact "with is lazy."
   (take 2 (with (repeat {:time 1}) (repeat {:time 2}))) =>
     [{:time 1}, {:time 1}])
-
-(defmethod play-note :foo [note] :bar)
-(fact
-  (-> {:part :foo} play-note) =>
-    :bar)
