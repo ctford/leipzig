@@ -35,3 +35,10 @@ To play a melody, define a default arrangement, put the melody into a particular
       (where :duration (bpm 90))
       (where :pitch (comp C major))
       play)
+
+Tests
+-----
+
+To run the unit tests without having to start Overtone's Supercollider server:
+
+    lein midje test.*
