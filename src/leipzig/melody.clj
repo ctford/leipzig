@@ -1,6 +1,4 @@
-(ns leipzig.melody
-  (:use
-    [overtone.live :only [at now]]))
+(ns leipzig.melody)
 
 (defn bpm
   "Returns a function that translates a beat number into milliseconds.
@@ -69,27 +67,3 @@
   "Repeats notes n times.
   e.g. (->> bassline (times 4))"
   [n notes] (reduce then (repeat n notes)))
-
-(defmulti play-note
-  "Plays a note according to its :part.
-  e.g. (play-note {:part :bass :time _})"
-  :part)
-
-(defn- trickle [notes]
-  (if-let [{epoch :time :as note} (first notes)]
-    (do
-      (Thread/sleep (max 0 (- epoch (+ 100 (now))))) 
-      (cons note 
-        (lazy-seq (trickle (rest notes)))))))
-
-(defn play
-  "Plays notes now.
-  e.g. (->> melody play)"
-  [notes] 
-  (future
-    (->>
-      notes
-      (after (now))
-      trickle
-      (map (fn [{epoch :time :as note}] (->> note play-note (at epoch))))
-      dorun)))

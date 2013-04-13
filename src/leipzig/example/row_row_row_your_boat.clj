@@ -2,7 +2,8 @@
   (:use
     leipzig.melody
     leipzig.scale
-    leipzig.canon)
+    leipzig.canon
+    leipzig.live)
   (:require [overtone.live :as overtone]
             [overtone.synth.stringed :as strings])) 
 
