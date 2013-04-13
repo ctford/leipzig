@@ -47,12 +47,12 @@
   (ratio-of temperament/equal 68 semitone) => (roughly (exp 2 1/12)))
 
 (fact "Pythagorean temperament has pure fifths, fourths and octaves."
-  (ratio-of (temperament/just 69) 69 fifth)      => 3/2
-  (ratio-of (temperament/just 69) 69 (- fourth)) => 3/4
-  (ratio-of (temperament/just 69) 69 fourth)     => 4/3
-  (ratio-of (temperament/just 69) 69 (- fifth))  => 2/3
-  (ratio-of (temperament/just 69) 69 octave)     => 2/1
-  (ratio-of (temperament/just 69) 69 (- octave)) => 1/2)
+  (ratio-of (temperament/pythagorean 69) 69 fifth)      => 3/2
+  (ratio-of (temperament/pythagorean 69) 69 (- fourth)) => 3/4
+  (ratio-of (temperament/pythagorean 69) 69 fourth)     => 4/3
+  (ratio-of (temperament/pythagorean 69) 69 (- fifth))  => 2/3
+  (ratio-of (temperament/pythagorean 69) 69 octave)     => 2/1
+  (ratio-of (temperament/pythagorean 69) 69 (- octave)) => 1/2)
 
 (fact "Meantone temperament has pure major thirds and octaves."
   (ratio-of (temperament/meantone 69) 69 major-third)     => (roughly 5/4) 

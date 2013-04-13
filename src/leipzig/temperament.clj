@@ -23,10 +23,10 @@
   e.g. (equal 69)"
   (tune 69 (repeat 11 (java.lang.Math/pow 2 1/12))))
 
-(defn just 
-  "Returns a function that converts midi to hertz using just intonation, measuring
+(defn pythagorean 
+  "Returns a function that converts midi to hertz using Pythagorean temperament, measuring
   ratios relative to root. The wolf tone is the fifth from one midi above root.
-  e.g. ((just 61) 69)"
+  e.g. ((pythagorean 61) 69)"
   [root] 
   (let [pure 3/2 
         wolf (/ pure pythagorean-comma)
