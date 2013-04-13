@@ -1,12 +1,16 @@
 (ns leipzig.temperament)
 
+(def pythagorean-comma
+  "The difference between an octave constructed out of pure fifths, and one constructed
+  from a pure 2/1 ratio."
+  531441/524288)
+
 (defn- align-concert-a [tuning] (fn [midi] (-> midi tuning (* (/ 440 (tuning 69))))))
-(def ^{:private true} geometric-progression (partial reductions * 1))
-(def ^{:private true} pythagorean-comma 531441/524288)
 
 (defn- tune 
   [root incremental-ratios] 
-  (let [ratios (->>
+  (let [geometric-progression (partial reductions * 1)
+        ratios (->>
                  (geometric-progression incremental-ratios) 
                  (map (fn normalise [ratio] (if (< ratio 2) ratio (normalise (/ ratio 2))))) 
                  sort) 
