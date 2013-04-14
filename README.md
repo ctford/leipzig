@@ -41,4 +41,4 @@ Tests
 
 To run the unit tests without having to start Overtone's Supercollider server:
 
-    lein midje test.*
+    lein midje leipzig.test.*
