@@ -35,7 +35,7 @@
 (defn jam*
   "Plays riff repeatedly, freshly dereferencing it each time.
   riff must be a var, not an arbitrary expression.
-  e.g. (jam* (var riff))"
+  e.g. (jam* (var melody))"
   [riff]
   (->> riff forever play))
 
