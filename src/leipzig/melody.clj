@@ -67,3 +67,13 @@
   "Repeats notes n times.
   e.g. (->> bassline (times 4))"
   [n notes] (reduce then (repeat n notes)))
+
+(defn lower
+  "Lower degree one octave (assuming a heptatonic scale)."
+  [degree]
+  ((from -7) degree))
+
+(defn raise
+  [degree]
+  "Raise degree one octave (assuming a heptatonic scale)."
+  ((from 7) degree))
