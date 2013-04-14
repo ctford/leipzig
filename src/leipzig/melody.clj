@@ -56,12 +56,13 @@
     :otherwise    (cons b (lazy-seq (with as other-bs)))))
 
 (defn then 
-  "Sequences second after first.
+  "Sequences later after earlier. 
   e.g. (->> call (then response))"
-  [second first]
-    (let [{time :time duration :duration} (last first)
-          shifted (after (+ duration time) second)]
-      (with first shifted)))
+  [later earlier]
+    (let [{time :time duration :duration} (last earlier)]
+      (->> earlier
+        (with
+          (->> later (after (+ duration time)))))))
 
 (defn times
   "Repeats notes n times.
