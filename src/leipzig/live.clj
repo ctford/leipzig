@@ -30,7 +30,7 @@
   (let [{final :time, duration :duration} (last @riff)]
     (concat
       @riff
-      (lazy-seq (->> (forever riff) (after (+ final duration)))))))
+      (lazy-seq (->> riff forever (after (+ final duration)))))))
 
 (defn jam*
   "Plays riff repeatedly, freshly dereferencing it each time.
