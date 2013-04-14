@@ -2,7 +2,7 @@
   (:use midje.sweet leipzig.scale))
 
 (fact
-  (map (comp B lydian low) (range 0 8)) =>
+  (map (comp low B lydian) (range 0 8)) =>
   [59 61 63 65 66 68 70 71])
 
 (fact
@@ -34,7 +34,7 @@
   [71 69 68 66 64 63 61 59])
 
 (fact "Fractional degrees represent accidentals."
-  (map (comp C phrygian high) [0 1 3/2 2 5/2 3 7/2 4 5 11/2 6 13/2 7]) =>
+  (map (comp high C phrygian) [0 1 3/2 2 5/2 3 7/2 4 5 11/2 6 13/2 7]) =>
   (range 72 85))
 
 (fact "Fractional degrees are linearly interpolated."

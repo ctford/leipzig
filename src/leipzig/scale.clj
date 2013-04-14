@@ -49,5 +49,5 @@
 
 (def minor aeolian)
 
-(def low #(- % 7))
-(def high #(+ % 7))
+(defn low [midi] ((from -12) midi))
+(defn high [midi] ((from 12) midi))
