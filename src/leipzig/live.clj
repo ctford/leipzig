@@ -1,6 +1,6 @@
 (ns leipzig.live
-  (:require [overtone.live :as overtone]
-            [leipzig.melody :as melody]))
+  (:use [leipzig.melody])
+  (:require [overtone.live :as overtone]))
 
 (defmulti play-note
   "Plays a note according to its :part.
@@ -21,7 +21,7 @@
   (future
     (->>
       notes
-      (melody/after (overtone/now))
+      (after (overtone/now))
       trickle
       (map (fn [{epoch :time :as note}] (->> note play-note (overtone/at epoch))))
       dorun)))
@@ -32,7 +32,7 @@
   (let [{final :time, duration :duration} (last @riff)]
     (concat
       @riff
-      (lazy-seq (->> (forever riff) (melody/where :time (from (+ final duration))))))))
+      (lazy-seq (->> (forever riff) (where :time (from (+ final duration))))))))
 
 (defn jam*
   "Plays riff repeatedly, freshly dereferencing it each time.
@@ -42,10 +42,9 @@
   (->> riff forever play))
 
 (defmacro jam 
-  "Plays riff repeatedly, freshly dereferencing it each time.
-  riff must be a symbol, not an arbitrary expression.
+  "Plays riff-symbol repeatedly, freshly dereferencing its var each time.
   e.g.
     (def riff (phrase [1 2] [3 4])) 
     (jam riff)"
-  [riff] 
-  `(jam* (var ~riff))) 
+  [riff-symbol] 
+  `(jam* (var ~riff-symbol))) 
