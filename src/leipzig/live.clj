@@ -26,13 +26,11 @@
       (map (fn [{epoch :time :as note}] (->> note play-note (overtone/at epoch))))
       dorun)))
 
-(defn- from [base] (partial + base))
-
 (defn- forever [riff]
   (let [{final :time, duration :duration} (last @riff)]
     (concat
       @riff
-      (lazy-seq (->> (forever riff) (where :time (from (+ final duration))))))))
+      (lazy-seq (->> (forever riff) (after (+ final duration)))))))
 
 (defn jam*
   "Plays riff repeatedly, freshly dereferencing it each time.
