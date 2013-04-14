@@ -1,6 +1,5 @@
-(ns leipzig.scale 
-    (:use
-       [clojure.math.numeric-tower :only [floor ceil]]))
+(ns leipzig.scale
+  (:require [clojure.math.numeric-tower :as math]))
 
 (defmacro defs {:private true} [names values]
   `(do ~@(map
@@ -12,9 +11,9 @@
 (defmulti scale-of
   (fn [intervals degree]
     (cond 
-      (not= degree (floor degree)) :fraction
-      (neg? degree)                :negative
-      :otherwise                   :natural)))
+      (not= degree (math/floor degree)) :fraction
+      (neg? degree)                     :negative
+      :otherwise                        :natural)))
 
 (defn scale [intervals] (partial scale-of intervals))
 
@@ -23,9 +22,9 @@
 (defmethod scale-of :negative [intervals degree]
   (->> degree - (scale-of (reverse intervals)) -))
 (defmethod scale-of :fraction [intervals degree]
-  (let [lower (scale-of intervals (floor degree))
-        upper (scale-of intervals (ceil degree))
-        fraction (- degree (floor degree))]
+  (let [lower (scale-of intervals (math/floor degree))
+        upper (scale-of intervals (math/ceil degree))
+        fraction (- degree (math/floor degree))]
   (+ lower (* fraction (- upper lower)))))
 
 (def major (scale [2 2 1 2 2 2 1]))
