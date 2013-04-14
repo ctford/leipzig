@@ -50,11 +50,3 @@
 (fact "with is lazy."
   (take 2 (with (repeat {:time 1}) (repeat {:time 2}))) =>
     [{:time 1}, {:time 1}])
-
-(fact
-  (->> [{:pitch 1} {:pitch 2}] (where :pitch raise)) =>
-    [{:pitch 8}, {:pitch 9}])
-
-(fact
-  (->> [{:pitch 1} {:pitch 2}] (where :pitch lower)) =>
-    [{:pitch -6}, {:pitch -5}])

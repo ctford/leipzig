@@ -32,7 +32,7 @@
 (def pentatonic (scale [3 2 2 3 2]))
 (def chromatic (scale [1]))
 
-(defn- from [base] (partial + base))
+(defn from [base] (partial + base))
 
 (defs [sharp flat] [inc dec])
 (defs [C D E F G A B]
@@ -48,5 +48,24 @@
 
 (def minor aeolian)
 
-(defn low [midi] ((from -12) midi))
-(defn high [midi] ((from 12) midi))
+(defn low
+  "Lower midi one octave.
+  e.g. (comp low D minor)"
+  [midi]
+  ((from -12) midi))
+
+(defn high
+  "Raise midi one octave.
+  e.g. (comp high C major)"
+  [midi]
+  ((from 12) midi))
+
+(defn lower
+  "Lower midi one octave."
+  [degree]
+  ((from -7) degree))
+
+(defn raise
+  [degree]
+  "Raise degree one octave (assuming a heptatonic scale)."
+  ((from 7) degree))

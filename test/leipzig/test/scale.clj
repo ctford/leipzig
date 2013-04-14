@@ -40,3 +40,11 @@
 (fact "Fractional degrees are linearly interpolated."
   (map blues [0 1/3 2/3 1 3/2 2 3 4 13/3 14/3 5 11/2 6]) =>
   (range 13))
+
+(fact "high and low change octaves in midi."
+  (high 0) => 12 
+  (low 12) => 0)
+
+(fact "raise and lower change octaves in (heptatonic) degrees."
+  (raise 0) => 7 
+  (lower 7) => 0)

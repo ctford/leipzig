@@ -1,4 +1,5 @@
-(ns leipzig.melody)
+(ns leipzig.melody
+  (:use [leipzig.scale]))
 
 (defn bpm
   "Returns a function that translates a beat number into milliseconds.
@@ -37,8 +38,6 @@
   [k f notes]
   (wherever (is true), k f notes))
 
-(defn- from [base] (partial + base))
-
 (defn after
   "Delay notes by wait.
   e.g. (->> melody (after 3))"
@@ -68,13 +67,3 @@
   "Repeats notes n times.
   e.g. (->> bassline (times 4))"
   [n notes] (reduce then (repeat n notes)))
-
-(defn lower
-  "Lower degree one octave (assuming a heptatonic scale)."
-  [degree]
-  ((from -7) degree))
-
-(defn raise
-  [degree]
-  "Raise degree one octave (assuming a heptatonic scale)."
-  ((from 7) degree))
