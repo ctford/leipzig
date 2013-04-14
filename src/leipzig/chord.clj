@@ -2,7 +2,6 @@
  (:require [clojure.set :as set]))
 
 (defn- from [n] (partial + n))
-(defn- lower [chord n k] (update-in chord [k] (from (- n))))
 (defn- update-all [m [k & ks] f]
  (if k
    (-> m (update-in [k] f) (update-all ks f))
