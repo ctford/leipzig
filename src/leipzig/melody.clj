@@ -8,8 +8,8 @@
 (defn- sum-n [series n] (apply + (take n series)))
 (defn- rhythm 
   [durations]
-  (let [timings (map (partial sum-n durations) (range))]
-    (map #(zipmap [:time :duration] [%1 %2]) timings durations)))
+  (let [times (reductions + 0 durations)]
+    (map #(zipmap [:time :duration] [%1 %2]) times durations)))
 
 (defn phrase
   "Translates a sequence of durations and pitches into a melody.
