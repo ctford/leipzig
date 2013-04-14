@@ -5,7 +5,7 @@
   e.g. ((bpm 90) 5)" 
   [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
 
-(defn- sum-n [series n] (reduce + (take n series)))
+(defn- sum-n [series n] (apply + (take n series)))
 (defn- rhythm 
   [durations]
   (let [timings (map (partial sum-n durations) (range))]
