@@ -58,5 +58,5 @@
 
 (comment
   (row-row (bpm 120) (comp C sharp major))
-  (row-row (bpm 90) (comp B flat low low minor))
+  (row-row (bpm 90) (comp low B flat minor))
 )
