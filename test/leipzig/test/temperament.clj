@@ -3,7 +3,7 @@
   (:require [leipzig.temperament :as temperament]))
 
 (defn- ratio-of [tuning base interval] (/ (tuning (+ base interval)) (tuning base)))
-(defmacro def- [sym init] `(def ^{:private true} ~sym ~init))
+(defmacro def- [sym init] `(def ^:private ~sym ~init))
 
 (def- octave 12)
 (def- major-seventh 10)

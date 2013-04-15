@@ -1,7 +1,7 @@
 (ns leipzig.scale
   (:require [clojure.math.numeric-tower :as math]))
 
-(defmacro defs {:private true} [names values]
+(defmacro defs ^:private [names values]
   `(do ~@(map
      (fn [name value] `(def ~name ~value))
      names (eval values))))
