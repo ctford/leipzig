@@ -4,7 +4,7 @@ A composition library for [Overtone](https://github.com/overtone/overtone) by [@
 
 Examples
 --------
-See [Row, row, row your boat](leipzig/blob/master/src/leipzig/example/row_row_row_your_boat.clj) or [whelmed](https://github.com/ctford/whelmed).
+See [Row, row, row your boat](src/leipzig/example/row_row_row_your_boat.clj) or [whelmed](https://github.com/ctford/whelmed).
 
 Using it
 --------
@@ -41,4 +41,4 @@ Tests
 
 To run the unit tests without having to start Overtone's Supercollider server:
 
-    lein midje test.*
+    lein midje leipzig.test.*
