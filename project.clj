@@ -8,7 +8,7 @@
   :dependencies	[
     [org.clojure/clojure "1.4.0"]
     [overtone "0.8.0"]
-    [midje "1.5.1"]
     [org.clojure/math.numeric-tower "0.0.1"]]
-  :profiles {:dev {:plugins [[lein-midje "3.0.0"]]}}
-  )
+  :profiles {:dev
+             {:plugins [[lein-midje "3.0.0"]]
+              :dependencies [[midje "1.5.1"]]}})
