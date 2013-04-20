@@ -61,7 +61,7 @@
   ((from 12) midi))
 
 (defn lower
-  "Lower midi one octave."
+  "Lower degree one octave (assuming a heptatonic scale)."
   [degree]
   ((from -7) degree))
 
