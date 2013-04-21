@@ -31,6 +31,7 @@ New in 0.1.0
 ------------
 * *Addition* - Melodies are modelled as sequences of maps, ordered by :time.
 * *Addition* - `play` lazily sends notes to SuperCollider as they are required.
+* *Addition* - The `play-note` multimethod arranges notes to instrument on the :part key.
 * *Addition* - Scales are modelled as functions that translate degrees to midi.
 * *Addition* - Canons are modelled as functions that transform one melody into another. 
 * *Addition* - Chords are modelled as maps.
