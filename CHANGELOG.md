@@ -9,12 +9,12 @@ New in 0.4.0
 * *Breaking change* - `play` and `play-note` are in the new `leipzig.live` namespace.
 * *Breaking change* - `high` and `low` operate on midi, not degrees.
 * *Bug fix* - Fractional degrees are linearly interpolated by `scale`.
-* *Addition* - Alternatives to equal temperament are provided in `leipzig.temperament`.
 * *Addition* - `inversion` transforms chords.
 * *Addition* - `raise` and `lower` are like high and low, but for degrees.
 * *Addition* - `from` is public in `leipzig.scale`.
-* *Addition* - The `jam` macro in `leipzig.live` affords redef-aware looping.
 * *Addition* - `wherever` is like `where`, but selectively transforms notes.
+* *Experimental* - Alternatives to equal temperament are provided in `leipzig.temperament`.
+* *Experimental* - The `jam` macro in `leipzig.live` affords redef-aware looping.
 
 New in 0.3.0
 ------------
