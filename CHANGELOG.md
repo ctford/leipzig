@@ -15,7 +15,6 @@ New in 0.4.0
 * *Addition* - `from` is public in `leipzig.scale`.
 * *Addition* - `jam` macro added to `leipzig.live` allow redef-aware looping.
 * *Addition* - `wherever` is like `where`, but selectively transforms notes.
-* *Addition* - Change log. ;-)
 
 New in 0.3.0
 ------------
