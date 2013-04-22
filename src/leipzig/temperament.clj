@@ -6,6 +6,11 @@
   531441/524288)
 
 (defn- align-concert-a [tuning] (fn [midi] (-> midi tuning (* (/ 440 (tuning 69))))))
+(defn- temper [midi ratios]
+  (cond
+    (< midi 0) (* 1/2 (temper (+ midi 12) ratios))
+    (> midi 11) (* 2 (temper (- midi 12) ratios))
+    :otherwise (nth ratios midi)))
 
 (defn- tune 
   [root incremental-ratios] 
@@ -14,12 +19,7 @@
                  (geometric-progression incremental-ratios) 
                  (map (fn normalise [ratio] (if (< ratio 2) ratio (normalise (/ ratio 2))))) 
                  sort) 
-        tuning (fn temper [midi]
-                (let [normal (- midi root)]
-                  (cond
-                    (< normal 0) (* 1/2 (temper (+ midi 12)))
-                    (> normal 11) (* 2 (temper (- midi 12)))
-                    :otherwise (nth ratios normal))))]
+        tuning (fn [midi] (-> midi (- root) (temper ratios)))]
     (align-concert-a tuning)))
 
 (def equal
