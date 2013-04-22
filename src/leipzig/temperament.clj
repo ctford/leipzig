@@ -37,6 +37,15 @@
         fifths (mapcat repeat [7 1 3] [pure wolf pure])]
     (tune root fifths)))
 
+(defn just [root]
+  "Returns a function that converts midi to hertz using just intonation, measuring ratios
+  relative to root. Specifically, this is Ptolemy's intense diatonic scale, but has a
+  wolf tone from the major second to the fourth, which makes it unusable for aeolian mode.
+  e.g. ((just 61) 69)"
+  (align-concert-a
+    (fn [midi]
+      (temper (- midi root) [1/1 135/128 9/8 6/5 5/4 4/3 45/32 3/2 8/5 27/16 9/5 15/8]))))
+
 (defn meantone 
   "Returns a function that converts midi to hertz using quarter-comma meantone tuning,
   measuring ratios relative to root. The major third is a pure 5/4 ratio, but there are

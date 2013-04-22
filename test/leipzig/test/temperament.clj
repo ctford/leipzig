@@ -7,6 +7,7 @@
 
 (def- octave 12)
 (def- major-seventh 10)
+(def- minor-sixth 8)
 (def- fifth 7)
 (def- fourth 5)
 (def- major-third 4)
@@ -21,6 +22,8 @@
   (temperament/equal 69)                 => 440
   ((temperament/pythagorean 69) 69)      => 440
   ((temperament/pythagorean 70) 69)      => 440
+  ((temperament/just 69) 69)             => 440
+  ((temperament/just 70) 69)             => 440
   ((temperament/meantone 69) 69)         => 440
   ((temperament/meantone 70) 69)         => 440.0
   ((temperament/werckmeister-i 69) 69)   => 440
@@ -53,6 +56,16 @@
   (ratio-of (temperament/pythagorean 69) 69 (- fifth))  => 2/3
   (ratio-of (temperament/pythagorean 69) 69 octave)     => 2/1
   (ratio-of (temperament/pythagorean 69) 69 (- octave)) => 1/2)
+
+(fact "Just intonation has pure sixths, fifths, fourths, thirds and octaves."
+  (ratio-of (temperament/just 69) 69 fifth)           => 3/2
+  (ratio-of (temperament/just 69) 69 (- fourth))      => 3/4
+  (ratio-of (temperament/just 69) 69 fourth)          => 4/3
+  (ratio-of (temperament/just 69) 69 (- fifth))       => 2/3
+  (ratio-of (temperament/just 69) 69 major-third)     => 5/4
+  (ratio-of (temperament/just 69) 69 (- minor-sixth)) => 5/8
+  (ratio-of (temperament/just 69) 69 octave)          => 2/1
+  (ratio-of (temperament/just 69) 69 (- octave))      => 1/2)
 
 (fact "Meantone temperament has pure major thirds and octaves."
   (ratio-of (temperament/meantone 69) 69 major-third)     => (roughly 5/4) 
