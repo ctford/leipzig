@@ -39,8 +39,8 @@
 
 (defn just [root]
   "Returns a function that converts midi to hertz using just intonation, measuring ratios
-  relative to root. Specifically, this is Ptolemy's intense diatonic scale, but has a
-  wolf tone from the major second to the fourth, which makes it unusable for aeolian mode.
+  relative to root. Specifically, this is five-limit just intonation, with a wolf tone
+  from the major second to the fourth.
   e.g. ((just 61) 69)"
   (align-concert-a
     (fn [midi]
