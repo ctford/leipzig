@@ -37,14 +37,29 @@
         fifths (mapcat repeat [7 1 3] [pure wolf pure])]
     (tune root fifths)))
 
-(defn just [root]
+(defn five-limit-just [root]
   "Returns a function that converts midi to hertz using just intonation, measuring ratios
-  relative to root. Specifically, this is five-limit just intonation, with a wolf tone
-  from the major second to the fourth.
-  e.g. ((just 61) 69)"
+  relative to root. Specifically, this is a five-limit asymmetric just intonation, with
+  a wolf tone from the major second to the fourth.
+  e.g. ((five-limit-just 61) 69)"
   (align-concert-a
     (fn [midi]
       (temper (- midi root) [1/1 135/128 9/8 6/5 5/4 4/3 45/32 3/2 8/5 27/16 9/5 15/8]))))
+
+(defn seven-limit-just [root]
+  "Returns a function that converts midi to hertz using just intonation, measuring ratios
+  relative to root. Specifically, this is a seven-limit just intonation, with a wolf tone
+  from the major second to the fourth.
+  e.g. ((seven-limit-just 61) 69)"
+  (align-concert-a
+    (fn [midi]
+      (temper (- midi root) [1/1 135/128 8/7 6/5 5/4 4/3 7/5 3/2 8/5 27/16 7/4 15/8]))))
+
+(def just
+  "Returns a function that converts midi to hertz using just intonation, measuring ratios
+  relative to root. See five-limit-just. 
+  e.g. ((just 61) 69)"
+  five-limit-just)
 
 (defn meantone 
   "Returns a function that converts midi to hertz using quarter-comma meantone tuning,

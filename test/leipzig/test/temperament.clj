@@ -6,9 +6,10 @@
 (defmacro def- [sym init] `(def ^:private ~sym ~init))
 
 (def- octave 12)
-(def- major-seventh 10)
+(def- minor-seventh 10)
 (def- minor-sixth 8)
 (def- fifth 7)
+(def- augmented-fourth 6)
 (def- fourth 5)
 (def- major-third 4)
 (def- minor-third 3)
@@ -24,6 +25,8 @@
   ((temperament/pythagorean 70) 69)      => 440
   ((temperament/just 69) 69)             => 440
   ((temperament/just 70) 69)             => 440
+  ((temperament/seven-limit-just 69) 69) => 440
+  ((temperament/seven-limit-just 70) 69) => 440
   ((temperament/meantone 69) 69)         => 440
   ((temperament/meantone 70) 69)         => 440.0
   ((temperament/werckmeister-i 69) 69)   => 440
@@ -57,7 +60,7 @@
   (ratio-of (temperament/pythagorean 69) 69 octave)     => 2/1
   (ratio-of (temperament/pythagorean 69) 69 (- octave)) => 1/2)
 
-(fact "Just intonation has pure sixths, fifths, fourths, thirds and octaves."
+(fact "Five-limit just intonation has pure sixths, fifths, fourths, thirds and octaves."
   (ratio-of (temperament/just 69) 69 fifth)           => 3/2
   (ratio-of (temperament/just 69) 69 (- fourth))      => 3/4
   (ratio-of (temperament/just 69) 69 fourth)          => 4/3
@@ -66,6 +69,12 @@
   (ratio-of (temperament/just 69) 69 (- minor-sixth)) => 5/8
   (ratio-of (temperament/just 69) 69 octave)          => 2/1
   (ratio-of (temperament/just 69) 69 (- octave))      => 1/2)
+
+(fact "Seven-limit just intonation has more consonant major seconds, augmented fourths
+      and minor sevenths."
+  (ratio-of (temperament/seven-limit-just 69) 69 tone)             => 8/7
+  (ratio-of (temperament/seven-limit-just 69) 69 augmented-fourth) => 7/5
+  (ratio-of (temperament/seven-limit-just 69) 69 minor-seventh)    => 7/4)
 
 (fact "Meantone temperament has pure major thirds and octaves."
   (ratio-of (temperament/meantone 69) 69 major-third)     => (roughly 5/4) 
@@ -76,7 +85,7 @@
 (fact "Werckmeister I has pure fourths and dominant sevenths."
   (ratio-of (temperament/werckmeister-i 69) 69 fourth)        => (roughly 4/3) 
   (ratio-of (temperament/werckmeister-i 69) 69 minor-third)   => (roughly 32/27) 
-  (ratio-of (temperament/werckmeister-i 69) 69 major-seventh) => (roughly 16/9))
+  (ratio-of (temperament/werckmeister-i 69) 69 minor-seventh) => (roughly 16/9))
 
 (fact "Werckmeister II has pure fourths." 
   (ratio-of (temperament/werckmeister-ii 69) 69 minor-third)  => (roughly 32/27) 
