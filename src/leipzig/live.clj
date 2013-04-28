@@ -26,7 +26,10 @@
       (map (fn [{epoch :time :as note}] (->> note play-note (overtone/at epoch))))
       dorun)))
 
-(defn- forever [riff]
+(defn- forever
+  "Lazily loop riff forever. riff must start with a positive :time, otherwise there
+  will be a glitch as a new copy of riff is sequenced."
+  [riff]
   (let [{final :time, duration :duration} (last @riff)]
     (concat
       @riff
