@@ -7,7 +7,10 @@
   [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
 
 (defn- sum-n [series n] (apply + (take n series)))
-(defn- rhythm 
+
+(defn rhythm 
+  "Translates a sequence of durations into a rhythm.
+  e.g. (rhythm [1 1 2])"
   [durations]
   (let [times (reductions + 0 durations)]
     (map #(zipmap [:time :duration] [%1 %2]) times durations)))

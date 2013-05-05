@@ -16,6 +16,11 @@
     [{:time 0, :part :bass}
      {:time 1, :part :piano}])
 
+(fact "rhythm takes sequential durations and produces a rhythm."
+  (rhythm [1 2]) =>
+    [{:time 0 :duration 1}
+     {:time 1 :duration 2}])
+
 (fact
   (phrase [1 2] [3 4]) =>
     [{:time 0 :duration 1 :pitch 3}
