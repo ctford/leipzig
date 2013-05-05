@@ -6,7 +6,8 @@
   e.g. ((bpm 90) 5)" 
   [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
 
-(defn- sum-n [series n] (apply + (take n series)))
+(defn- having [k values notes]
+  (map #(assoc %1 k %2) notes values))
 
 (defn rhythm 
   "Translates a sequence of durations into a rhythm.
@@ -19,7 +20,7 @@
   "Translates a sequence of durations and pitches into a melody.
   e.g. (phrase [1 1 2] [7 6 4])" 
   [durations pitches]
-  (map #(assoc %1 :pitch %2) (rhythm durations) pitches))
+  (->> (rhythm durations) (having :pitch pitches)))
 
 (def is
   "Synonym for constantly.
