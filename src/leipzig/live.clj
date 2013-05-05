@@ -56,3 +56,13 @@
        (def melody nil)"
   [riff-symbol] 
   `(jam* (var ~riff-symbol))) 
+
+(defmacro help
+  "Print the docs for all public vars in namespace."
+  [namespace]
+  `(do
+     ~@(map
+         (fn [name]
+           (let [sym (symbol (str namespace "/" name))]
+           `(clojure.repl/doc ~sym)))
+         (-> namespace ns-publics keys sort))))
