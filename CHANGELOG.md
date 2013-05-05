@@ -4,6 +4,11 @@ Change Log
 Leipzig still sees occasional breaking changes, though every effort will be made to
 document them here.
 
+New in 0.5.0
+------------
+* *Addition* - `just` translates from midi to frequency using just intonation.
+* *Addition* - `rhythm` builds sequences of notes without pitch.
+
 New in 0.4.0
 ------------
 * *Breaking change* - `play` and `play-note` are in the new `leipzig.live` namespace.
