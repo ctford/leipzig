@@ -58,7 +58,8 @@
   `(jam* (var ~riff-symbol))) 
 
 (defmacro help
-  "Print the docs for all public vars in namespace."
+  "Print the docs for all public vars in namespace.
+  Assumes namespace is already loaded."
   [namespace]
   `(do
      ~@(map
