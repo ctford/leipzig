@@ -1,5 +1,8 @@
 [Leipzig](https://github.com/ctford/leipzig)
 =========
+
+[![Build Status](https://travis-ci.org/ctford/leipzig.png)](https://travis-ci.org/ctford/leipzig)
+
 A composition library for [Overtone](https://github.com/overtone/overtone) by [@ctford](https://github.com/ctford).
 
 Examples
