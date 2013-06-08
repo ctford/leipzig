@@ -1,7 +1,7 @@
 (ns leipzig.chord
- (:require [clojure.set :as set]))
+  (:require [clojure.set :as set]
+            [leipzig.scale :as scale]))
 
-(defn- from [n] (partial + n))
 (defn- update-all [m [k & ks] f]
  (if k
    (-> m (update-in [k] f) (update-all ks f))
@@ -11,7 +11,7 @@
 (defn root
   "Translates a chord so that its root is at tonic.
   e.g. (-> triad (root 4))" 
-  [chord tonic] (-> chord (mapval (from tonic)))) 
+  [chord tonic] (-> chord (mapval (scale/from tonic)))) 
 
 (def triad
   "A three-tone chord."
@@ -30,4 +30,4 @@
   e.g. (-> triad (inversion 2))"
   (let [stable (->> [:i :iii :v] (take n) set) 
         lowered (set/difference (-> chord keys set) stable)]
-    (update-all chord (seq lowered) (from -7))))
+    (update-all chord (seq lowered) scale/lower)))
