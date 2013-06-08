@@ -21,7 +21,7 @@
 (defmethod play-note :bass [note]
   (pick 0.9 0.2 (update-in note [:pitch] #(- % 12))))
 
-(def melody
+(def melody "A simple melody built from durations and pitches."
                ; Row, row, row your boat,
   (->> (phrase [3/3 3/3 2/3 1/3 3/3]
                [  0   0   0   1   2])
@@ -39,13 +39,15 @@
                [  4   3   2   1   0]))
     (where :part (is :leader))))
 
-(def bass
+(def bass "A bass part to accompany the melody."
   (->> (phrase [1  1 2]
                [0 -3 0])
      (where :part (is :bass))
      (times 4)))
 
-(defn row-row [speed key]
+(defn row-row
+  "Play the tune 'Row, row, row your boat' as a round."
+  [speed key]
   (->> melody
     (with bass)
     (times 2)
