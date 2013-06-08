@@ -8,6 +8,7 @@ New in 0.5.0
 ------------
 * *Addition* - `just` translates from midi to frequency using just intonation.
 * *Addition* - `rhythm` builds sequences of notes without pitch.
+* *Addition* - Codox documentation.
 
 New in 0.4.0
 ------------
