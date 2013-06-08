@@ -37,7 +37,7 @@ You can create a melody with the `phrase` function. Here's the first few notes o
                    [  0   0   0   1   2])
            (where :part (is :melody))))
 
-The first argument to `phrase` is a sequence of durations. The second is a sequence of pitches. Once we have built a sequence of notes, we can transform it with sequence functions, either from Leipzig or ones from Clojure's core libraries. In this case, we've used `where` to set the `:part` key of each note to `:melody`.
+The first argument to `phrase` is a sequence of durations. The second is a sequence of pitches. `phrase` builds a sequence of notes which we can transform with sequence functions, either from Leipzig or ones from Clojure's core libraries. In this case, we've used `where` to set the `:part` key of each note to `:melody`.
 
 To play a melody, first define an arrangement. `play-note` is a multimethod that dispatches on the `:part` key of each note, so you can easily define an instrument responsible for playing notes of each part. Then, put the sequence of notes into a particular key and tempo and pass them along to `play`:
 
