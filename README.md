@@ -27,16 +27,21 @@ Leipzig models music as a sequence of notes, each of which is a map:
 
     {:time 2000,
      :pitch 67,
-     :duration 1000}
+     :duration 1000
+     :part :melody}
 
-You can create a melody with the phrase function. Here's the first few notes of 'Row, row, row your boat':
+You can create a melody with the `phrase` function. Here's the first few notes of 'Row, row, row your boat', designated as the melody:
 
-    (phrase [3/3 3/3 2/3 1/3 3/3]
-            [  0   0   0   1   2])
+    (def melody
+      (->> (phrase [3/3 3/3 2/3 1/3 3/3]
+                   [  0   0   0   1   2])
+           (where :part (is :melody))))
 
-To play a melody, define a default arrangement, put the melody into a particular key and time and then pass it to play:
+The first argument to `phrase` is a sequence of durations. The second is a sequence of pitches. Once we have built a sequence of notes, we can transform it with sequence functions, either from Leipzig or ones from Clojure's core libraries. In this case, we've used `where` to set the `:part` key of each note to `:melody`.
 
-    (defmethod play-note :default [{midi :pitch}] (sampled-piano midi))
+To play a melody, first define an arrangement. `play-note` is a multimethod that dispatches on the `:part` key of each note, so you can easily define an instrument responsible for playing notes of each part. Then, put the sequence of notes into a particular key and tempo and pass them along to `play`:
+
+    (defmethod play-note :melody [{midi :pitch}] (sampled-piano midi))
 
     (->> melody
       (where :time (bpm 90))
