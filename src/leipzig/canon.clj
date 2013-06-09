@@ -22,10 +22,13 @@
 
 (def crab
   "A transformation that reflects a melody over time."
-  (fn [notes] (map
-                (fn [{start :time length :duration :as note}]
-                  (assoc note :time (- (+ start length))))
-                notes)))
+  (fn [notes]
+   (let [{start :time length :duration} (last notes)
+         reflect (fn [{start :time length :duration :as note}]
+                   (assoc note :time (- (+ start length))))]
+     (->> notes
+          (map reflect)
+          (where :time (from (+ start length)))))))
 
 (def table
   "A transformation that reflects a melody over time and pitch."
