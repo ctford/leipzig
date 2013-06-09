@@ -25,8 +25,8 @@ Building a melody
 
 Leipzig models music as a sequence of notes, each of which is a map:
 
-    {:time 2000,
-     :pitch 67,
+    {:time 2000
+     :pitch 67
      :duration 1000
      :part :melody}
 
