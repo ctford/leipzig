@@ -4,7 +4,7 @@
 (defn canon
   "Accompanies notes with a melody created by applying f to notes.
   e.g. (->> leader (canon (simple 4)))"
-  [f notes] (with notes (f notes)))
+  [f notes] (->> (f notes) (sort-by :time) (with notes)))
 
 (defn- from [base] (partial + base))
 
@@ -22,7 +22,10 @@
 
 (def crab
   "A transformation that reflects a melody over time."
-  (fn [notes] (->> notes (where :time -))))
+  (fn [notes] (map
+                (fn [{start :time length :duration :as note}]
+                  (assoc note :time (- (+ start length))))
+                notes)))
 
 (def table
   "A transformation that reflects a melody over time and pitch."
