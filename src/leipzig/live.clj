@@ -35,27 +35,16 @@
       @riff
       (lazy-seq (->> riff forever (after (+ final duration)))))))
 
-(defn jam*
-  "Plays riff repeatedly, freshly dereferencing it each time.
-  riff must be a var, not an arbitrary expression.
-  To terminate the looping, set riff to nil.
-  e.g. (jam* (var melody))
+(defn jam
+  "Plays riff repeatedly, freshly dereferencing it each time
+  (riff must be a ref). To terminate the looping, set riff
+  to nil.
+  e.g. (jam (var melody))
 
        ; Later...
        (def melody nil)"
   [riff]
   (->> riff forever play))
-
-(defmacro jam 
-  "Plays riff-symbol repeatedly, freshly dereferencing its var each time.
-  To terminate the looping, set riff-symbol's var to nil.
-  e.g. (def melody (phrase [1 2] [3 4])) 
-       (jam melody)
-
-       ; Later...
-       (def melody nil)"
-  [riff-symbol] 
-  `(jam* (var ~riff-symbol))) 
 
 (defmacro help
   "Print the docs for all public vars in namespace.
