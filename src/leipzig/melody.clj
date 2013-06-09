@@ -6,15 +6,18 @@
   e.g. ((bpm 90) 5)" 
   [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
 
-(defn- having [k values notes]
-  (map #(assoc %1 k %2) notes values))
-
 (defn rhythm 
   "Translates a sequence of durations into a rhythm.
   e.g. (rhythm [1 1 2])"
   [durations]
   (let [times (reductions + 0 durations)]
     (map #(zipmap [:time :duration] [%1 %2]) times durations)))
+
+(defn having
+  "Zips an arbitrary quality onto a melody.
+  e.g. (->> (rhythm [1 1/2]) (having :drum [:kick :snare]))"
+  [k values notes]
+  (map #(assoc %1 k %2) notes values))
 
 (defn phrase
   "Translates a sequence of durations and pitches into a melody.

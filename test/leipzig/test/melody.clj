@@ -21,6 +21,11 @@
     [{:time 0 :duration 1}
      {:time 1 :duration 2}])
 
+(fact "having zips arbitrary attributes onto a melody."
+  (->> (rhythm [1 2]) (having :drum [:kick :snare]))
+    [{:time 0 :duration 1 :drum :kick}
+     {:time 1 :duration 2 :drum :snare}])
+
 (fact
   (phrase [1 2] [3 4]) =>
     [{:time 0 :duration 1 :pitch 3}
