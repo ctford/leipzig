@@ -6,8 +6,10 @@ document them here.
 
 New in 0.5.0
 ------------
+* *Breaking change* - `crab` translates the result to avoid playing it before the original.
 * *Bug fix* - `crab` reflects melodies according to the end of each note (see issue #2).
 * *Bug fix* - `canon` sorts the transformed notes by time to ensure order is preserved.
+* *Addition* - `having` zips arbitrary atributes onto melodies.
 * *Addition* - `just` translates from midi to frequency using just intonation.
 * *Addition* - `rhythm` builds sequences of notes without pitch.
 * *Addition* - Codox documentation.
