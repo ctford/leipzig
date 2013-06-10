@@ -30,9 +30,10 @@
   "Lazily loop riff forever. riff must start with a positive :time, otherwise there
   will be a glitch as a new copy of riff is sequenced."
   [riff]
-  (let [{final :time, duration :duration} (last @riff)]
+  (let [once-through @riff
+        {final :time, duration :duration} (last once-through)]
     (concat
-      @riff
+      once-through
       (lazy-seq (->> riff forever (after (+ final duration)))))))
 
 (defn jam
