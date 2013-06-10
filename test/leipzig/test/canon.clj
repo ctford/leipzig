@@ -15,7 +15,6 @@
     [{:duration 1/2 :time 0} {:duration 1 :time 0}
      {:duration 1 :time 1/2} {:duration 1/2 :time 1}])
 
-(fact "Canons preserve the time-order invariate."
-  (->> (melody/rhythm [1 1/2]) (canon reverse)) =>
-     [{:duration 1 :time 0} {:duration 1 :time 0}
-      {:duration 1/2 :time 1} {:duration 1/2 :time 1}])
+(fact "Crab preserves the time-order invariate."
+  (->> (melody/rhythm [1 1/2]) crab) =>
+     [{:duration 1/2 :time 0} {:duration 1 :time 1/2}])

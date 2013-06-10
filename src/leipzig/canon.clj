@@ -4,7 +4,7 @@
 (defn canon
   "Accompanies notes with a melody created by applying f to notes.
   e.g. (->> leader (canon (simple 4)))"
-  [f notes] (->> (f notes) (sort-by :time) (with notes)))
+  [f notes] (->> (f notes) (with notes)))
 
 (defn- from [base] (partial + base))
 
@@ -28,6 +28,7 @@
                    (assoc note :time (- (+ start length))))]
      (->> notes
           (map reflect)
+          (sort-by :time)
           (where :time (from (+ start length)))))))
 
 (def table
