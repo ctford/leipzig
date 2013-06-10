@@ -17,4 +17,8 @@
 
 (fact "Crab preserves the time-order invariate."
   (->> (melody/rhythm [1 1/2]) crab) =>
-     [{:duration 1/2 :time 0} {:duration 1 :time 1/2}])
+    [{:duration 1/2 :time 0} {:duration 1 :time 1/2}])
+
+(fact "Canon is lazy."
+  (->> (melody/rhythm (repeat 1)) (canon (simple 1/2)) (take 2)) =>
+    [{:time 0 :duration 1} {:time 1/2 :duration 1}])
