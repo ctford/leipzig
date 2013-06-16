@@ -4,6 +4,10 @@ Change Log
 Leipzig still sees occasional breaking changes, though every effort will be made to
 document them here.
 
+New in 0.6.0
+------------
+* *Addition* - `nil`s represent rests in `phrase`.
+
 New in 0.5.0
 ------------
 * *Breaking change* - `jam` is not a macro, so it expects a ref as an argument.
