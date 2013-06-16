@@ -21,9 +21,12 @@
 
 (defn phrase
   "Translates a sequence of durations and pitches into a melody.
-  e.g. (phrase [1 1 2] [7 6 4])" 
+  nil pitches signify rests.
+  e.g. (phrase [1/2 1/2 1/2 3/2 1/2 1/2 1/2] [0 1 2 nil 4 4/5 5])" 
   [durations pitches]
-  (->> (rhythm durations) (having :pitch pitches)))
+  (->> (rhythm durations)
+       (having :pitch pitches)
+       (filter :pitch)))
 
 (def is
   "Synonym for constantly.
