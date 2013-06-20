@@ -49,7 +49,10 @@
 (fact
   (->> (phrase [2] [1]) (times 2)) =>
     [{:time 0 :duration 2 :pitch 1}
-     {:time 2 :duration 2 :pitch 1}])
+     {:time 2 :duration 2 :pitch 1}]
+  (->> (phrase [2] [1]) (times 2 4)) =>
+    [{:time 0 :duration 2 :pitch 1}
+     {:time 4 :duration 2 :pitch 1}])
 
 (fact
   (->> (phrase [1 2] [2 3]) (after 1) (with (phrase [2] [1]))) =>

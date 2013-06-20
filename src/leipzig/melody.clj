@@ -64,16 +64,30 @@
     (before? a b) (cons a (lazy-seq (with other-as bs)))
     :otherwise    (cons b (lazy-seq (with as other-bs)))))
 
+(defn- duration [notes]
+  (let [{t :time d :duration} (last notes)]
+    (+ t d)))
+
 (defn then 
   "Sequences later after earlier. 
   e.g. (->> call (then response))"
   [later earlier]
-    (let [{time :time duration :duration} (last earlier)]
-      (->> earlier
-        (with
-          (->> later (after (+ duration time)))))))
+  (->> earlier
+       (with
+         (->> later (after (duration earlier))))))
 
 (defn times
-  "Repeats notes n times.
-  e.g. (->> bassline (times 4))"
-  [n notes] (reduce then (repeat n notes)))
+  "Repeats notes n times. If limit is supplied, it is used
+  as the starting time of the next iteration.
+  e.g. (->> bassline (times 4))
+       (->> bassline (times 4 8))"
+  ([n notes]
+   (times n (duration notes) notes)) 
+  ([n limit notes]
+   (->> (repeat n notes)
+        (map
+          (fn [n notes]
+            (->> notes
+                 (where :time (from (* n limit)))))
+          (range))
+        (reduce with)))) 
