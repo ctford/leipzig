@@ -69,12 +69,14 @@
     (+ t d)))
 
 (defn then 
-  "Sequences later after earlier. 
+  "Sequences later after earlier, starting from limit if it
+  is supplied. 
   e.g. (->> call (then response))"
-  [later earlier]
-  (->> earlier
-       (with
-         (->> later (after (duration earlier))))))
+  ([limit later earlier]
+   (->> earlier
+        (with (after limit later)))) 
+  ([later earlier]
+   (then (duration earlier) later earlier)))
 
 (defn times
   "Repeats notes n times. If limit is supplied, it is used
@@ -85,9 +87,4 @@
    (times n (duration notes) notes)) 
   ([n limit notes]
    (->> (repeat n notes)
-        (map
-          (fn [n notes]
-            (->> notes
-                 (where :time (from (* n limit)))))
-          (range))
-        (reduce with)))) 
+        (reduce (partial then limit))))) 
