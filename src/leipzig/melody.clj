@@ -64,7 +64,7 @@
     (before? a b) (cons a (lazy-seq (with other-as bs)))
     :otherwise    (cons b (lazy-seq (with as other-bs)))))
 
-(defn- duration [notes]
+(defn duration [notes]
   (let [{t :time d :duration} (last notes)]
     (+ t d)))
 
