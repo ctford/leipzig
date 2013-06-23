@@ -19,6 +19,12 @@
   [k values notes]
   (map #(assoc %1 k %2) notes values))
 
+(defn- flattened [{pitchery :pitch :as note}]
+  (cond
+    (vector? pitchery) (map (fn [pitch] (assoc note :pitch pitch)) pitchery)
+    (map? pitchery) (->> pitchery vals sort vec (assoc note :pitch) flattened)
+    :otherwise [note]))
+
 (defn phrase
   "Translates a sequence of durations and pitches into a melody.
   nil pitches signify rests.
@@ -26,6 +32,7 @@
   [durations pitches]
   (->> (rhythm durations)
        (having :pitch pitches)
+       (mapcat flattened)
        (filter :pitch)))
 
 (def is

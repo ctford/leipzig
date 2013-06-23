@@ -1,6 +1,7 @@
 (ns leipzig.test.melody
   (:use [midje.sweet :exclude [after]]
-        leipzig.melody))
+        leipzig.melody)
+  (:require [leipzig.chord :as chord]))
 
 (fact
   (->> [{:time 2}] (where :time (bpm 60))) =>
@@ -33,7 +34,18 @@
   
   (phrase [1 1 2] [3 nil 4]) =>
     [{:time 0 :duration 1 :pitch 3}
-     {:time 2 :duration 2 :pitch 4}])
+     {:time 2 :duration 2 :pitch 4}]
+  
+  (phrase [1 2] [0 [2 4]]) =>
+    [{:time 0 :duration 1 :pitch 0}
+     {:time 1 :duration 2 :pitch 2}
+     {:time 1 :duration 2 :pitch 4}]
+
+  (phrase [1 2] [0 chord/triad]) =>
+    [{:time 0 :duration 1 :pitch 0}
+     {:time 1 :duration 2 :pitch 0}
+     {:time 1 :duration 2 :pitch 2}
+     {:time 1 :duration 2 :pitch 4}])
 
 (fact
   (->> (phrase [1] [2]) (then (phrase [3] [4]))) =>
