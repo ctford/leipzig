@@ -41,7 +41,7 @@
      {:time 1 :duration 2 :pitch 2}
      {:time 1 :duration 2 :pitch 4}]
 
-  (phrase [1 2] [0 chord/triad]) =>
+  (phrase [1 2] [0 (map inc [-1 1 3])]) =>
     [{:time 0 :duration 1 :pitch 0}
      {:time 1 :duration 2 :pitch 0}
      {:time 1 :duration 2 :pitch 2}

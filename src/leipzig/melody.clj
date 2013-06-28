@@ -26,7 +26,7 @@
   (utter [pitch time duration]
     [{:pitch pitch :time time :duration duration}])
   
-  clojure.lang.PersistentVector
+  clojure.lang.Sequential
   (utter [cluster time duration]
     (mapcat #(utter % time duration) cluster))
 
