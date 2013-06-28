@@ -32,7 +32,7 @@
 
   clojure.lang.MapEquivalence
   (utter [chord time duration]
-    (mapcat #(utter % time duration) (-> chord vals sort)))
+    (utter (-> chord vals sort) time duration))
 
   nil
   (utter [_ _ _] []))
