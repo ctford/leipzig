@@ -30,11 +30,7 @@
   (utter [cluster time duration]
     (mapcat #(utter % time duration) cluster))
 
-  clojure.lang.PersistentHashMap
-  (utter [chord time duration]
-    (mapcat #(utter % time duration) (-> chord vals sort)))
-
-  clojure.lang.PersistentArrayMap
+  clojure.lang.MapEquivalence
   (utter [chord time duration]
     (mapcat #(utter % time duration) (-> chord vals sort)))
 

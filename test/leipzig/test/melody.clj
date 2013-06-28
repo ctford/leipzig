@@ -46,6 +46,12 @@
      {:time 1 :duration 2 :pitch 0}
      {:time 1 :duration 2 :pitch 2}
      {:time 1 :duration 2 :pitch 4}]
+
+  (phrase [1 2] [0 (-> chord/triad (chord/root 3))]) =>
+    [{:time 0 :duration 1 :pitch 0}
+     {:time 1 :duration 2 :pitch 3}
+     {:time 1 :duration 2 :pitch 5}
+     {:time 1 :duration 2 :pitch 7}]
   
   (phrase [1 2] [2 (-> chord/triad (dissoc :iii))]) =>
     [{:time 0 :duration 1 :pitch 2}
