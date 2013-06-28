@@ -19,21 +19,35 @@
   [k values notes]
   (map #(assoc %1 k %2) notes values))
 
-(defn- flattened [{pitchery :pitch :as note}]
-  (cond
-    (vector? pitchery) (map (fn [pitch] (assoc note :pitch pitch)) pitchery)
-    (map? pitchery) (->> pitchery vals sort vec (assoc note :pitch) flattened)
-    :otherwise [note]))
+(defprotocol Utterable (utter [thing time pitch]))
+
+(extend-protocol Utterable
+  Object
+  (utter [pitch time duration]
+    [{:pitch pitch :time time :duration duration}])
+  
+  clojure.lang.PersistentVector
+  (utter [cluster time duration]
+    (mapcat #(utter % time duration) cluster))
+
+  clojure.lang.PersistentHashMap
+  (utter [chord time duration]
+    (mapcat #(utter % time duration) (-> chord vals sort)))
+
+  clojure.lang.PersistentArrayMap
+  (utter [chord time duration]
+    (mapcat #(utter % time duration) (-> chord vals sort)))
+
+  nil
+  (utter [_ _ _] []))
 
 (defn phrase
   "Translates a sequence of durations and pitches into a melody.
   nil pitches signify rests.
   e.g. (phrase [1/2 1/2 1/2 3/2 1/2 1/2 1/2] [0 1 2 nil 4 4/5 5])" 
   [durations pitches]
-  (->> (rhythm durations)
-       (having :pitch pitches)
-       (mapcat flattened)
-       (filter :pitch)))
+  (let [times (reductions + 0 durations)]
+    (mapcat utter pitches times durations)))
 
 (def is
   "Synonym for constantly.
