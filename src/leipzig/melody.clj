@@ -39,8 +39,11 @@
 
 (defn phrase
   "Translates a sequence of durations and pitches into a melody.
-  nil pitches signify rests.
-  e.g. (phrase [1/2 1/2 1/2 3/2 1/2 1/2 1/2] [0 1 2 nil 4 4/5 5])" 
+  nil pitches signify rests, vectors represent cluster, and maps
+  represent chords.
+  e.g. (phrase [1/2 1/2 3/2 3/2] [0 1 nil 4])
+       (phrase [1 1 2] [4 3 [0 2]])
+       (phrase (repeat 4) (map #(-> triad (root %))) [0 3 4 3])" 
   [durations pitches]
   (let [times (reductions + 0 durations)]
     (mapcat utter pitches times durations)))
