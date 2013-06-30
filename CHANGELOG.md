@@ -9,6 +9,7 @@ New in 0.6.0
 * *Addition* - `nil`s represent rests in `phrase`.
 * *Addition* - `Sequential`s (lists, vectors and lazy-seqs) represent clusters in `phrase`.
 * *Addition* - Maps represent chords in `phrase`.
+* *Addition* - `then` and `times` accept an optional parameter controlling when the subsequent melody starts.
 
 New in 0.5.0
 ------------
