@@ -34,8 +34,8 @@ You can create a melody with the `phrase` function. Here's the first few notes o
 
     (def melody
       (->>
-        (phrase [3/3 3/3 2/3 1/3 3/3]
-                [  0   0   0   1   2])
+        (phrase [2 2 1 1 2]
+                [2 0 2 3 4])
         (where :part (is :melody))))
 
 The first argument to `phrase` is a sequence of durations. The second is a sequence of pitches. `phrase` builds a sequence of notes which we can transform with sequence functions, either from Leipzig or ones from Clojure's core libraries. In this case, we've used `where` to set the `:part` key of each note to `:melody`.
@@ -46,6 +46,26 @@ To play a melody, first define an arrangement. `play-note` is a multimethod that
 
     (->>
       melody
+      (where :time (bpm 90))
+      (where :duration (bpm 90))
+      (where :pitch (comp C major))
+      play)
+
+Actually, `phrase` accepts more than just pitches. `nil`s are interpreted as rests, vectors and lists as clusters and maps as chords. Here's a more advanced example that plays a 1/4/5 chord progression on the offbeat. We'll supply a default arrangement so that the accompaniment is played on the piano too:
+
+    (defmethod play-note :default [{midi :pitch}] (sampled-piano midi))
+
+    (def accompaniment
+      (->>
+        (phrase (repeat 1)
+                [nil triad nil triad nil (-> triad (root 3)) nil (-> triad (root 4))])
+        (where :pitch lower)))
+
+You can then put multiple series of notes together:
+
+    (->>
+      melody
+      (with accompaniment)
       (where :time (bpm 90))
       (where :duration (bpm 90))
       (where :pitch (comp C major))
