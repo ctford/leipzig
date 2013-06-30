@@ -30,7 +30,7 @@ Leipzig models music as a sequence of notes, each of which is a map:
      :duration 1000
      :part :melody}
 
-You can create a melody with the `phrase` function. Here's the first few notes of 'Row, row, row your boat', designated as the melody:
+You can create a melody with the `phrase` function. Here's a simple melody:
 
     (def melody
       (->>
