@@ -1,4 +1,4 @@
-(defproject leipzig "0.6.0-SNAPSHOT"
+(defproject leipzig "0.6.0"
   :description "A composition library for Overtone."
   :url "http://github.com/ctford/leipzig"
   :license {:name "The MIT License"
@@ -13,4 +13,4 @@
              {:plugins [[lein-midje "3.0.0"]
                         [codox "0.6.4"]]
               :dependencies [[midje "1.5.1"]]}}
-  :codox {:src-dir-uri "http://github.com/ctford/leipzig/blob/0.5.0"})
+  :codox {:src-dir-uri "http://github.com/ctford/leipzig/blob/0.6.0"})
