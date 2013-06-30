@@ -13,7 +13,7 @@ Using it
 --------
 Include it as a dependency in your project.clj:
 
-    [leipzig "0.5.0"]
+    [leipzig "0.6.0"]
 
 API
 ---
