@@ -61,15 +61,3 @@
        (def melody nil)"
   [riff]
   (->> riff forever play))
-
-(defmacro help
-  "Print the docs for all public vars in namespace.
-  Will require namespace if it is not already loaded."
-  [namespace]
-  (require namespace)
-  `(do
-     ~@(map
-         (fn [name]
-           (let [sym (symbol (str namespace "/" name))]
-             `(clojure.repl/doc ~sym)))
-         (-> namespace ns-publics keys sort))))
