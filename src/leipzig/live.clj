@@ -14,17 +14,31 @@
       (cons note 
         (lazy-seq (trickle (rest notes)))))))
 
+(def channels (atom []))
+(defn- register [channel] (swap! channels #(conj % channel)))
+(defn stop
+  "Kills all running melodies.
+  e.g. (->> melody play)
+  
+       ; Later
+       (stop)"
+  []
+  (doseq [channel @channels] (future-cancel channel))
+  (overtone/stop)
+  (reset! channels []))
+
 (defn play
   "Plays notes now.
   e.g. (->> melody play)"
   [notes] 
-  (future
-    (->>
-      notes
-      (after (overtone/now))
-      trickle
-      (map (fn [{epoch :time :as note}] (->> note play-note (overtone/at epoch))))
-      dorun)))
+  (->>
+    notes
+    (after (overtone/now))
+    trickle
+    (map (fn [{epoch :time :as note}] (->> note play-note (overtone/at epoch))))
+    dorun
+    future
+    register))
 
 (defn- forever
   "Lazily loop riff forever. riff must start with a positive :time, otherwise there
