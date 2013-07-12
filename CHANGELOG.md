@@ -4,6 +4,11 @@ Change Log
 Leipzig still sees occasional breaking changes, though every effort will be made to
 document them here.
 
+New in 0.7.0
+------------
+* *Breaking change* - The `help` macro has been removed because it wasn't helpful. 
+* *Addition* - `stop` kills all running melodies.
+
 New in 0.6.0
 ------------
 * *Addition* - `nil`s represent rests in `phrase`. Note, ensure you use `rhythm` instead of `(phrase ... (repeat nil))` or `phrase` will never return.
