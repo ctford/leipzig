@@ -93,3 +93,7 @@
 (fact "with is lazy."
   (take 2 (with (repeat {:time 1}) (repeat {:time 2}))) =>
     [{:time 1}, {:time 1}])
+
+(fact "with is variadic."
+  (with (rhythm [1]) (rhythm [2]) (rhythm [3])) => 
+    [{:time 0 :duration 1} {:time 0 :duration 2} {:time 0 :duration 3}])

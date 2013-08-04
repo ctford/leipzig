@@ -75,14 +75,15 @@
 
 (defn- before? [a b] (<= (:time a) (:time b)))
 (defn with
-  "Accompanies two melodies with each other.
-  e.g. (->> melody (with bass))"
-  [[a & other-as :as as] [b & other-bs :as bs]]
-  (cond
-    (empty? as) bs
-    (empty? bs) as
-    (before? a b) (cons a (lazy-seq (with other-as bs)))
-    :otherwise    (cons b (lazy-seq (with as other-bs)))))
+  "Blends melodies.
+  e.g. (->> melody (with bass drums))"
+  ([[a & other-as :as as] [b & other-bs :as bs]]
+   (cond
+     (empty? as) bs
+     (empty? bs) as
+     (before? a b) (cons a (lazy-seq (with other-as bs)))
+     :otherwise    (cons b (lazy-seq (with as other-bs)))))
+  ([as bs & others] (reduce with (cons as (cons bs others)))))
 
 (defn duration [notes]
   (let [{t :time d :duration} (last notes)]
