@@ -15,7 +15,9 @@
         (lazy-seq (trickle (rest notes)))))))
 
 (def channels (atom []))
-(defn- register [channel] (swap! channels #(conj % channel)))
+(defn- register [channel]
+  (swap! channels #(conj % channel))
+  channel)
 (defn stop
   "Kills all running melodies.
   e.g. (->> melody play)
