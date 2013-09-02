@@ -7,6 +7,7 @@ document them here.
 New in 0.7.0
 ------------
 * *Breaking change* - The `help` macro has been removed because it wasn't helpful. 
+* *Bug fix* - `play` again returns the future it creates.
 * *Addition* - `stop` kills all running melodies.
 * *Addition* - `with` is variadic.
 
