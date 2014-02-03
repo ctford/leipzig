@@ -43,19 +43,15 @@ The first argument to `phrase` is a sequence of durations. The second is a seque
 To play a melody, first define an arrangement. `play-note` is a multimethod that dispatches on the `:part` key of each note, so you can easily define an instrument responsible for playing notes of each part. Then, put the sequence of notes into a particular key and tempo and pass them along to `play`:
 
     (require ['overtone.live :as 'overtone])
+    (use 'leipzig.live
+         'leipzig.scale)
 
     (overtone/definst chime [freq 440 tremelo 0.05]
       (* (overtone/sin-osc freq)
          (overtone/env-gen (overtone/perc) :action overtone/FREE)
          (overtone/sin-osc tremelo 1.6)))
 
-    (use 'leipzig.live)
-
     (defmethod play-note :default [{freq :pitch}] (chime (overtone/midi->hz freq)))
-
-    (use
-      'leipzig.scale
-      'leipzig.chord)
 
     (->>
       melody
@@ -67,6 +63,8 @@ To play a melody, first define an arrangement. `play-note` is a multimethod that
 There's nothing magic about `where`. It just applies a function to a particular key of each note, like `update-in` for sequences.
 
 Actually, `phrase` accepts more than just pitches. `nil`s are interpreted as rests and maps as chords. Here's a more advanced example that plays a 1/4/5 chord progression on the offbeat. We'll add a bit of colour to how we play the chords by introducing some tremelo when we invoke `chime`.
+
+    (use 'leipzig.chord)
 
     (defmethod play-note :chords [{freq :pitch}] (chime (overtone/midi->hz freq) 2))
 
