@@ -32,17 +32,30 @@ Leipzig models music as a sequence of notes, each of which is a map:
 
 You can create a melody with the `phrase` function. Here's a simple melody:
 
-    (def melody
-      (->>
-        (phrase [2 2 1 1 2]
-                [2 0 2 3 4])
-        (where :part (is :melody))))
+    (use 'leipzig.melody)
 
-The first argument to `phrase` is a sequence of durations. The second is a sequence of pitches. `phrase` builds a sequence of notes which we can transform with sequence functions, either from Leipzig or ones from Clojure's core libraries. In this case, we've used `where` to set the `:part` key of each note to `:melody`.
+    (def melody
+      (phrase [2 2 1 1 2]
+              [2 0 2 3 4]))
+
+The first argument to `phrase` is a sequence of durations. The second is a sequence of pitches. `phrase` builds a sequence of notes which we can transform with sequence functions, either from Leipzig or ones from Clojure's core libraries.
 
 To play a melody, first define an arrangement. `play-note` is a multimethod that dispatches on the `:part` key of each note, so you can easily define an instrument responsible for playing notes of each part. Then, put the sequence of notes into a particular key and tempo and pass them along to `play`:
 
-    (defmethod play-note :melody [{midi :pitch}] (sampled-piano midi))
+    (require ['overtone.live :as 'overtone])
+
+    (overtone/definst chime [freq 440 tremelo 0.05]
+      (* (overtone/sin-osc freq)
+         (overtone/env-gen (overtone/perc) :action overtone/FREE)
+         (overtone/sin-osc tremelo 1.6)))
+
+    (use 'leipzig.live)
+
+    (defmethod play-note :default [{freq :pitch}] (chime (overtone/midi->hz freq)))
+
+    (use
+      'leipzig.scale
+      'leipzig.chord)
 
     (->>
       melody
@@ -51,21 +64,26 @@ To play a melody, first define an arrangement. `play-note` is a multimethod that
       (where :pitch (comp C major))
       play)
 
-Actually, `phrase` accepts more than just pitches. `nil`s are interpreted as rests, vectors and lists as clusters and maps as chords. Here's a more advanced example that plays a 1/4/5 chord progression on the offbeat. We'll supply a default arrangement so that the accompaniment is played on the piano too:
+There's nothing magic about `where`. It just applies a function to a particular key of each note, like `update-in` for sequences.
 
-    (defmethod play-note :default [{midi :pitch}] (sampled-piano midi))
+Actually, `phrase` accepts more than just pitches. `nil`s are interpreted as rests and maps as chords. Here's a more advanced example that plays a 1/4/5 chord progression on the offbeat. We'll add a bit of colour to how we play the chords by introducing some tremelo when we invoke `chime`.
+
+    (defmethod play-note :chords [{freq :pitch}] (chime (overtone/midi->hz freq) 2))
 
     (def accompaniment
       (->>
         (phrase (repeat 1)
                 [nil triad nil triad nil (-> triad (root 3)) nil (-> triad (root 4))])
-        (where :pitch lower)))
+        (with (phrase (repeat 2) [0 0 3 4]))
+        (where :pitch lower)
+        (where :part (is :chords))))
 
 You can then put multiple series of notes together:
 
     (->>
-      melody
-      (with accompaniment)
+      accompaniment
+      (then (with accompaniment melody))
+      (then (with accompaniment (->> melody drop-last (then (phrase [1 1 4] [4 6 7])))))
       (where :time (bpm 90))
       (where :duration (bpm 90))
       (where :pitch (comp C major))
