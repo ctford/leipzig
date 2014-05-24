@@ -7,3 +7,4 @@ pom.xml.asc
 /doc/
 .lein-deps-sum
 .lein-repl-history
+.nrepl-port
