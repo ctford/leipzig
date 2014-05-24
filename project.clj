@@ -10,7 +10,7 @@
     [overtone "0.8.0"]
     [org.clojure/math.numeric-tower "0.0.1"]]
   :profiles {:dev
-             {:plugins [[lein-midje "3.0.0"]
+             {:plugins [[lein-midje "3.1.3"]
                         [codox "0.6.4"]]
-              :dependencies [[midje "1.5.1"]]}}
+              :dependencies [[midje "1.6.3"]]}}
   :codox {:src-dir-uri "http://github.com/ctford/leipzig/blob/0.7.0"})
