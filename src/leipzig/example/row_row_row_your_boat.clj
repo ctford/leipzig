@@ -1,11 +1,10 @@
 (ns leipzig.example.row-row-row-your-boat
-  (:use
-    leipzig.melody
-    leipzig.scale
-    leipzig.canon
-    leipzig.live)
   (:require [overtone.live :as overtone]
-            [overtone.synth.stringed :as strings])) 
+            [overtone.synth.stringed :as strings]
+            [leipzig.melody :refer :all]
+            [leipzig.scale :refer :all]
+            [leipzig.canon :refer :all]
+            [leipzig.live :as live]))
 
 (strings/gen-stringed-synth ektara 1 true)
 
@@ -14,11 +13,11 @@
                      (ektara midi :distort distort :amp amp :gate 1))]
       (overtone/at (+ start length) (overtone/ctl synth-id :gate 0))))
 
-(defmethod play-note :leader [note]
+(defmethod live/play-note :leader [note]
   (pick 0.7 1.0 note))
-(defmethod play-note :follower [note]
+(defmethod live/play-note :follower [note]
   (pick 0.3 1.0 note))
-(defmethod play-note :bass [note]
+(defmethod live/play-note :bass [note]
   (pick 0.9 0.2 (update-in note [:pitch] #(- % 12))))
 
 (def melody "A simple melody built from durations and pitches."
@@ -56,7 +55,7 @@
     (where :time speed)
     (where :duration speed)
     (where :pitch key)
-    play))
+    live/play))
 
 (comment
   (row-row (bpm 120) (comp C sharp major))

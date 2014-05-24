@@ -1,5 +1,6 @@
 (ns leipzig.test.chord
-  (:use midje.sweet leipzig.chord))
+  (:require [midje.sweet :refer :all]
+            [leipzig.chord :refer :all]))
 
 (fact
   (-> triad (root 3)) =>

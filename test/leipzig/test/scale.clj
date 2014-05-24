@@ -1,5 +1,6 @@
 (ns leipzig.test.scale
-  (:use midje.sweet leipzig.scale))
+  (:require [midje.sweet :refer :all]
+            [leipzig.scale :refer :all]))
 
 (fact
   (map (comp low B lydian) (range 0 8)) =>

@@ -1,6 +1,6 @@
 (ns leipzig.live
-  (:use [leipzig.melody])
-  (:require [overtone.live :as overtone]))
+  (:require [overtone.live :as overtone]
+            [leipzig.melody :as melody]))
 
 (defmulti play-note
   "Plays a note according to its :part.
@@ -35,7 +35,7 @@
   [notes] 
   (->>
     notes
-    (after (overtone/now))
+    (melody/after (overtone/now))
     trickle
     (map (fn [{epoch :time :as note}] (->> note play-note (overtone/at epoch))))
     dorun
@@ -51,7 +51,7 @@
       once-through
       (lazy-seq (->> riff
                      forever
-                     (after (duration once-through)))))))
+                     (melody/after (melody/duration once-through)))))))
 
 (defn jam
   "Plays riff repeatedly, freshly dereferencing it each time

@@ -1,6 +1,7 @@
 (ns leipzig.test.canon
-  (:use midje.sweet leipzig.canon)
-  (:require [leipzig.melody :as melody]))
+  (:require [leipzig.melody :as melody]
+            [midje.sweet :refer :all]
+            [leipzig.canon :refer :all]))
 
 (fact "Canons accompany a melody with a functional transformation of itself."
   (->> [{:time 1 :pitch 1}] (canon mirror)) =>

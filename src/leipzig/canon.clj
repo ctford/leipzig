@@ -1,5 +1,5 @@
 (ns leipzig.canon
-  (:use [leipzig.melody]))
+  (:require [leipzig.melody :refer :all]))
 
 (defn canon
   "Accompanies notes with a melody created by applying f to notes.

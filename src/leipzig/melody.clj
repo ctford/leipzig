@@ -1,5 +1,5 @@
 (ns leipzig.melody
-  (:use [leipzig.scale]))
+  (:require [leipzig.scale :as scale]))
 
 (defn bpm
   "Returns a function that translates a beat number into milliseconds.
@@ -71,7 +71,7 @@
 (defn after
   "Delay notes by wait.
   e.g. (->> melody (after 3))"
-  [wait notes] (where :time (from wait) notes))
+  [wait notes] (where :time (scale/from wait) notes))
 
 (defn- before? [a b] (<= (:time a) (:time b)))
 (defn with
