@@ -4,6 +4,10 @@ Change Log
 Leipzig still sees occasional breaking changes, though every effort will be made to
 document them here.
 
+New in 0.8.0
+------------
+* *Addition* - `mapthen` provides a temporal equivalent to mapcat.
+
 New in 0.7.0
 ------------
 * *Breaking change* - The `help` macro has been removed because it wasn't helpful. 

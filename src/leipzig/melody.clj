@@ -99,6 +99,13 @@
   ([later earlier]
    (then (duration earlier) later earlier)))
 
+(defn mapthen [f & melodies]
+  "Apply f to each melody, then join them together.
+  e.g. (mapthen drop-last [bassline vocals])"
+  (->> melodies
+       (apply map f)
+       (reduce #(then %2 %1))))
+
 (defn times
   "Repeats notes n times. If limit is supplied, it is used
   as the starting time of the next iteration.

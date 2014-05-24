@@ -72,6 +72,14 @@
      {:time 0 :duration 1 :pitch 2}
      {:time 2 :duration 1 :pitch 5}])
 
+(fact "map-then transforms several melodies then joins them up."
+  (mapthen drop-last
+           [1 2]
+           [(phrase [1 1] [2 2])
+           (phrase [3 3 3] [4 4 4])]) =>
+  [{:time 0 :duration 1 :pitch 2}
+   {:time 1 :duration 3 :pitch 4}])
+
 (fact
   (->> (phrase [2] [1]) (times 2)) =>
     [{:time 0 :duration 2 :pitch 1}
