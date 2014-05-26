@@ -10,8 +10,7 @@
   "Translates a sequence of durations into a rhythm.
   e.g. (rhythm [1 1 2])"
   [durations]
-  (let [times (reductions + 0 durations)]
-    (map #(zipmap [:time :duration] [%1 %2]) times durations)))
+  (phrase durations (repeat nil)))
 
 (defn having
   "Zips an arbitrary quality onto a melody.
@@ -35,11 +34,12 @@
     (utter (-> chord vals sort) time duration))
 
   nil
-  (utter [_ _ _] []))
+  (utter [pitch time duration]
+    [{:time time :duration duration}]))
 
 (defn phrase
   "Translates a sequence of durations and pitches into a melody.
-  nil pitches signify rests, vectors represent cluster, and maps
+  nil pitches signify rests, vectors represent clusters, and maps
   represent chords.
   e.g. (phrase [1/2 1/2 3/2 3/2] [0 1 nil 4])
        (phrase [1 1 2] [4 3 [0 2]])
@@ -50,7 +50,7 @@
 
 (def is
   "Synonym for constantly.
-  e.g. (->> notes (where :part (is :bass)))" 
+  e.g. (->> notes (wherever (comp not :part), :part (is :bass)))"
   constantly)
 
 (defn- if-applicable [condition? f] (fn [x] (if (condition? x) (f x) x)))
@@ -63,10 +63,10 @@
     notes))
 
 (defn where
-  "Applies f to the k key of each note in notes.
+  "Applies f to the k key of each note in notes, ignoring nil.
   e.g. (->> notes (where :time (bpm 90)))"
   [k f notes]
-  (wherever (is true), k f notes))
+  (wherever k, k f notes))
 
 (defn after
   "Delay notes by wait.
@@ -90,14 +90,12 @@
     (+ t d)))
 
 (defn then 
-  "Sequences later after earlier, starting from limit if it
-  is supplied. 
+  "Sequences later after earlier.
   e.g. (->> call (then response))"
-  ([limit later earlier]
-   (->> earlier
-        (with (after limit later)))) 
-  ([later earlier]
-   (then (duration earlier) later earlier)))
+  [later earlier]
+  (->> later
+       (after (duration earlier))
+       (with earlier)))
 
 (defn mapthen [f & melodies]
   "Apply f to each melody, then join them together.
@@ -107,12 +105,9 @@
        (reduce #(then %2 %1))))
 
 (defn times
-  "Repeats notes n times. If limit is supplied, it is used
-  as the starting time of the next iteration.
-  e.g. (->> bassline (times 4))
-       (->> bassline (times 4 8))"
-  ([n notes]
-   (times n (duration notes) notes)) 
-  ([n limit notes]
-   (->> (repeat n notes)
-        (reduce (partial then limit))))) 
+  "Repeats notes n times.
+  e.g. (->> bassline (times 4))"
+  [n notes]
+  (->> notes
+       (repeat n)
+       (mapthen identity)))
