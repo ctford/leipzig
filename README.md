@@ -11,8 +11,9 @@ See [Row, row, row your boat](src/leipzig/example/row_row_row_your_boat.clj) or 
 
 Using it
 --------
-Include it as a dependency in your project.clj:
+Include it as a dependency in your project.clj, along with Overtone:
 
+    [overtone "0.9.1"]
     [leipzig "0.7.0"]
 
 API
@@ -64,9 +65,11 @@ There's nothing magic about `where`. It just applies a function to a particular 
 
 Actually, `phrase` accepts more than just pitches. `nil`s are interpreted as rests and maps as chords. Here's a more advanced example that plays a 1/4/5 chord progression on the offbeat. We'll add a bit of colour to how we play the chords by introducing some tremelo when we invoke `chime`.
 
+NB: We need the `when` in `play-note` so that we don't crash when we encounter a rest, which have `:pitch` of `nil`.
+
     (use 'leipzig.chord)
 
-    (defmethod play-note :chords [{freq :pitch}] (chime (overtone/midi->hz freq) 2))
+    (defmethod play-note :chords [{freq :pitch}] (when freq (chime (overtone/midi->hz freq) 2)))
 
     (def accompaniment
       (->>
@@ -97,9 +100,8 @@ Leipzig is designed to play nicely with Clojure's standard sequence functions. T
       (take 24)
       (filter #(-> % :time even?)))
 
-These sequence functions all exhibit "closure" i.e. their result is the same shape as their input. That allows them to be used and combined very flexibly. `where` for example, can be used to set the part, raise the pitch or put the notes into a particular tempo: 
+These sequence functions all exhibit "closure" i.e. their result is the same shape as their input. That allows them to be used and combined very flexibly. `where` for example, to raise the pitch or put the notes into a particular tempo: 
 
-    (->> notes (where :part (is :bass)))
     (->> notes (where :pitch inc))
     (->> notes (where :time (bpm 90)))
 
