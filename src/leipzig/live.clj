@@ -35,9 +35,10 @@
   [notes] 
   (->>
     notes
+    (melody/where :time (partial * 1000))
     (melody/after (overtone/now))
     trickle
-    (map (fn [{epoch :time :as note}] (->> note play-note (overtone/at epoch))))
+    (map (fn [{epoch :time :as note}] (->> (dissoc note :time) play-note (overtone/at epoch))))
     dorun
     future
     register))
