@@ -18,6 +18,12 @@
   [k values notes]
   (map #(assoc %1 k %2) notes values))
 
+(defn all
+  "Fixes an arbitrary quality across a melody.
+  e.g. (->> (rhythm [1 1/2]) (all :part :drum))"
+  [k value notes]
+  (having k (repeat value) notes))
+
 (defprotocol Utterable (utter [thing time pitch]))
 
 (extend-protocol Utterable

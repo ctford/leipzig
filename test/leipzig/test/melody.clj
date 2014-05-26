@@ -27,6 +27,11 @@
     [{:time 0 :duration 1 :drum :kick}
      {:time 1 :duration 2 :drum :snare}])
 
+(fact "all sets a key to the same value across a melody."
+  (->> (rhythm [1 2]) (all :part :drum)) =>
+    [{:time 0 :duration 1 :part :drum}
+     {:time 1 :duration 2 :part :drum}])
+
 (fact
   (phrase [1 2] [3 4]) =>
     [{:time 0 :duration 1 :pitch 3}
