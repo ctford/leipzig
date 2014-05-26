@@ -6,12 +6,6 @@
   e.g. ((bpm 90) 5)" 
   [beats] (fn [beat] (-> beat (/ beats) (* 60))))
 
-(defn rhythm 
-  "Translates a sequence of durations into a rhythm.
-  e.g. (rhythm [1 1 2])"
-  [durations]
-  (phrase durations (repeat nil)))
-
 (defn having
   "Zips an arbitrary quality onto a melody.
   e.g. (->> (rhythm [1 1/2]) (having :drum [:kick :snare]))"
@@ -53,6 +47,12 @@
   [durations pitches]
   (let [times (reductions + 0 durations)]
     (mapcat utter pitches times durations)))
+
+(defn rhythm
+  "Translates a sequence of durations into a rhythm.
+  e.g. (rhythm [1 1 2])"
+  [durations]
+  (phrase durations (repeat nil)))
 
 (def is
   "Synonym for constantly.
