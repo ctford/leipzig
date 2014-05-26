@@ -72,7 +72,7 @@
   "Applies f to the k key of each note in notes, ignoring nil.
   e.g. (->> notes (where :time (bpm 90)))"
   [k f notes]
-  (wherever k, k f notes))
+  (wherever (is true), k f notes))
 
 (defn after
   "Delay notes by wait.

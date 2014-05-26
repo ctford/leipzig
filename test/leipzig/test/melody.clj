@@ -7,10 +7,6 @@
   (->> [{:time 90}] (where :time (bpm 90))) =>
     [{:time 60}])
 
-(fact "where ignores nils."
-  (->> (rhythm [1 2]) (where :pitch dec)) =>
-    [{:time 0 :duration 1} {:time 1 :duration 2}])
-
 (fact "wherever can be used to provide default values to keys."
   (->> [{:time 0} {:time 1, :part :piano}]
     (wherever (comp not :part), :part (is :bass))) =>
@@ -27,8 +23,8 @@
     [{:time 0 :duration 1 :drum :kick}
      {:time 1 :duration 2 :drum :snare}])
 
-(fact "all sets a key to the same value across a melody."
-  (->> (rhythm [1 2]) (all :part :drum)) =>
+(fact "where can be used to set a constant value across a melody."
+  (->> (rhythm [1 2]) (where :part (is :drum))) =>
     [{:time 0 :duration 1 :part :drum}
      {:time 1 :duration 2 :part :drum}])
 

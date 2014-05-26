@@ -76,7 +76,7 @@ NB: We need the `when` in `play-note` so that we don't crash when we encounter a
         (phrase (repeat 1)
                 [nil triad nil triad nil (-> triad (root 3)) nil (-> triad (root 4))])
         (with (phrase (repeat 2) [0 0 3 4]))
-        (where :pitch lower)
+        (wherever :pitch, :pitch lower)
         (where :part (is :chords))))
 
 You can then put multiple series of notes together:
@@ -87,7 +87,7 @@ You can then put multiple series of notes together:
       (then (with accompaniment (->> melody drop-last (then (phrase [1 1 4] [4 6 7])))))
       (where :time (bpm 90))
       (where :duration (bpm 90))
-      (where :pitch (comp C major))
+      (wherever :pitch, :pitch (comp C major))
       play)
 
 Design
@@ -100,9 +100,10 @@ Leipzig is designed to play nicely with Clojure's standard sequence functions. T
       (take 24)
       (filter #(-> % :time even?)))
 
-These sequence functions all exhibit "closure" i.e. their result is the same shape as their input. That allows them to be used and combined very flexibly. `where` for example, to raise the pitch or put the notes into a particular tempo: 
+These sequence functions all exhibit "closure" i.e. their result is the same shape as their input. That allows them to be used and combined very flexibly. `where` for example, can raise the pitch, set the part or put the notes into a particular tempo:
 
     (->> notes (where :pitch inc))
+    (->> notes (where :part (is :melody)))
     (->> notes (where :time (bpm 90)))
 
 Leipzig aims to be a library rather than a framework or environment. It uses simple Clojure datastructures and strives to be as open as possible. A new timing scheme, tuning or tempo can be mixed with Leipzig's other functions just as easily as the ones that come with the library.
