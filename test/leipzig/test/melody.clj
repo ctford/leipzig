@@ -3,9 +3,9 @@
             [midje.sweet :refer :all :exclude [after]]
             [leipzig.melody :refer :all]))
 
-(fact
-  (->> [{:time 2}] (where :time (bpm 60))) =>
-    [{:time 2000}])
+(fact "Beats-per-minute is rendered in seconds."
+  (->> [{:time 90}] (where :time (bpm 90))) =>
+    [{:time 60}])
 
 (fact
   (->> [{}] (where :part (is :bass))) =>

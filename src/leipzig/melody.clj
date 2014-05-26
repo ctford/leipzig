@@ -2,9 +2,9 @@
   (:require [leipzig.scale :as scale]))
 
 (defn bpm
-  "Returns a function that translates a beat number into milliseconds.
+  "Returns a function that translates a beat number into seconds.
   e.g. ((bpm 90) 5)" 
-  [beats] (fn [beat] (-> beat (/ beats) (* 60) (* 1000))))
+  [beats] (fn [beat] (-> beat (/ beats) (* 60))))
 
 (defn rhythm 
   "Translates a sequence of durations into a rhythm.

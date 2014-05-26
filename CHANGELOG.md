@@ -6,6 +6,7 @@ document them here.
 
 New in 0.8.0
 ------------
+* *Breaking change* - `bpm` returns a fn that converts beats to seconds, to match Supercollider. 
 * *Addition* - `mapthen` provides a temporal equivalent to mapcat.
 
 New in 0.7.0
