@@ -7,11 +7,9 @@ document them here.
 New in 0.8.0
 ------------
 * *Breaking change* - In `phrase`, rests are reified as notes of nil pitch.
-* *Breaking change* - `where` ignores nils.
 * *Breaking change* - `then` and `times` do not allow padding.
 * *Breaking change* - `bpm` returns a fn that converts beats to seconds, to match Supercollider. 
 * *Addition* - `mapthen` provides a temporal equivalent to mapcat.
-* *Addition* - `all` applies a constant quality across a melody.
 
 New in 0.7.0
 ------------
