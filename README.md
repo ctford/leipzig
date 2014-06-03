@@ -1,5 +1,5 @@
 [Leipzig](https://github.com/ctford/leipzig)
-=========
+============================================
 
 [![Build Status](https://travis-ci.org/ctford/leipzig.png)](https://travis-ci.org/ctford/leipzig)
 
@@ -7,7 +7,15 @@ A composition library for [Overtone](https://github.com/overtone/overtone) by [@
 
 Examples
 --------
-See [Row, row, row your boat](src/leipzig/example/row_row_row_your_boat.clj) or [whelmed](https://github.com/ctford/whelmed).
+See [Row, row, row your boat](src/leipzig/example/row_row_row_your_boat.clj) or
+[whelmed](https://github.com/ctford/whelmed) for examples.
+
+In [Leipzig from scratch](https://www.youtube.com/watch?v=Lp_kQh34EWA), I demonstrate how to create a piece from
+`lein new` onwards.
+
+Leipzig came out of a talk I gave called
+[Functional Composition](http://www.infoq.com/presentations/music-functional-language), where I explain basic music
+theory using Overtone and Clojure.
 
 Use
 ---
@@ -108,8 +116,8 @@ These sequence functions all exhibit "closure" i.e. their result is the same sha
 
 Leipzig aims to be a library rather than a framework or environment. It uses simple Clojure datastructures and strives to be as open as possible. A new timing scheme, tuning or tempo can be mixed with Leipzig's other functions just as easily as the ones that come with the library.
 
-Tests
------
+Testing
+-------
 
 To run the unit tests without having to start Overtone's Supercollider server:
 
