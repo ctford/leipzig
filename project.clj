@@ -13,4 +13,4 @@
              {:plugins [[lein-midje "3.1.3"]
                         [codox "0.6.4"]]
               :dependencies [[midje "1.6.3"]]}}
-  :codox {:src-dir-uri "http://github.com/ctford/leipzig/blob/0.7.0"})
+  :codox {:src-dir-uri "http://github.com/ctford/leipzig/blob/0.8.0"})
