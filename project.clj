@@ -6,11 +6,11 @@
             :distribution :repo
             :comments "Same as Overtone"}
   :dependencies	[
-    [org.clojure/clojure "1.4.0"]
-    [overtone "0.8.0"]
-    [org.clojure/math.numeric-tower "0.0.1"]]
+    [org.clojure/clojure "1.5.1"]
+    [overtone "0.9.1"]
+    [org.clojure/math.numeric-tower "0.0.4"]]
   :profiles {:dev
              {:plugins [[lein-midje "3.1.3"]
-                        [codox "0.6.4"]]
+                        [codox "0.8.8"]]
               :dependencies [[midje "1.6.3"]]}}
   :codox {:src-dir-uri "http://github.com/ctford/leipzig/blob/0.8.0"})
