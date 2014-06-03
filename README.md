@@ -9,12 +9,12 @@ Examples
 --------
 See [Row, row, row your boat](src/leipzig/example/row_row_row_your_boat.clj) or [whelmed](https://github.com/ctford/whelmed).
 
-Using it
---------
+Use
+---
 Include it as a dependency in your project.clj, along with Overtone:
 
     [overtone "0.9.1"]
-    [leipzig "0.7.0"]
+    [leipzig "0.8.0"]
 
 API
 ---
