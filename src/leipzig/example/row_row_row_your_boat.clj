@@ -1,24 +1,23 @@
 (ns leipzig.example.row-row-row-your-boat
   (:require [overtone.live :as overtone]
-            [overtone.synth.stringed :as strings]
             [leipzig.melody :refer :all]
             [leipzig.scale :refer :all]
             [leipzig.canon :refer :all]
             [leipzig.live :as live]))
 
-(strings/gen-stringed-synth ektara 1 true)
+(overtone/definst beep [freq 440]
+  (-> freq
+      overtone/saw
+      (* (overtone/env-gen (overtone/perc)))))
 
-(defn pick [distort amp {midi :pitch, start :time, length :duration}] 
-    (let [synth-id (overtone/at start
-                     (ektara midi :distort distort :amp amp :gate 1))]
-      (overtone/at (+ start length) (overtone/ctl synth-id :gate 0))))
+(defmethod live/play-note :leader [{midi :pitch}]
+  (-> midi overtone/midi->hz beep))
 
-(defmethod live/play-note :leader [note]
-  (pick 0.7 1.0 note))
-(defmethod live/play-note :follower [note]
-  (pick 0.3 1.0 note))
-(defmethod live/play-note :bass [note]
-  (pick 0.9 0.2 (update-in note [:pitch] #(- % 12))))
+(defmethod live/play-note :follower [{midi :pitch}]
+  (-> midi overtone/midi->hz beep))
+
+(defmethod live/play-note :bass [{midi :pitch}]
+  (-> midi overtone/midi->hz beep))
 
 (def melody "A simple melody built from durations and pitches."
                ; Row, row, row your boat,
