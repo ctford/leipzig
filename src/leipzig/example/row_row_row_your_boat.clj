@@ -8,7 +8,7 @@
 (overtone/definst beep [freq 440]
   (-> freq
       overtone/saw
-      (* (overtone/env-gen (overtone/perc)))))
+      (* (overtone/env-gen (overtone/perc) :action overtone/FREE))))
 
 (defmethod live/play-note :leader [{midi :pitch}]
   (-> midi overtone/midi->hz beep))
