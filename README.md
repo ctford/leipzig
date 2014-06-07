@@ -10,7 +10,7 @@ Use
 Include it as a dependency in your project.clj, along with Overtone:
 
     [overtone "0.9.1"]
-    [leipzig "0.8.0"]
+    [leipzig "0.8.1"]
 
 Get started
 -----------
