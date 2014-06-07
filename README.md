@@ -83,6 +83,38 @@ You can then put multiple series of notes together:
       (where :pitch (comp scale/C scale/major))
       live/play)
 
+Advanced use
+------------
+
+In addition to simple pitches, `phrase` can take maps representing chords or `nil`s:
+
+    (require '[leipzig.chord :as chord])
+
+    (def chords "Off-beat chords."
+      (->> (phrase (repeat 1/2)
+                   [nil chord/triad
+                    nil (-> chord/seventh (chord/root 4) (chord/inversion 1))
+                    nil chord/triad
+                    nil chord/triad])
+           (where :part (is :chords))))
+
+The maps generate a note for each value in the map - the keys are used only to enable chord-transforming functions such as `root` and `inversion`.
+
+The `nil`s generate notes without pitches, representing rests. This is convenient, because it allows melodies to have a duration extending beyond their last audible note. However, the `play-note` implementations and `where` invocations must be prepared to handle this, e.g. by using `when` and `where`'s variation `wherever`:
+
+    (require '[leipzig.melody :refer [wherever]])
+
+    (defmethod live/play-note :chords [{midi :pitch}]
+      (when midi (-> midi overtone/midi->hz beep)))
+
+    (->>
+      (times 2 chords)
+      (with (->> melody (then reply)))
+      (where :time (bpm 90))
+      (where :duration (bpm 90))
+      (wherever :pitch, :pitch (comp scale/C scale/major))
+      live/play)
+
 Examples
 --------
 
