@@ -1,8 +1,8 @@
 (ns leipzig.example.row-row-row-your-boat
   (:require [overtone.live :as overtone]
-            [leipzig.melody :refer :all]
-            [leipzig.scale :refer :all]
-            [leipzig.canon :refer :all]
+            [leipzig.melody :refer [is phrase then times where with]]
+            [leipzig.scale :as scale]
+            [leipzig.canon :as canon]
             [leipzig.live :as live]))
 
 (overtone/definst beep [freq 440]
@@ -18,7 +18,7 @@
 (overtone/definst seeth [freq 440]
   (-> freq
       overtone/saw
-      (* (overtone/env-gen (overtone/perc 0.3 0.3) :action overtone/FREE))))
+      (* (overtone/env-gen (overtone/perc 0.5 0.5) :action overtone/FREE))))
 
 (defmethod live/play-note :leader [{midi :pitch}]
   (-> midi overtone/midi->hz beep))
@@ -57,15 +57,14 @@
   "Play the tune 'Row, row, row your boat' as a round."
   [speed key]
   (->> melody
+    (canon/canon (comp (canon/simple 4) (partial where :part (is :follower))))
     (with bass)
-    (times 2)
-    (canon (comp (simple 4) (partial where :part (is :follower))))
     (where :time speed)
     (where :duration speed)
     (where :pitch key)
     live/play))
 
 (comment
-  (row-row (bpm 120) (comp C sharp major))
-  (row-row (bpm 90) (comp low B flat minor))
+  (row-row (bpm 120) (comp scale/C scale/sharp scale/major))
+  (row-row (bpm 90) (comp scale/low scale/B scale/flat scale/minor))
 )
