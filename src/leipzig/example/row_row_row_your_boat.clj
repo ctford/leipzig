@@ -16,10 +16,10 @@
       overtone/square
       (* (overtone/env-gen (overtone/perc) :action overtone/FREE))))
 
-(overtone/definst seeth [freq 440]
+(overtone/definst seeth [freq 440 dur 1.0]
   (-> freq
       overtone/saw
-      (* (overtone/env-gen (overtone/perc 0.5 0.5) :action overtone/FREE))))
+      (* (overtone/env-gen (overtone/perc (* dur 1/2) (* dur 1/2)) :action overtone/FREE))))
 
 (defmethod live/play-note :leader [{midi :pitch}]
   (-> midi overtone/midi->hz beep))
@@ -27,8 +27,8 @@
 (defmethod live/play-note :follower [{midi :pitch}]
   (-> midi overtone/midi->hz ping))
 
-(defmethod live/play-note :bass [{midi :pitch}]
-  (-> midi overtone/midi->hz (/ 2) seeth))
+(defmethod live/play-note :bass [{midi :pitch seconds :duration}]
+  (-> midi overtone/midi->hz (/ 2) (seeth seconds)))
 
 (def melody "A simple melody built from durations and pitches."
                ; Row, row, row your boat,
