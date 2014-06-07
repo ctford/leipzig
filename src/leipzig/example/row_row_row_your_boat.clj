@@ -3,6 +3,7 @@
             [leipzig.melody :refer [is phrase then times where with]]
             [leipzig.scale :as scale]
             [leipzig.canon :as canon]
+            [leipzig.chord :as chord]
             [leipzig.live :as live]))
 
 (overtone/definst beep [freq 440]
@@ -65,6 +66,6 @@
     live/play))
 
 (comment
-  (row-row (bpm 120) (comp scale/C scale/sharp scale/major))
-  (row-row (bpm 90) (comp scale/low scale/B scale/flat scale/minor))
+  (row-row (bpm 120) (comp scale/C scale/major))
+  (row-row (bpm 90) (comp scale/low scale/B scale/minor))
 )
