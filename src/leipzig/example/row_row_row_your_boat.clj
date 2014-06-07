@@ -1,6 +1,6 @@
 (ns leipzig.example.row-row-row-your-boat
   (:require [overtone.live :as overtone]
-            [leipzig.melody :refer [is phrase then times where with]]
+            [leipzig.melody :refer [bpm is phrase then times where with]]
             [leipzig.scale :as scale]
             [leipzig.canon :as canon]
             [leipzig.chord :as chord]
