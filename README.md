@@ -39,13 +39,13 @@ To play a melody, first define an arrangement. `play-note` is a multimethod that
              '[leipzig.live :as live]
              '[leipzig.scale :as scale])
 
-    (overtone/definst beep [freq 440]
+    (overtone/definst beep [freq 440 dur 1.0]
       (-> freq
           overtone/saw
-          (* (overtone/env-gen (overtone/perc) :action overtone/FREE))))
+          (* (overtone/env-gen (overtone/perc 0.05 dur) :action overtone/FREE))))
 
-    (defmethod live/play-note :default [{midi :pitch}]
-      (-> midi overtone/midi->hz beep))
+    (defmethod live/play-note :default [{midi :pitch seconds :duration}]
+      (-> midi overtone/midi->hz (beep seconds)))
 
     (->>
       melody
@@ -69,7 +69,8 @@ Let's define two other parts to go with the original melody:
            (where :part (is :bass))))
 
     (defmethod live/play-note :bass [{midi :pitch}]
-      (-> midi overtone/midi->hz (/ 2) beep)) ; Halving the frequency drops the note an octave.
+      ; Halving the frequency drops the note an octave.
+      (-> midi overtone/midi->hz (/ 2) (beep 0.5)))
 
 You can then put multiple series of notes together:
 
@@ -93,7 +94,7 @@ In addition to simple pitches, `phrase` can take maps representing chords or `ni
     (def chords "Off-beat chords."
       (->> (phrase (repeat 1/2)
                    [nil chord/triad
-                    nil (-> chord/seventh (chord/root 4) (chord/inversion 1))
+                    nil (-> chord/seventh (chord/root 4) (chord/inversion 1) (dissoc :v))
                     nil chord/triad
                     nil chord/triad])
            (where :part (is :chords))))
@@ -102,13 +103,15 @@ The maps generate a note for each value in the map - the keys are used only to e
 
 The `nil`s generate notes without pitches, representing rests. This is convenient, because it allows melodies to have a duration extending beyond their last audible note. However, the `play-note` implementations and `where` invocations must be prepared to handle this, e.g. by using `when` and `where`'s variation `wherever`:
 
-    (require '[leipzig.melody :refer [wherever]])
+    (require '[leipzig.melody :refer [wherever]]
+             '[leipzig.scale :refer [lower]])
 
     (defmethod live/play-note :chords [{midi :pitch}]
       (when midi (-> midi overtone/midi->hz beep)))
 
     (->>
       (times 2 chords)
+      (wherever :pitch, :pitch lower)
       (with (->> melody (then reply)))
       (where :time (bpm 90))
       (where :duration (bpm 90))
