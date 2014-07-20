@@ -160,3 +160,8 @@ Testing
 To run the unit tests without having to start Overtone's Supercollider server:
 
     lein midje leipzig.test.*
+
+Issues
+------
+
+As pointed out by [@clojens](https://github.com/clojens), `leipzig.live` imports `overtone.live`, which implicitly boots an internal Supercollider server and [can cause problems for folks using 64 bit Windows](https://github.com/ctford/leipzig/issues/4).
