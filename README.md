@@ -12,6 +12,12 @@ Include it as a dependency in your project.clj, along with Overtone:
     [overtone "0.9.1"]
     [leipzig "0.8.1"]
 
+Leiningen template
+------------------
+
+There is a [Leiningen template](https://github.com/ctford/leipzig-template) that creates a simple Leipzig project,
+ready to run.
+
 Get started
 -----------
 
