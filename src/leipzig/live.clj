@@ -7,17 +7,15 @@
   e.g. (play-note {:part :bass :time _})"
   :part)
 
-(defn- trickle [notes]
-  (if-let [{epoch :time :as note} (first notes)]
-    (do
-      (Thread/sleep (max 0 (- epoch (+ 100 (overtone/now))))) 
-      (cons note 
-        (lazy-seq (trickle (rest notes)))))))
+(defn- trickle [[{epoch :time :as note} & others]]
+  (Thread/sleep (max 0 (- epoch (+ 100 (overtone/now)))))
+  (cons note (lazy-seq (trickle others))))
 
 (def channels (atom []))
 (defn- register [channel]
   (swap! channels #(conj % channel))
   channel)
+
 (defn stop
   "Kills all running melodies.
   e.g. (->> melody play)
