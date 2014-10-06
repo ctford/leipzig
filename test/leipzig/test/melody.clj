@@ -62,7 +62,9 @@
 
 (fact
   (->> (rhythm []) duration) => 0
-  (->> (rhythm [1 2 3]) duration) => 6
+  (->> (rhythm [1 2 3]) duration) => 6)
+
+(fact "The duration of notes is determined by the note that finishes last."
   (->> (rhythm [1 2 3]) (with (rhythm [100])) duration) => 100)
 
 (fact

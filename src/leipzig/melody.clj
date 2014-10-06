@@ -92,12 +92,10 @@
   ([as bs & others] (reduce with (cons as (cons bs others)))))
 
 (defn duration
-  "Returns the total duration of notes."
+  "Returns the total duration of notes.
+  e.g. (->> melody duration)"
   [notes]
-  (->> notes
-       (map (fn [{t :time d :duration}] (+ t d)))
-       (cons 0)
-       (apply max)))
+  (reduce (fn [so-far {t :time d :duration}] (max so-far (+ t d))) 0 notes))
 
 (defn then 
   "Sequences later after earlier.
