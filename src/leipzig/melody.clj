@@ -91,9 +91,13 @@
      :otherwise    (cons b (lazy-seq (with as other-bs)))))
   ([as bs & others] (reduce with (cons as (cons bs others)))))
 
-(defn duration [notes]
-  (let [{t :time d :duration} (last notes)]
-    (+ t d)))
+(defn duration
+  "Returns the total duration of notes."
+  [notes]
+  (->> notes
+       (map (fn [{t :time d :duration}] (+ t d)))
+       (cons 0)
+       (apply max)))
 
 (defn then 
   "Sequences later after earlier.

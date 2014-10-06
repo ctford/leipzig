@@ -61,6 +61,11 @@
      {:time 1 :duration 2 :pitch 4}])
 
 (fact
+  (->> (rhythm []) duration) => 0
+  (->> (rhythm [1 2 3]) duration) => 6
+  (->> (rhythm [1 2 3]) (with (rhythm [100])) duration) => 100)
+
+(fact
   (->> (phrase [1] [2]) (then (phrase [3] [4]))) =>
     [{:time 0 :duration 1 :pitch 2}
      {:time 1 :duration 3 :pitch 4}])
