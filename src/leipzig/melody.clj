@@ -40,13 +40,18 @@
 (defn phrase
   "Translates a sequence of durations and pitches into a melody.
   nil pitches signify rests, vectors represent clusters, and maps
-  represent chords.
+  represent chords. Vector durations represent repeated notes.
   e.g. (phrase [1/2 1/2 3/2 3/2] [0 1 nil 4])
        (phrase [1 1 2] [4 3 [0 2]])
+       (phrase [1 [1 2]] [4 3])
        (phrase (repeat 4) (map #(-> triad (root %))) [0 3 4 3])" 
   [durations pitches]
-  (let [times (reductions + 0 durations)]
-    (mapcat utter pitches times durations)))
+  (let [wrap (fn [x] (if (sequential? x) x [x]))
+        counts (map (comp count wrap) durations)
+        normalised-pitches (mapcat repeat counts pitches)
+        normalised-durations (mapcat wrap durations)
+        times (reductions + 0 normalised-durations)]
+    (mapcat utter normalised-pitches times normalised-durations)))
 
 (defn rhythm
   "Translates a sequence of durations into a rhythm.

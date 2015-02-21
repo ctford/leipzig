@@ -58,7 +58,19 @@
   (phrase [1 2] [2 (-> chord/triad (dissoc :iii))]) =>
     [{:time 0 :duration 1 :pitch 2}
      {:time 1 :duration 2 :pitch 0}
-     {:time 1 :duration 2 :pitch 4}])
+     {:time 1 :duration 2 :pitch 4}]
+
+  (phrase [1 [1/2 1/2]] [2 4]) =>
+    [{:time 0 :duration 1 :pitch 2}
+     {:time 1 :duration 1/2 :pitch 4}
+     {:time 3/2 :duration 1/2 :pitch 4}]
+
+  (phrase [1 [1/2 1/2]] [2 [0 4]]) =>
+    [{:time 0 :duration 1 :pitch 2}
+     {:time 1 :duration 1/2 :pitch 0}
+     {:time 1 :duration 1/2 :pitch 4}
+     {:time 3/2 :duration 1/2 :pitch 0}
+     {:time 3/2 :duration 1/2 :pitch 4}])
 
 (fact
   (->> (rhythm []) duration) => 0

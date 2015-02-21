@@ -4,6 +4,10 @@ Change Log
 Leipzig still sees occasional breaking changes, though every effort will be made to
 document them here.
 
+New in 0.9.0
+------------
+* *Addition* - `phrase` accepts vector durations, representing repeated notes.
+
 New in 0.8.0
 ------------
 * *Breaking change* - In `phrase`, rests are reified as notes of nil pitch.
