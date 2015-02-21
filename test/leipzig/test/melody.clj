@@ -7,11 +7,18 @@
   (->> [{:time 90}] (where :time (bpm 90))) =>
     [{:time 60}])
 
-(fact "wherever can be used to provide default values to keys."
-  (->> [{:time 0} {:time 1, :part :piano}]
-    (wherever (comp not :part), :part (is :bass))) =>
-    [{:time 0, :part :bass}
-     {:time 1, :part :piano}])
+(fact "wherever applies a function to selected notes."
+  (->> [{:time 0 :duration 0} {:time 1 :duration 3}]
+    (wherever (comp even? :time), :part (is :bass))) =>
+    [{:time 0 :duration 0 :part :bass}
+     {:time 1 :duration 3}])
+
+(fact "where applies a function to all notes with the specified key."
+  (->> [{:time 0 :duration 0 :volume 2} {:time 1 :duration 3 :volume 3} {:time 2 :duration 2}]
+    (where :volume inc)) =>
+    [{:time 0 :duration 0 :volume 3}
+     {:time 1 :duration 3 :volume 4}
+     {:time 2 :duration 2}])
 
 (fact "rhythm takes sequential durations and produces a rhythm."
   (rhythm [1 2]) =>
@@ -23,8 +30,8 @@
     [{:time 0 :duration 1 :drum :kick}
      {:time 1 :duration 2 :drum :snare}])
 
-(fact "where can be used to set a constant value across a melody."
-  (->> (rhythm [1 2]) (where :part (is :drum))) =>
+(fact "all can be used to set a constant value across a melody."
+  (->> (rhythm [1 2]) (all :part :drum)) =>
     [{:time 0 :duration 1 :part :drum}
      {:time 1 :duration 2 :part :drum}])
 

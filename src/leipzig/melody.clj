@@ -12,12 +12,6 @@
   [k values notes]
   (map #(assoc %1 k %2) notes values))
 
-(defn all
-  "Fixes an arbitrary quality across a melody.
-  e.g. (->> (rhythm [1 1/2]) (all :part :drum))"
-  [k value notes]
-  (having k (repeat value) notes))
-
 (defprotocol Utterable (utter [thing time pitch]))
 
 (extend-protocol Utterable
@@ -64,20 +58,26 @@
   e.g. (->> notes (wherever (comp not :part), :part (is :bass)))"
   constantly)
 
-(defn- if-applicable [condition? f] (fn [x] (if (condition? x) (f x) x)))
+(defn- if-applicable [applies? f] (fn [x] (if (applies? x) (f x) x)))
 (defn wherever
   "Applies f to the k key of each note wherever condition? returns true.
   e.g. (->> notes (wherever (comp not :part), :part (is :piano))"
-  [condition? k f notes]
+  [applies? k f notes]
   (map
-    (if-applicable condition? #(update-in % [k] f))
+    (if-applicable applies? #(update-in % [k] f))
     notes))
 
 (defn where
-  "Applies f to the k key of each note in notes, ignoring nil.
+  "Applies f to the k key of each note in notes, ignoring missing keys.
   e.g. (->> notes (where :time (bpm 90)))"
   [k f notes]
-  (wherever (is true), k f notes))
+  (wherever #(contains? % k), k f notes))
+
+(defn all
+  "Sets a constant value for each note of a melody.
+  e.g. (->> notes (all :part :drum))"
+  [k v notes]
+  (wherever (is true), k (is v) notes))
 
 (defn after
   "Delay notes by wait.
