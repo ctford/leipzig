@@ -90,7 +90,7 @@
      {:time 0 :duration 1 :pitch 2}
      {:time 2 :duration 1 :pitch 5}])
 
-(fact "map-then transforms several melodies then joins them up."
+(fact "mapthen transforms several melodies then joins them up."
   (mapthen drop-last
            [1 2]
            [(phrase [1 1] [2 2])
