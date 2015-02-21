@@ -7,6 +7,7 @@ document them here.
 New in 0.9.0
 ------------
 * *Addition* - `phrase` accepts vector durations, representing repeated notes.
+* *Addition* - `but` replaces part of a melody.
 * *Breaking change* - `where` ignores missing keys.
 
 New in 0.8.0

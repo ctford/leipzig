@@ -13,6 +13,24 @@
     [{:time 0 :duration 0 :part :bass}
      {:time 1 :duration 3}])
 
+(fact "but substitutes part of a melody for another."
+   (->> (phrase (repeat 1) [0 1 2 3])
+     (but 2 4 (phrase (repeat 1/4) [8 7 6 5]))) =>
+      [{:time 0 :duration 1 :pitch 0}
+       {:time 1 :duration 1 :pitch 1}
+       {:time 2 :duration 1/4 :pitch 8}
+       {:time 9/4 :duration 1/4 :pitch 7}
+       {:time 10/4 :duration 1/4 :pitch 6}
+       {:time 11/4 :duration 1/4 :pitch 5}])
+
+(fact "but truncates notes that fall in the exlusion interval."
+   (->> (phrase (repeat 4) [0 1])
+     (but 6 8 (phrase (repeat 1) [2 3]))) =>
+      [{:time 0 :duration 4 :pitch 0}
+       {:time 4 :duration 2 :pitch 1}
+       {:time 6 :duration 1 :pitch 2}
+       {:time 7 :duration 1 :pitch 3}])
+
 (fact "where applies a function to all notes with the specified key."
   (->> [{:time 0 :duration 0 :volume 2} {:time 1 :duration 3 :volume 3} {:time 2 :duration 2}]
     (where :volume inc)) =>

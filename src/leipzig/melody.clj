@@ -96,6 +96,23 @@
      :otherwise    (cons b (lazy-seq (with as other-bs)))))
   ([as bs & others] (reduce with (cons as (cons bs others)))))
 
+(defn but
+  "Replaces part of a melody with another.
+  e.g. (->> notes (but 2 4 variation))"
+  [start end variation notes]
+  (let [starts-in? (fn [{:keys [time]}]
+                    (and (<= start time) (< time end)))
+        enters (fn [{:keys [time duration]}]
+                 (< start (+ time duration)))
+        clip (fn [{:keys [time] :as note}]
+               (if (enters note)
+                 (assoc note :duration (- start time))
+                 note))]
+    (->> notes
+         (filter (complement starts-in?))
+         (map clip)
+         (with (after start variation)) )))
+
 (defn duration
   "Returns the total duration of notes.
   e.g. (->> melody duration)"
