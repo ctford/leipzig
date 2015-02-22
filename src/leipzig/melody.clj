@@ -12,23 +12,23 @@
   [k values notes]
   (map #(assoc %1 k %2) notes values))
 
-(defprotocol Utterable (utter [thing time pitch]))
+(defprotocol Utterable (utter [thing time pitch duration]))
 
 (extend-protocol Utterable
   Object
-  (utter [pitch time duration]
-    [{:pitch pitch :time time :duration duration}])
+  (utter [pitch time duration velocity]
+    [{:pitch pitch :time time :duration duration :velocity velocity}])
   
   clojure.lang.Sequential
-  (utter [cluster time duration]
-    (mapcat #(utter % time duration) cluster))
+  (utter [cluster time duration velocity]
+    (mapcat #(utter % time duration velocity) cluster))
 
   clojure.lang.MapEquivalence
-  (utter [chord time duration]
-    (utter (-> chord vals sort) time duration))
+  (utter [chord time duration velocity]
+    (utter (-> chord vals sort) time duration velocity))
 
   nil
-  (utter [pitch time duration]
+  (utter [pitch time duration velocity]
     [{:time time :duration duration}]))
 
 (defn phrase
@@ -36,16 +36,19 @@
   nil pitches signify rests, vectors represent clusters, and maps
   represent chords. Vector durations represent repeated notes.
   e.g. (phrase [1/2 1/2 3/2 3/2] [0 1 nil 4])
-       (phrase [1 1 2] [4 3 [0 2]])
-       (phrase [1 [1 2]] [4 3])
-       (phrase (repeat 4) (map #(-> triad (root %))) [0 3 4 3])" 
-  [durations pitches]
-  (let [wrap (fn [x] (if (sequential? x) x [x]))
-        counts (map (comp count wrap) durations)
-        normalised-pitches (mapcat repeat counts pitches)
-        normalised-durations (mapcat wrap durations)
-        times (reductions + 0 normalised-durations)]
-    (mapcat utter normalised-pitches times normalised-durations)))
+  (phrase [1 1 2] [4 3 [0 2]])
+  (phrase [1 [1 2]] [4 3])
+  (phrase (repeat 4) (map #(-> triad (root %))) [0 3 4 3])"
+  ([durations pitches velocities]
+   (let [wrap (fn [x] (if (sequential? x) x [x]))
+         counts (map (comp count wrap) durations)
+         normalised-pitches (mapcat repeat counts pitches)
+         normalised-durations (mapcat wrap durations)
+         times (reductions + 0 normalised-durations)]
+     (mapcat utter normalised-pitches times normalised-durations velocities)))
+  ([durations pitches]
+   (->> (phrase durations pitches (repeat nil))
+        (map #(dissoc % :velocity)))))
 
 (defn rhythm
   "Translates a sequence of durations into a rhythm.
@@ -117,7 +120,7 @@
   "Returns the total duration of notes.
   e.g. (->> melody duration)"
   [notes]
-  (reduce (fn [so-far {t :time d :duration}] (max so-far (+ t d))) 0 notes))
+  (->> notes (map (fn [{:keys [time duration]}] (+ time duration))) (cons 0) (apply max)))
 
 (defn then 
   "Sequences later after earlier.

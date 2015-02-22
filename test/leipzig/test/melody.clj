@@ -85,6 +85,10 @@
      {:time 1 :duration 2 :pitch 0}
      {:time 1 :duration 2 :pitch 4}]
 
+  (phrase [1 2] [2 3] [0.3 0.4]) =>
+    [{:time 0 :duration 1 :pitch 2 :velocity 0.3}
+     {:time 1 :duration 2 :pitch 3 :velocity 0.4}]
+
   (phrase [1 [1/2 1/2]] [2 4]) =>
     [{:time 0 :duration 1 :pitch 2}
      {:time 1 :duration 1/2 :pitch 4}
