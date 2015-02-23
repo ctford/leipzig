@@ -12,7 +12,7 @@
   [k values notes]
   (map #(assoc %1 k %2) notes values))
 
-(defprotocol Utterable (utter [thing time duration velocity]))
+(defprotocol Utterable (utter [thing time pitch duration]))
 
 (extend-protocol Utterable
   Object
@@ -30,6 +30,31 @@
   nil
   (utter [pitch time duration velocity]
     [{:time time :duration duration}]))
+
+(defn phrase
+  "Translates a sequence of durations and pitches into a melody.
+  nil pitches signify rests, vectors represent clusters, and maps
+  represent chords. Vector durations represent repeated notes.
+  e.g. (phrase [1/2 1/2 3/2 3/2] [0 1 nil 4])
+  (phrase [1 1 2] [4 3 [0 2]])
+  (phrase [1 [1 2]] [4 3])
+  (phrase (repeat 4) (map #(-> triad (root %))) [0 3 4 3])"
+  ([durations pitches velocities]
+   (let [wrap (fn [x] (if (sequential? x) x [x]))
+         counts (map (comp count wrap) durations)
+         normalised-pitches (mapcat repeat counts pitches)
+         normalised-durations (mapcat wrap durations)
+         times (reductions + 0 normalised-durations)]
+     (mapcat utter normalised-pitches times normalised-durations velocities)))
+  ([durations pitches]
+   (->> (phrase durations pitches (repeat nil))
+        (map #(dissoc % :velocity)))))
+
+(defn rhythm
+  "Translates a sequence of durations into a rhythm.
+  e.g. (rhythm [1 1 2])"
+  [durations]
+  (phrase durations (repeat nil)))
 
 (def is
   "Synonym for constantly.
@@ -119,29 +144,3 @@
   (->> notes
        (repeat n)
        (mapthen identity)))
-
-(defn- render [duration pitch velocity]
-  (if (sequential? duration)
-    (mapthen #(render % pitch velocity) duration)
-    (utter pitch 0 duration velocity)))
-
-(defn phrase
-  "Translates a sequence of durations and pitches into a melody.
-  nil pitches signify rests, vectors represent clusters, and maps
-  represent chords. Vector durations represent repeated notes.
-  e.g. (phrase [1/2 1/2 3/2 3/2] [0 1 nil 4])
-  (phrase [1 1 2] [4 3 [0 2]])
-  (phrase [1 [1 2]] [4 3])
-  (phrase (repeat 4) (map #(-> triad (root %))) [0 3 4 3])"
-  ([durations pitches velocities]
-   (->> (map render durations pitches velocities)
-        (reduce #(then %2 %1) [])))
-  ([durations pitches]
-   (->> (phrase durations pitches (repeat 1.0))
-        (map #(dissoc % :velocity)))))
-
-(defn rhythm
-  "Translates a sequence of durations into a rhythm.
-  e.g. (rhythm [1 1 2])"
-  [durations]
-  (phrase durations (repeat nil)))
