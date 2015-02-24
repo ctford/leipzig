@@ -104,9 +104,9 @@
   e.g. (->> notes (but 2 4 variation))"
   [start end variation notes]
   (let [starts-in? (fn [{:keys [time]}]
-                    (and (<= start time) (< time end)))
+                     (and (<= start time) (< time end)))
         clip (fn [{:keys [time duration] :as note}]
-               (if (< start (+ time duration))
+               (if (and (< time start) (<= start (+ time duration)))
                  (assoc note :duration (- start time))
                  note))]
     (->> notes
