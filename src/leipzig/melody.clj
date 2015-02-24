@@ -105,10 +105,8 @@
   [start end variation notes]
   (let [starts-in? (fn [{:keys [time]}]
                     (and (<= start time) (< time end)))
-        enters (fn [{:keys [time duration]}]
-                 (< start (+ time duration)))
-        clip (fn [{:keys [time] :as note}]
-               (if (enters note)
+        clip (fn [{:keys [time duration] :as note}]
+               (if (< start (+ time duration))
                  (assoc note :duration (- start time))
                  note))]
     (->> notes
