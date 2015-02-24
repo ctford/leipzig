@@ -114,7 +114,7 @@
     (->> notes
          (filter (complement starts-in?))
          (map clip)
-         (with (after start variation)) )))
+         (with (->> variation (after start))) )))
 
 (defn duration
   "Returns the total duration of notes.
