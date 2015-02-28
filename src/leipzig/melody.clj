@@ -118,7 +118,10 @@
   "Returns the total duration of notes.
   e.g. (->> melody duration)"
   [notes]
-  (->> notes (map (fn [{:keys [time duration]}] (+ time duration))) (cons 0) (apply max)))
+  (let [length (fn [{:keys [time duration]}] (+ time duration))]
+    (->> notes
+         (map length)
+         (reduce max 0))))
 
 (defn then 
   "Sequences later after earlier.
