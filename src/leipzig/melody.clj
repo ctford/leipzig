@@ -145,3 +145,13 @@
   (->> notes
        (repeat n)
        (mapthen identity)))
+
+(defn tempo
+  "Transform both :time and :duration according to timing."
+  [timing notes]
+  (->> notes
+       (map (fn [{start :time duration :duration :as note}]
+              (-> note
+                  (assoc :duration (- (timing (+ start duration))
+                                      (timing start))))))
+       (where :time timing)))

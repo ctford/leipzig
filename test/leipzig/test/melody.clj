@@ -1,5 +1,6 @@
 (ns leipzig.test.melody
   (:require [leipzig.chord :as chord]
+            [leipzig.scale :as scale]
             [midje.sweet :refer :all :exclude [after]]
             [leipzig.melody :refer :all]))
 
@@ -149,6 +150,11 @@
 (fact "with is variadic."
   (with (rhythm [1]) (rhythm [2]) (rhythm [3])) => 
     [{:time 0 :duration 1} {:time 0 :duration 2} {:time 0 :duration 3}])
+
+(fact "tempo transforms both time and duration."
+      (->> [{:time 0 :duration 1/2} {:time 1/2 :duration 1/2}]
+           (tempo (comp (scale/scale [2/3 1/3]) (partial * 2)))) =>
+      [{:time 0 :duration 2/3} {:time 2/3 :duration 1/3}]) 
 
 (future-fact "interpolate linearly interpolates between the supplied coordinates."
   ((interpolate [[0 0] [1 1]]) 1/2) => 1/2
