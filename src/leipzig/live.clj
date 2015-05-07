@@ -7,9 +7,10 @@
   e.g. (play-note {:part :bass :time _})"
   :part)
 
-(defn- trickle [[{epoch :time :as note} & others]]
-  (Thread/sleep (max 0 (- epoch (+ 100 (overtone/now)))))
-  (cons note (lazy-seq (trickle others))))
+(defn- trickle [[note & others]]
+  (when-let [{epoch :time} note]
+    (Thread/sleep (max 0 (- epoch (+ 100 (overtone/now)))))
+    (cons note (lazy-seq (trickle others)))))
 
 (def channels (atom []))
 (defn- register [channel]
