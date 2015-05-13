@@ -28,20 +28,26 @@
   (overtone/stop)
   (reset! channels []))
 
+(defn- translate [notes]
+  (->> notes
+       (melody/after (-> notes first :time -)) ; Allow for notes that lead in.
+       (melody/after 0.1) ; Make sure we have time to realise the seq.
+       (melody/where :time (partial * 1000))
+       (melody/after (overtone/now))))
+
 (defn play
   "Plays notes now.
   e.g. (->> melody play)"
   [notes] 
   (->>
     notes
-    (melody/where :time (partial * 1000))
-    (melody/after (overtone/now))
+    translate
     trickle
     (map (fn [{epoch :time :as note}]
            (->> (dissoc note :time)
                 play-note
                 (overtone/at epoch)
-                (when (< (overtone/now) epoch)))))
+                (when (< (overtone/now) epoch))))) ; Don't play notes in the past.
     dorun
     future
     register))
