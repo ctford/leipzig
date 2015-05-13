@@ -147,7 +147,8 @@
        (mapthen identity)))
 
 (defn tempo
-  "Transform both :time and :duration according to timing."
+  "Transform both :time and :duration according to timing.
+  e.g. (->> notes (tempo (bpm 120)))"
   [timing notes]
   (->> notes
        (map (fn [{start :time duration :duration :as note}]
@@ -157,7 +158,8 @@
        (where :time timing)))
 
 (defn accelerando
-  "Linearly interpolated change between from and to."
+  "Linearly interpolated change between from and to.
+  e.g. (->> notes (tempo (accelerando 0 4 3/2))))"
   [from to by]
   (fn rate [t]
     (cond
