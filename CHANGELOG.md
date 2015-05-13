@@ -11,6 +11,7 @@ New in 0.9.0
 * *Addition* - `but` replaces part of a melody.
 * *Addition* - `tempo` applies a transformation to both time and duration.
 * *Addition* - Experimental `accelerando` linearly interpolates between two relatively different rates.
+* *Addition* - `play` allows for lead-in notes with negative times. 
 * *Breaking change* - `where` ignores missing keys.
 * *Bug fix* - `play` no longer throws a `NullPointerException` for finite sequences of notes.
 
