@@ -10,7 +10,7 @@ Use
 Include it as a dependency in your project.clj, along with Overtone:
 
     [overtone "0.9.1"]
-    [leipzig "0.8.1"]
+    [leipzig "0.9.0"]
 
 Leiningen template
 ------------------
@@ -55,8 +55,7 @@ To play a melody, first define an arrangement. `play-note` is a multimethod that
 
     (->>
       melody
-      (where :time (bpm 90))
-      (where :duration (bpm 90))
+      (tempo (bpm 90))
       (where :pitch (comp scale/C scale/major))
       live/play)
 
@@ -85,8 +84,7 @@ You can then put multiple series of notes together:
       (then (with bass melody))
       (then (with bass melody reply))
       (then (times 2 bass))
-      (where :time (bpm 90))
-      (where :duration (bpm 90))
+      (tempo (bpm 90))
       (where :pitch (comp scale/C scale/major))
       live/play)
 
@@ -103,7 +101,7 @@ In addition to simple pitches, `phrase` can take maps representing chords or `ni
                     nil (-> chord/seventh (chord/root 4) (chord/inversion 1) (dissoc :v))
                     nil chord/triad
                     nil chord/triad])
-           (where :part (is :chords))))
+           (all :part :chords)))
 
 The maps generate a note for each value in the map - the keys are used only to enable chord-transforming functions such as `root` and `inversion`.
 
@@ -119,9 +117,8 @@ The `nil`s generate notes without pitches, representing rests. This is convenien
       (times 2 chords)
       (wherever :pitch, :pitch lower)
       (with (->> melody (then reply)))
-      (where :time (bpm 90))
-      (where :duration (bpm 90))
-      (wherever :pitch, :pitch (comp scale/C scale/major))
+      (tempo (bpm 90))
+      (where :pitch (comp scale/C scale/major))
       live/play)
 
 Examples
@@ -155,7 +152,6 @@ Leipzig is designed to play nicely with Clojure's standard sequence functions. T
 These sequence functions all exhibit "closure" i.e. their result is the same shape as their input. That allows them to be used and combined very flexibly. `where` for example, can raise the pitch, set the part or put the notes into a particular tempo:
 
     (->> notes (where :pitch inc))
-    (->> notes (where :part (is :melody)))
     (->> notes (where :time (bpm 90)))
 
 Leipzig aims to be a library rather than a framework or environment. It uses simple Clojure datastructures and strives to be as open as possible. A new timing scheme, tuning or tempo can be mixed with Leipzig's other functions just as easily as the ones that come with the library.
