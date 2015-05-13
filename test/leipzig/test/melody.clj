@@ -156,6 +156,16 @@
            (tempo (comp (scale/scale [2/3 1/3]) (partial * 2)))) =>
       [{:time 0 :duration 2/3} {:time 2/3 :duration 1/3}]) 
 
+(fact "An accelerando linearly interpolates between two relatively different rates."
+      (->> (phrase [1 1 1] [0 0 0]) (tempo (accelerando 0 2 1))) =>
+      (phrase [1 1 1] [0 0 0])
+
+      (->> (phrase [1 1 1] [0 0 0]) (tempo (accelerando 0 2 2))) =>
+      (phrase [5/4 7/4 2] [0 0 0])
+
+      (->> (phrase [1 1 1] [0 0 0]) (tempo (accelerando 0 2 1/2))) =>
+      (phrase [7/8 5/8 1/2] [0 0 0]))
+
 (future-fact "interpolate linearly interpolates between the supplied coordinates."
   ((interpolate [[0 0] [1 1]]) 1/2) => 1/2
   ((interpolate [[0 0] [1 1] [2 2]]) 3/2) => 3/2)
