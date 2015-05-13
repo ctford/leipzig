@@ -10,7 +10,7 @@ New in 0.9.0
 * *Addition* - `phrase` accepts an optional third argument for velocities.
 * *Addition* - `but` replaces part of a melody.
 * *Addition* - `tempo` applies a transformation to both time and duration.
-* *Addition* - `accelerando` linearly interpolates between two relatively different rates.
+* *Addition* - Experimental `accelerando` linearly interpolates between two relatively different rates.
 * *Breaking change* - `where` ignores missing keys.
 * *Bug fix* - `play` no longer throws a `NullPointerException` for finite sequences of notes.
 
