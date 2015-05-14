@@ -7,7 +7,7 @@ A composition library for [Overtone](https://github.com/overtone/overtone) by [@
 
 Use
 ---
-Include it as a dependency in your project.clj, along with Overtone:
+Include it as a dependency in your `project.clj`, along with Overtone:
 
     [overtone "0.9.1"]
     [leipzig "0.9.0"]
