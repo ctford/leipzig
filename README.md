@@ -71,7 +71,7 @@ Let's define two other parts to go with the original melody:
     (def bass "A bass part to accompany the melody."
       (->> (phrase [1  1 2]
                    [0 -3 0])
-           (where :part (is :bass))))
+           (all :part :bass)))
 
     (defmethod live/play-note :bass [{midi :pitch}]
       ; Halving the frequency drops the note an octave.
@@ -87,6 +87,85 @@ You can then put multiple series of notes together:
       (tempo (bpm 90))
       (where :pitch (comp scale/C scale/major))
       live/play)
+
+Namespaces
+----------
+
+Leipzig features a number of namespaces, each containing functions pertaining to a
+particular area of composition.
+
+### `whelmed.melody`
+
+This namespace contains the core functions for creating and manipulating melodies. In particular:
+- `phrase` creates a melody from a sequence of durations and a sequence of pitches.
+- `where` applies a function to a specified key of each note in a melody.
+
+For example:
+
+    (->> (phrase [3/3 3/3 2/3 1/3 3/3] [0 0 0 1 2])
+         (where :time inc))
+
+### `whelmed.live`
+
+Here are functions to send your melodies to Overtone:
+- `play-note` is a multimethod that dispatches on the `:part` a note has.
+- `play` plays the notes.
+- `jam` loops the notes, reloading the var each time.
+- `stop` stops all running melodies.
+
+For example:
+
+    (defmethod live/play-note :melody [{midi :pitch}]
+      (some-> midi overtone/midi->hz beep))
+
+    (def boring-scale
+      (->> (phrase (repeat 1) (range 8))
+           (all :part :melody)
+           (where :pitch (comp C major))))
+
+    (jam (var boring-scale))
+
+    ; Edits to boring-scale will be played each time we go back round the loop.
+
+### `whelmed.scale`
+
+This namespace contains functions for placing melodies within musical scales. In particular:
+- `major` and `minor` are functions that place a pitch within a relative scale.
+- `A`, `B`, `C` etc are functions that take a relative pitch, and place it in a specific absolute key.
+
+For example:
+
+    (->> (phrase (repeat 1) (range 8))
+         (where :pitch (comp C major)))
+
+### `whelmed.chord`
+
+The `phrase` function accepts chords as well as simple pitches. This namespace provides simple ways
+to manipulate them:
+- `triad` is the tonic, which can be manipulated to form other chords.
+- `root` scales the chord up to the specified root.
+- `inversion` inverts the chord, leaving the root where it is.
+
+For example, a fourth chord, then the second inversio of the fifth:
+
+    (phrase
+      [4 4]
+      [(-> triad (root 3))
+       (-> triad (inversion 2) (root 4))])
+
+### `whelmed.temperament`
+
+This namespace translates midi pitches into frequencies. Overtone's `midi->hz` will usually do
+just fine, but if you want to experiement with more exotic temperaments, there are plenty here.
+
+In particular:
+- `equal` is equivalent to `midi->hz` and translates frequencies into pitches like a piano is tuned.
+- `just` uses pure ratios, and more closely models how singers interpret intervals into frequencies.
+
+For example:
+
+    (->> (phrase (repeat 1) (range 8))
+         (where :pitch (comp just C major)))
 
 Advanced use
 ------------
