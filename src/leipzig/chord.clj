@@ -6,6 +6,7 @@
  (if k
    (-> m (update-in [k] f) (update-all ks f))
    m))
+
 (defn- mapval [m f] (update-all m (keys m) f))
 
 (defn root
@@ -31,3 +32,8 @@
   (let [stable (->> [:i :iii :v] (take n) set) 
         lowered (set/difference (-> chord keys set) stable)]
     (update-all chord (seq lowered) scale/lower)))
+
+(defn augment
+  "Adds n to key k in the chord."
+  [chord k n]
+  (update-in chord [k] (scale/from n)))

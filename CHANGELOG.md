@@ -4,6 +4,10 @@ Change Log
 Leipzig still sees occasional breaking changes, though every effort will be made to
 document them here.
 
+New in 0.10.0
+------------
+* *Addition* - `augment` adds to an element of a chord.
+
 New in 0.9.0
 ------------
 * *Addition* - `phrase` accepts vector durations, representing repeated notes.

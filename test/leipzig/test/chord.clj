@@ -25,3 +25,6 @@
 (fact "The third inversion drops everything except the tonic, third and fifth."
   (-> seventh (inversion 3)) =>
   {:i 0, :iii 2, :v 4, :vii -1})
+
+(fact "Augmenting a chord adds to the specified element."
+  (-> triad (augment :iii 1)) => {:i 0 :iii 3 :v 4})
