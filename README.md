@@ -21,12 +21,19 @@ ready to run.
 Get started
 -----------
 
-Leipzig models music as a sequence of notes, each of which is a map:
+Leipzig models music as a sequence of notes, each of which is a map. They are ordered by `:time`:
 
-    {:time 1
-     :pitch 67
-     :duration 2
-     :part :melody}
+    [{:time 0
+      :pitch 67
+      :duration 2
+      :part :melody}
+     {:time 2
+      :pitch 71
+      :duration 2
+      :part :melody}]
+
+When using Leipzig, it's helpful to keep this model of notes in mind. Leipzig's functions are convenient
+ways of manipulating this basic structure, but there's nothing to stop you from building your own.
 
 You can create a melody with the `phrase` function. Here's a simple melody:
 
