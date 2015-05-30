@@ -153,7 +153,7 @@ to manipulate them:
 - `root` scales the chord up to the specified root.
 - `inversion` inverts the chord, leaving the root where it is.
 
-For example, a fourth chord, then the second inversio of the fifth:
+For example, a fourth chord, then the second inversion of the fifth:
 
     (phrase
       [4 4]
@@ -163,7 +163,7 @@ For example, a fourth chord, then the second inversio of the fifth:
 ### `whelmed.temperament`
 
 This namespace translates midi pitches into frequencies. Overtone's `midi->hz` will usually do
-just fine, but if you want to experiement with more exotic temperaments, there are plenty here.
+just fine, but if you want to experiment with more exotic temperaments, there are plenty here.
 
 In particular:
 - `equal` is equivalent to `midi->hz` and translates frequencies into pitches like a piano is tuned.
