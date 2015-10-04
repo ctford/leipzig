@@ -1,6 +1,6 @@
 (ns leipzig.example.row-row-row-your-boat
   (:require [overtone.live :as overtone]
-            [leipzig.melody :refer [bpm all phrase then times where with]]
+            [leipzig.melody :refer [bpm all phrase then times where with tempo]]
             [leipzig.scale :as scale]
             [leipzig.canon :as canon]
             [leipzig.chord :as chord]
@@ -60,8 +60,7 @@
   (->> melody
     (canon/canon (comp (canon/simple 4) (partial all :part :follower)))
     (with bass)
-    (where :time speed)
-    (where :duration speed)
+    (tempo speed)
     (where :pitch key)
     live/play))
 
