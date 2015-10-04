@@ -7,6 +7,7 @@ document them here.
 New in 0.10.0
 ------------
 * *Addition* - `augment` adds to an element of a chord.
+* *Bug fix* - The example works again.
 
 New in 0.9.0
 ------------

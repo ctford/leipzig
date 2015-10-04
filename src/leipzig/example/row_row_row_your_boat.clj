@@ -1,6 +1,6 @@
 (ns leipzig.example.row-row-row-your-boat
   (:require [overtone.live :as overtone]
-            [leipzig.melody :refer [bpm is phrase then times where with]]
+            [leipzig.melody :refer [bpm all phrase then times where with]]
             [leipzig.scale :as scale]
             [leipzig.canon :as canon]
             [leipzig.chord :as chord]
@@ -46,19 +46,19 @@
              ; Life  is   but  a    dream!
        (phrase [2/3  1/3  2/3  1/3  6/3]
                [  4    3    2    1    0]))
-    (where :part (is :leader))))
+    (all :part :leader)))
 
 (def bass "A bass part to accompany the melody."
   (->> (phrase [1  1 2]
                [0 -3 0])
-     (where :part (is :bass))
+     (all :part :bass)
      (times 4)))
 
 (defn row-row
   "Play the tune 'Row, row, row your boat' as a round."
   [speed key]
   (->> melody
-    (canon/canon (comp (canon/simple 4) (partial where :part (is :follower))))
+    (canon/canon (comp (canon/simple 4) (partial all :part :follower)))
     (with bass)
     (where :time speed)
     (where :duration speed)
