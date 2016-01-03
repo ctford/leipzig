@@ -12,24 +12,12 @@
   [k values notes]
   (map #(assoc %1 k %2) notes values))
 
-(defprotocol Utterable (utter [thing time pitch duration]))
-
-(extend-protocol Utterable
-  Object
-  (utter [pitch time duration velocity]
-    [{:pitch pitch :time time :duration duration :velocity velocity}])
-  
-  clojure.lang.Sequential
-  (utter [cluster time duration velocity]
-    (mapcat #(utter % time duration velocity) cluster))
-
-  clojure.lang.MapEquivalence
-  (utter [chord time duration velocity]
-    (utter (-> chord vals sort) time duration velocity))
-
-  nil
-  (utter [pitch time duration velocity]
-    [{:time time :duration duration}]))
+(defn utter [object time duration velocity]
+  (cond
+    (number? object)     [{:pitch object :time time :duration duration :velocity velocity}]
+    (sequential? object) (mapcat #(utter % time duration velocity) object)
+    (map? object)        (utter (-> object vals sort) time duration velocity)
+    (nil? object)        [{:time time :duration duration}]))
 
 (defn phrase
   "Translates a sequence of durations and pitches into a melody.
@@ -169,6 +157,6 @@
                       completion (/ position duration)
                       extent (- by 1)
                       base t
-                      extra (* position 1/2 completion extent)]
+                      extra (* position #? (:clj 1/2 :cljs 0.5) completion extent)]
                   (+ base extra))
       :otherwise (+ (rate to) (* by (- t to))))))

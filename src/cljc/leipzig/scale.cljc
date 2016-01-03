@@ -1,17 +1,22 @@
 (ns leipzig.scale
-  (:require [clojure.math.numeric-tower :as math]))
-
-(defmacro defs [names docstring values]
-  `(do ~@(map
-     (fn [name value] `(def ~name ~docstring ~value))
-     names (eval values))))
+  #?(:clj  (:require [clojure.math.numeric-tower :as math]
+                    [leipzig.macros :refer [defs]])
+     :cljs (:require-macros [leipzig.macros :refer [defs]])))
 
 (defn- sum-n [series n] (apply + (take n series)))
+
+(def floor
+  #?(:clj #(math/floor %)
+     :cljs #(.floor js/Math %)))
+
+(def ceil
+  #?(:clj #(math/ceil %)
+     :cljs #(.ceil js/Math %)))
 
 (defmulti scale-of
   (fn [intervals degree]
     (cond 
-      (not= degree (math/floor degree)) :fraction
+      (not= degree (floor degree)) :fraction
       (neg? degree)                     :negative
       :otherwise                        :natural)))
 
@@ -22,9 +27,9 @@
 (defmethod scale-of :negative [intervals degree]
   (->> degree - (scale-of (reverse intervals)) -))
 (defmethod scale-of :fraction [intervals degree]
-  (let [lower (scale-of intervals (math/floor degree))
-        upper (scale-of intervals (math/ceil degree))
-        fraction (- degree (math/floor degree))]
+  (let [lower (scale-of intervals (floor degree))
+        upper (scale-of intervals (ceil degree))
+        fraction (- degree (floor degree))]
   (+ lower (* fraction (- upper lower)))))
 
 (def major "Seven-tone scale, commonly used in Western music." (scale [2 2 1 2 2 2 1]))
