@@ -1,6 +1,5 @@
 (ns leipzig.scale
-  #?(:clj  (:require [clojure.math.numeric-tower :as math]
-                    [leipzig.macros :refer [defs]])
+  #?(:clj  (:require [clojure.math.numeric-tower :as math])
      :cljs (:require-macros [leipzig.macros :refer [defs]])))
 
 (defn- sum-n [series n] (apply + (take n series)))
@@ -39,24 +38,26 @@
 
 (defn from [base] (partial + base))
 
-(defs
-  [C D E F G A B]
-  "A key, expressed as a translation function."
-  (map
-    (comp from (from 60) major)
-    (range)))
+(def C (from 60))
+(def D (from 62))
+(def E (from 64))
+(def F (from 65))
+(def G (from 67))
+(def A (from 69))
+(def B (from 71))
 
-(defs
-  [sharp flat]
-  "A modification of a key, expressed as a translation function."
-  [inc dec])
+(def sharp inc)
+(def flat dec)
 
 (defn mode [scale n] (comp #(- % (scale n)) scale (from n)))
 
-(defs
-  [ionian dorian phrygian lydian mixolydian aeolian locrian]
-  "A heptatonic mode."
-  (map (partial mode major) (range)))
+(def ionian (mode major 0))
+(def dorian (mode major 1))
+(def phrygian (mode major 2))
+(def lydian (mode major 3))
+(def mixolydian (mode major 4))
+(def aeolian (mode major 5))
+(def locrian (mode major 6))
 
 (def minor "Natural minor is another name for the Aeolian mode." aeolian)
 
