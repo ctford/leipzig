@@ -1,6 +1,5 @@
 (ns leipzig.scale
-  #?(:clj  (:require [clojure.math.numeric-tower :as math])
-     :cljs (:require-macros [leipzig.macros :refer [defs]])))
+  #?(:clj (:require [clojure.math.numeric-tower :as math])))
 
 (defn- sum-n [series n] (apply + (take n series)))
 
