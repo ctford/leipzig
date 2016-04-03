@@ -6,6 +6,7 @@ document them here.
 
 New in 0.10.0
 ------------
+* *Addition* - Clojurescript is supported on all namespaces other than `live`.
 * *Addition* - `augment` adds to an element of a chord.
 * *Bug fix* - The example works again.
 
