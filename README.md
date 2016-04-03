@@ -207,6 +207,13 @@ The `nil`s generate notes without pitches, representing rests. This is convenien
       (where :pitch (comp scale/C scale/major))
       live/play)
 
+Clojurescript
+-------------
+
+Leipzig supports Clojurescript for all of its namespaces save `leipzig.live`. The `live` namespace depends directly on
+Overtone, so it cannot be used in the browser. However the rest of Leipzig can be used so long as an alternative synthesis
+engine is present like the Web Audio API. [Klangmeister](http://ctford.github.io/klangmeister/) is a good example of this.
+
 Examples
 --------
 
