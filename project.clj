@@ -1,5 +1,5 @@
 (defproject leipzig "0.11.0-SNAPSHOT"
-  :description "A composition library for Overtone."
+  :description "A composition library for Clojure and Clojurescript."
   :url "http://github.com/ctford/leipzig"
   :license {:name "The MIT License"
             :url "http://opensource.org/licenses/MIT"
