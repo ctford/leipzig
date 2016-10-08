@@ -5,9 +5,9 @@
             :url "http://opensource.org/licenses/MIT"
             :distribution :repo
             :comments "Same as Overtone"}
-  :dependencies	[[org.clojure/clojure "1.7.0"]
+  :dependencies	[[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.7.170"]
-                 [overtone "0.9.1"]
+                 [overtone "0.10.1"]
                  [org.clojure/math.numeric-tower "0.0.4"]]
   :source-paths ["src/clj" "src/cljc"]
   :profiles {:dev
