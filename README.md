@@ -217,7 +217,7 @@ engine is present like the Web Audio API. [Klangmeister](http://ctford.github.io
 Examples
 --------
 
-See [Row, row, row your boat](src/leipzig/example/row_row_row_your_boat.clj) or
+See [Row, row, row your boat](src/clj/leipzig/example/row_row_row_your_boat.clj) or
 [whelmed](https://github.com/ctford/whelmed) for examples.
 
 In [Leipzig from scratch](https://www.youtube.com/watch?v=Lp_kQh34EWA), I demonstrate how to create a piece from
