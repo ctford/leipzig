@@ -9,7 +9,7 @@ Use
 ---
 Include it as a dependency in your `project.clj`, along with [Overtone](https://github.com/overtone/overtone):
 
-    [overtone "0.9.1"]
+    [overtone "0.10.1"]
     [leipzig "0.10.0"]
 
 Leiningen template
