@@ -37,7 +37,7 @@ ways of manipulating this basic structure, but there's nothing to stop you from 
 
 You can create a melody with the `phrase` function. Here's a simple melody:
 
-    (require '[leipzig.melody :refer [bpm is phrase then times where with]])
+    (require '[leipzig.melody :refer [all bpm is phrase tempo then times where with]])
 
     (def melody
              ; Row,  row,  row   your  boat
