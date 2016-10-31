@@ -43,9 +43,7 @@ You can create a melody with the `phrase` function. Here's a simple melody:
 
 ```clojure
 (require '[leipzig.melody :refer [bpm is phrase then times where with]])
-```
 
-```clojure
 (def melody
          ; Row,  row,  row   your  boat
   (phrase [3/3   3/3   2/3   1/3   3/3]
@@ -60,21 +58,15 @@ To play a melody, first define an arrangement. `play-note` is a multimethod that
 (require '[overtone.live :as overtone]
          '[leipzig.live :as live]
          '[leipzig.scale :as scale])
-```
 
-```clojure
 (overtone/definst beep [freq 440 dur 1.0]
   (-> freq
       overtone/saw
       (* (overtone/env-gen (overtone/perc 0.05 dur) :action overtone/FREE))))
-```
 
-```clojure
 (defmethod live/play-note :default [{midi :pitch seconds :duration}]
   (-> midi overtone/midi->hz (beep seconds)))
-```
 
-```clojure
 (->>
   melody
   (tempo (bpm 90))
@@ -91,16 +83,12 @@ Let's define two other parts to go with the original melody:
          ; Gent -ly  down the stream
   (phrase [2/3  1/3  2/3  1/3  6/3]
           [  2    1    2    3    4]))
-```
 
-```clojure
 (def bass "A bass part to accompany the melody."
   (->> (phrase [1  1 2]
                [0 -3 0])
        (all :part :bass)))
-```
 
-```clojure
 (defmethod live/play-note :bass [{midi :pitch}]
   ; Halving the frequency drops the note an octave.
   (-> midi overtone/midi->hz (/ 2) (beep 0.5)))
@@ -151,16 +139,12 @@ For example:
 ```clojure
 (defmethod live/play-note :melody [{midi :pitch}]
   (some-> midi overtone/midi->hz beep))
-```
 
-```clojure
 (def boring-scale
   (->> (phrase (repeat 1) (range 8))
        (all :part :melody)
        (where :pitch (comp C major))))
-```
 
-```clojure
 (jam (var boring-scale))
 ```
 
@@ -219,9 +203,7 @@ In addition to simple pitches, `phrase` can take maps representing chords or `ni
 
 ```clojure
 (require '[leipzig.chord :as chord])
-```
 
-```clojure
 (def chords "Off-beat chords."
   (->> (phrase (repeat 1/2)
                [nil chord/triad
@@ -238,14 +220,10 @@ The `nil`s generate notes without pitches, representing rests. This is convenien
 ```clojure
 (require '[leipzig.melody :refer [wherever]]
          '[leipzig.scale :refer [lower]])
-```
 
-```clojure
 (defmethod live/play-note :chords [{midi :pitch}]
   (when midi (-> midi overtone/midi->hz beep)))
-```
 
-```clojure
 (->>
   (times 2 chords)
   (wherever :pitch, :pitch lower)
