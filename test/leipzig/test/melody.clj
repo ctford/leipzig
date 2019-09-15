@@ -14,14 +14,20 @@
     [{:time 0 :duration 0 :part :bass}
      {:time 1 :duration 3}])
 
-(fact "cut truncates a melody"
+(fact "cut truncates or pads a melody to fit."
   (->> (phrase [1 2 3] [0 1 2]) (cut 3)) =>
     [{:time 0, :duration 1, :pitch 0}
      {:time 1, :duration 2, :pitch 1}]
 
   (->> (phrase [1 2 3] [0 1 2]) (cut 2)) =>
     [{:time 0, :duration 1, :pitch 0}
-     {:time 1, :duration 1, :pitch 1}])
+     {:time 1, :duration 1, :pitch 1}]
+
+  (->> (phrase [1 2 3] [0 1 2]) (cut 7)) =>
+    [{:time 0, :duration 1, :pitch 0}
+     {:time 1, :duration 2, :pitch 1}
+     {:time 3, :duration 3, :pitch 2}
+     {:time 6, :duration 1, :rest? true}])
 
 (fact "but substitutes part of a melody for another."
    (->> (phrase (repeat 1) [0 1 2 3])
