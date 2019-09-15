@@ -76,17 +76,18 @@
   e.g. (->> melody (after 3))"
   [wait notes] (where :time (scale/from wait) notes))
 
-(defn- before? [a b] (<= (:time a) (:time b)))
 (defn with
   "Blends melodies.
   e.g. (->> melody (with bass drums))"
-  ([[a & other-as :as as] [b & other-bs :as bs]]
-   (cond
-     (empty? as) bs
-     (empty? bs) as
-     (before? a b) (cons a (lazy-seq (with other-as bs)))
-     :otherwise    (cons b (lazy-seq (with as other-bs)))))
-  ([as bs & others] (reduce with (cons as (cons bs others)))))
+  ([& melodies]
+   (letfn [(before? [{a :time} {b :time}] (<= a b))
+           (with* [[a & other-as :as as] [b & other-bs :as bs]]
+             (cond
+               (empty? as) bs
+               (empty? bs) as
+               (before? a b) (cons a (lazy-seq (with* other-as bs)))
+               :otherwise    (cons b (lazy-seq (with* as other-bs)))))]
+     (reduce with* [] melodies))))
 
 (defn but
   "Replaces part of a melody with another.
