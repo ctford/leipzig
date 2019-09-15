@@ -43,6 +43,7 @@
     notes
     translate
     trickle
+    (remove :rest?)
     (map (fn [{epoch :time :as note}]
            (->> (dissoc note :time)
                 play-note

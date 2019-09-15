@@ -4,6 +4,10 @@ Change Log
 Leipzig still sees occasional breaking changes, though every effort will be made to
 document them here.
 
+New in 0.11.0
+------------
+* *Addition* - `phrase` marks rests with `:rest?` and `play` ignores them.
+
 New in 0.10.0
 ------------
 * *Addition* - Clojurescript is supported on all namespaces other than `live`.

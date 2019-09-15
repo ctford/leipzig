@@ -17,7 +17,7 @@
     (number? object)     [{:pitch object :time time :duration duration :velocity velocity}]
     (sequential? object) (mapcat #(utter % time duration velocity) object)
     (map? object)        (utter (-> object vals sort) time duration velocity)
-    (nil? object)        [{:time time :duration duration}]))
+    (nil? object)        [{:time time :duration duration :rest? true}]))
 
 (defn phrase
   "Translates a sequence of durations and pitches into a melody.
@@ -42,7 +42,8 @@
   "Translates a sequence of durations into a rhythm.
   e.g. (rhythm [1 1 2])"
   [durations]
-  (phrase durations (repeat nil)))
+  (->> (phrase durations (repeat 0)) ; If we use (repeat nil) that means rest.
+       (map #(dissoc % :pitch))))
 
 (def is
   "Synonym for constantly.
