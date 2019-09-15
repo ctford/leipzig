@@ -128,7 +128,7 @@
   [{:time 0 :duration 1 :pitch 2}
    {:time 1 :duration 3 :pitch 4}])
 
-(fact
+(fact "times repeats a melody."
   (->> (phrase [2] [1]) (times 2)) =>
     [{:time 0 :duration 2 :pitch 1}
      {:time 2 :duration 2 :pitch 1}])
