@@ -14,6 +14,15 @@
     [{:time 0 :duration 0 :part :bass}
      {:time 1 :duration 3}])
 
+(fact "cut truncates a melody"
+  (->> (phrase [1 2 3] [0 1 2]) (cut 3)) =>
+    [{:time 0, :duration 1, :pitch 0}
+     {:time 1, :duration 2, :pitch 1}]
+
+  (->> (phrase [1 2 3] [0 1 2]) (cut 2)) =>
+    [{:time 0, :duration 1, :pitch 0}
+     {:time 1, :duration 1, :pitch 1}])
+
 (fact "but substitutes part of a melody for another."
    (->> (phrase (repeat 1) [0 1 2 3])
      (but 2 4 (phrase (repeat 1/4) [8 7 6 5]))) =>
@@ -58,12 +67,12 @@
   (phrase [1 2] [3 4]) =>
     [{:time 0 :duration 1 :pitch 3}
      {:time 1 :duration 2 :pitch 4}]
-  
+
   (phrase [1 1 2] [3 nil 4]) =>
     [{:time 0 :duration 1 :pitch 3}
      {:time 1 :duration 1 :rest? true}
      {:time 2 :duration 2 :pitch 4}]
-  
+
   (phrase [1 2] [0 [2 4]]) =>
     [{:time 0 :duration 1 :pitch 0}
      {:time 1 :duration 2 :pitch 2}
@@ -80,7 +89,7 @@
      {:time 1 :duration 2 :pitch 3}
      {:time 1 :duration 2 :pitch 5}
      {:time 1 :duration 2 :pitch 7}]
-  
+
   (phrase [1 2] [2 (-> chord/triad (dissoc :iii))]) =>
     [{:time 0 :duration 1 :pitch 2}
      {:time 1 :duration 2 :pitch 0}

@@ -7,6 +7,7 @@ document them here.
 New in 0.11.0
 ------------
 * *Addition* - `phrase` marks rests with `:rest?` and `play` ignores them.
+* *Addition* - `cut` truncates melodies.
 * *Bug fix* - `with` is properly variadic, including one or zero arguments.
 
 New in 0.10.0

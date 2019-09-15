@@ -89,6 +89,13 @@
                :otherwise    (cons b (lazy-seq (with* as other-bs)))))]
      (reduce with* [] melodies))))
 
+(defn cut
+  "Discard notes after a cutoff."
+  [cutoff notes]
+  (->> notes
+       (take-while #(-> % :time (< cutoff)))
+       (map #(assoc % :duration (min (:duration %) (- cutoff (:time %)))))))
+
 (defn but
   "Replaces part of a melody with another.
   e.g. (->> notes (but 2 4 variation))"
