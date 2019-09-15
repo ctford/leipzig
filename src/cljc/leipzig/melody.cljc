@@ -140,12 +140,11 @@
   "Transform both :time and :duration according to timing.
   e.g. (->> notes (tempo (bpm 120)))"
   [timing notes]
-  (->> notes
-       (map (fn [{start :time duration :duration :as note}]
-              (-> note
-                  (assoc :duration (- (timing (+ start duration))
-                                      (timing start))))))
-       (where :time timing)))
+  (letfn [(update-duration [{t :time d :duration :as note}]
+            (assoc note :duration (- (timing (+ t d)) (timing t))))]
+    (->> notes
+      (map update-duration)
+      (where :time timing))))
 
 (defn accelerando
   "Linearly interpolated change between from and to.
