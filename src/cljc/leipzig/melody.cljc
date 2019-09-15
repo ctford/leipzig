@@ -50,14 +50,14 @@
   e.g. (->> notes (wherever (comp not :part), :part (is :bass)))"
   constantly)
 
-(defn- if-applicable [applies? f] (fn [x] (if (applies? x) (f x) x)))
 (defn wherever
-  "Applies f to the k key of each note wherever condition? returns true.
+  "Applies f to the k key of each note wherever applies? returns true.
   e.g. (->> notes (wherever (comp not :part), :part (is :piano))"
   [applies? k f notes]
-  (map
-    (if-applicable applies? #(update-in % [k] f))
-    notes))
+  (letfn [(do-if [applies? f] (fn [x] (if (applies? x) (f x) x)))]
+    (map
+      (do-if applies? #(update-in % [k] f))
+      notes)))
 
 (defn where
   "Applies f to the k key of each note in notes, ignoring missing keys.
