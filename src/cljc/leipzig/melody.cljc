@@ -61,7 +61,7 @@
 
 (defn where
   "Applies f to the k key of each note in notes, ignoring missing keys.
-  e.g. (->> notes (where :time (bpm 90)))"
+  e.g. (->> notes (where :pitch inc))"
   [k f notes]
   (wherever #(contains? % k), k f notes))
 

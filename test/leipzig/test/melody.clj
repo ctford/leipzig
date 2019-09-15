@@ -5,8 +5,8 @@
             [leipzig.melody :refer :all]))
 
 (fact "Beats-per-minute is rendered in seconds."
-  (->> [{:time 90}] (where :time (bpm 90))) =>
-    [{:time 60}])
+  (->> [{:time 90 :duration 90}] (tempo (bpm 90))) =>
+    [{:time 60 :duration 60}])
 
 (fact "wherever applies a function to selected notes."
   (->> [{:time 0 :duration 0} {:time 1 :duration 3}]
