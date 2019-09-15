@@ -107,12 +107,14 @@
   (->> (rhythm [1 2 3]) duration) => 6
   (->> (rhythm [1 2 3]) (with (rhythm [100])) duration) => 100)
 
-(fact
+(fact "then puts one melody after another."
+  (->> [] (then (phrase [3] [4]))) =>
+    [{:time 0 :duration 3 :pitch 4}]
+
   (->> (phrase [1] [2]) (then (phrase [3] [4]))) =>
     [{:time 0 :duration 1 :pitch 2}
-     {:time 1 :duration 3 :pitch 4}])
+     {:time 1 :duration 3 :pitch 4}]
 
-(fact
   (->> (phrase [1] [2]) (then (after -2 (phrase [3 1] [4 5])))) =>
     [{:time -1 :duration 3 :pitch 4}
      {:time 0 :duration 1 :pitch 2}
