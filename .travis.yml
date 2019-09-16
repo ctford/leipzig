@@ -1,6 +1,5 @@
 sudo: false
 language: clojure
-lein: lein2
 script: lein2 midje leipzig.test.* 
 jdk:
   - openjdk9
