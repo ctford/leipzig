@@ -6,6 +6,7 @@ document them here.
 
 New in 0.11.0
 ------------
+* *Addition* - `jam` and `play` now accept a custom play fn.
 * *Addition* - `phrase` marks rests with `:rest?` and `play` ignores them.
 * *Addition* - `cut` truncates or pads melodies to fit.
 * *Bug fix* - `with` is properly variadic, including one or zero arguments.
