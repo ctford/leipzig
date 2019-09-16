@@ -35,8 +35,8 @@
        (melody/where :time (partial * 1000))
        (melody/after (overtone/now))))
 
-(def play-fn
-  "A function that plays a note via overtone/at"
+(def play-at
+  "Play a note via overtone/at."
   (fn [epoch note]
     (overtone/at epoch (play-note note))))
 
@@ -44,7 +44,7 @@
   "Plays notes now.
   e.g. (->> melody play)"
   ([notes]
-   (play play-fn notes))
+   (play play-at notes))
   ([play-fn notes]
    (->>
      notes
@@ -52,8 +52,7 @@
      trickle
      (remove :rest?)
      (map (fn [{epoch :time :as note}]
-            (->> (dissoc note :time)
-                 (play-fn epoch)
+            (->> (play-fn epoch)
                  (when (< (overtone/now) epoch))))) ; Don't play notes in the past.
      dorun
      future
@@ -79,7 +78,7 @@
        ; Later...
        (def melody nil)"
   ([riff]
-   (jam play-fn))
+   (jam play-at))
   ([riff play-fn]
    (->> riff forever
         (play play-fn))))
