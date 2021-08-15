@@ -6,9 +6,7 @@
   (/ (tuning (+ base interval)) (tuning base)))
 
 (defn- ratio-of-sum [tuning base interval-1 interval-2]
-  (*
-   (/ (tuning (+ base interval-1)) (tuning base))
-   (/ (tuning (+ base interval-2)) (tuning base))))
+  (* (ratio-of tuning base interval-1) (ratio-of tuning base interval-2)))
 
 (defmacro def- [sym init] `(def ^:private ~sym ~init))
 
