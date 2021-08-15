@@ -9,6 +9,7 @@ New in 0.11.0
 * *Addition* - `phrase` marks rests with `:rest?` and `play` ignores them.
 * *Addition* - `cut` truncates or pads melodies to fit.
 * *Bug fix* - `with` is properly variadic, including one or zero arguments.
+* *Bug fix* - `just` has a properly consonant major sixth.
 
 New in 0.10.0
 ------------

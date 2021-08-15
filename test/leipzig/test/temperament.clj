@@ -2,11 +2,19 @@
   (:require [leipzig.temperament :as temperament]
             [midje.sweet :refer :all]))
 
-(defn- ratio-of [tuning base interval] (/ (tuning (+ base interval)) (tuning base)))
+(defn- ratio-of [tuning base interval]
+  (/ (tuning (+ base interval)) (tuning base)))
+
+(defn- ratio-of-sum [tuning base interval-1 interval-2]
+  (*
+   (/ (tuning (+ base interval-1)) (tuning base))
+   (/ (tuning (+ base interval-2)) (tuning base))))
+
 (defmacro def- [sym init] `(def ^:private ~sym ~init))
 
 (def- octave 12)
 (def- minor-seventh 10)
+(def- major-sixth 9)
 (def- minor-sixth 8)
 (def- fifth 7)
 (def- augmented-fourth 6)
@@ -15,6 +23,7 @@
 (def- minor-third 3)
 (def- tone 2)
 (def- semitone 1)
+(def- unison 0)
 
 (def- exp #(java.lang.Math/pow %1 %2))
 (defn- cent [r] (exp 2 (/ r 1200)))
@@ -61,14 +70,14 @@
   (ratio-of (temperament/pythagorean 69) 69 (- octave)) => 1/2)
 
 (fact "Five-limit just intonation has pure sixths, fifths, fourths, thirds and octaves."
-  (ratio-of (temperament/just 69) 69 fifth)           => 3/2
-  (ratio-of (temperament/just 69) 69 (- fourth))      => 3/4
-  (ratio-of (temperament/just 69) 69 fourth)          => 4/3
-  (ratio-of (temperament/just 69) 69 (- fifth))       => 2/3
-  (ratio-of (temperament/just 69) 69 major-third)     => 5/4
-  (ratio-of (temperament/just 69) 69 (- minor-sixth)) => 5/8
-  (ratio-of (temperament/just 69) 69 octave)          => 2/1
-  (ratio-of (temperament/just 69) 69 (- octave))      => 1/2)
+  (ratio-of (temperament/just 69) 69 fifth)                       => 3/2
+  (ratio-of-sum (temperament/just 69) 69 fifth fourth)            => 2/1
+  (ratio-of (temperament/just 69) 69 major-third)                 => 5/4
+  (ratio-of-sum (temperament/just 69) 69 major-third minor-sixth) => 2/1
+  (ratio-of (temperament/just 69) 69 major-sixth)                 => 5/3
+  (ratio-of-sum (temperament/just 69) 69 major-sixth minor-third) => 2/1
+  (ratio-of (temperament/just 69) 69 octave)                      => 2/1
+  (ratio-of-sum (temperament/just 69) 69 octave unison)           => 2/1)
 
 (fact "Seven-limit just intonation has more consonant major seconds, augmented fourths
       and minor sevenths."

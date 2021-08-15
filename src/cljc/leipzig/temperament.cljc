@@ -1,5 +1,4 @@
 (ns leipzig.temperament)
-
 (def pow #?(:clj #(java.lang.Math/pow %1 %2)
             :cljs #(.pow js/Math %1 %2)))
 
@@ -47,7 +46,7 @@
   e.g. ((five-limit-just 61) 69)"
   (align-concert-a
     (fn [midi]
-      (temper (- midi root) [(/ 1 1) (/ 135 128) (/ 9 8) (/ 6 5) (/ 5 4) (/ 4 3) (/ 45 32) (/ 3 2) (/ 8 5) (/ 27 16) (/ 9 5) (/ 15 8)]))))
+      (temper (- midi root) [(/ 1 1) (/ 135 128) (/ 9 8) (/ 6 5) (/ 5 4) (/ 4 3) (/ 45 32) (/ 3 2) (/ 8 5) (/ 5 3) (/ 9 5) (/ 15 8)]))))
 
 (defn seven-limit-just [root]
   "Returns a function that converts midi to hertz using just intonation, measuring ratios
