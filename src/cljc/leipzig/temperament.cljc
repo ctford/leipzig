@@ -55,7 +55,7 @@
   e.g. ((seven-limit-just 61) 69)"
   (align-concert-a
     (fn [midi]
-      (temper (- midi root) [(/ 1 1) (/ 135 128) (/ 8 7) (/ 6 5) (/ 5 4) (/ 4 3) (/ 7 5) (/ 3 2) (/ 8 5) (/ 27 16) (/ 7 4) (/ 15 8)]))))
+      (temper (- midi root) [(/ 1 1) (/ 135 128) (/ 8 7) (/ 6 5) (/ 5 4) (/ 4 3) (/ 7 5) (/ 3 2) (/ 8 5) (/ 5 3) (/ 7 4) (/ 15 8)]))))
 
 (def just
   "Returns a function that converts midi to hertz using just intonation, measuring ratios

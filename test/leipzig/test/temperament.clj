@@ -77,6 +77,15 @@
   (ratio-of (temperament/just 69) 69 octave)                      => 2/1
   (ratio-of-sum (temperament/just 69) 69 octave unison)           => 2/1)
 
+(fact "Seven-limit just intonation has the same sixths, fifths, fourths, thirds
+      and octaves as five-limit."
+  ((temperament/seven-limit-just 69) (+ 69 fifth))       => ((temperament/five-limit-just 69) (+ 69 fifth))
+  ((temperament/seven-limit-just 69) (+ 69 fourth))      => ((temperament/five-limit-just 69) (+ 69 fourth))
+  ((temperament/seven-limit-just 69) (+ 69 major-third)) => ((temperament/five-limit-just 69) (+ 69 major-third))
+  ((temperament/seven-limit-just 69) (+ 69 minor-third)) => ((temperament/five-limit-just 69) (+ 69 minor-third))
+  ((temperament/seven-limit-just 69) (+ 69 major-sixth)) => ((temperament/five-limit-just 69) (+ 69 major-sixth))
+  ((temperament/seven-limit-just 69) (+ 69 minor-sixth)) => ((temperament/five-limit-just 69) (+ 69 minor-sixth)))
+
 (fact "Seven-limit just intonation has more consonant major seconds, augmented fourths
       and minor sevenths."
   (ratio-of (temperament/seven-limit-just 69) 69 tone)             => 8/7
