@@ -9,7 +9,7 @@
 
 (defn- trickle [[note & others]]
   (when-let [{epoch :time} note]
-    (Thread/sleep (max 0 (- epoch (+ 100 (overtone/now)))))
+    (Thread/sleep (long (max 0 (- epoch (+ 100 (overtone/now))))))
     (cons note (lazy-seq (trickle others)))))
 
 (def channels (atom []))
