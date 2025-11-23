@@ -141,10 +141,14 @@
   "Transform both :time and :duration according to timing.
   e.g. (->> notes (tempo (bpm 120)))"
   [timing notes]
-  (letfn [(update-duration [{t :time d :duration :as note}]
-            (assoc note :duration (- (timing (+ t d)) (timing t))))]
+  (letfn [(update-durations [{t :time d :duration h :hold :as note}]
+                            (cond-> note
+                              d
+                              (assoc :duration (- (timing (+ t d)) (timing t)))
+                              h
+                              (assoc :hold (- (timing (+ t h)) (timing t)))))]
     (->> notes
-      (map update-duration)
+      (map update-durations)
       (where :time timing))))
 
 (defn cut
