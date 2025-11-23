@@ -121,9 +121,10 @@
        (after (duration earlier))
        (with earlier)))
 
-(defn mapthen [f & melodies]
+(defn mapthen
   "Apply f to each melody, then join them together.
   e.g. (mapthen drop-last [bassline vocals])"
+  [f & melodies]
   (->> melodies
        (apply map f)
        (reduce #(then %2 %1))))

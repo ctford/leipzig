@@ -28,7 +28,10 @@
   (overtone/stop)
   (reset! channels []))
 
-(defn- translate [notes]
+(defn- translate
+  "Convert notes from relative :time in seconds to absolute :time in milliseconds,
+   starting now."
+  [notes]
   (->> notes
        (melody/after (-> notes first :time -)) ; Allow for notes that lead in.
        (melody/after 0.1) ; Make sure we have time to realise the seq.
