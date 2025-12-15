@@ -19,7 +19,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'maven'
 
       - name: Setup Clojure
         uses: DeLaGuardo/setup-clojure@12.1
