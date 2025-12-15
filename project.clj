@@ -14,10 +14,10 @@
              {:plugins [[lein-midje "3.2.1"]
                         [lein-cljsbuild "1.1.8"]
                         [codox "0.8.8"]]
-              :dependencies  [[com.cemerick/piggieback "0.2.1"]
-                              [org.clojure/tools.nrepl "0.2.10"]
+              :dependencies  [[cider/piggieback "0.6.0"]
+                              [nrepl/nrepl "1.3.0"]
                               [midje "1.9.9"] ]
-              :repl-options  {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}}
+              :repl-options  {:nrepl-middleware [cider.piggieback/wrap-cljs-repl]}}}
   :cljsbuild {:builds {:prod {:source-paths ["src/cljc"]
                               :compiler     {:output-to     "target/cljs/leipzig.js"
                                              :optimizations :whitespace}}}}
