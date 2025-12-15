@@ -191,7 +191,7 @@
   ((interpolate [[0 0] [1 1]]) 1/2) => 1/2
   ((interpolate [[0 0] [1 1] [2 2]]) 3/2) => 3/2)
 
-(future-fact "interpolate returns 1 outside the supplied coordinates."
+(fact "interpolate returns 1 outside the supplied coordinates."
   ((interpolate []) 1) => 1
   ((interpolate [[2 2]]) 0) => 1
   ((interpolate [[2 2]]) 3) => 1)
