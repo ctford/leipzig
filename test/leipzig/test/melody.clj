@@ -187,7 +187,7 @@
       (->> (phrase [1 1 1] [0 0 0]) (tempo (accelerando 0 2 1/2))) =>
       (phrase [7/8 5/8 1/2] [0 0 0]))
 
-(future-fact "interpolate linearly interpolates between the supplied coordinates."
+(fact "interpolate linearly interpolates between the supplied coordinates."
   ((interpolate [[0 0] [1 1]]) 1/2) => 1/2
   ((interpolate [[0 0] [1 1] [2 2]]) 3/2) => 3/2)
 

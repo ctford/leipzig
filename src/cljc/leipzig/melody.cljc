@@ -157,6 +157,33 @@
       (->> starters (then (phrase [margin-remaining] [nil])))
       starters)))
 
+(defn interpolate
+  "Returns a function that linearly interpolates between coordinate pairs.
+  Coordinates should be a sequence of [x y] pairs.
+  Returns 1 for values outside the coordinate range."
+  [coordinates]
+  (fn [x]
+    (if (empty? coordinates)
+      1
+      (let [sorted-coords (sort-by first coordinates)
+            [x-min] (first sorted-coords)
+            [x-max] (last sorted-coords)]
+        (cond
+          (< x x-min) 1
+          (> x x-max) 1
+          :else
+          (let [;; Find the two points to interpolate between
+                before (last (filter #(<= (first %) x) sorted-coords))
+                after (first (filter #(> (first %) x) sorted-coords))]
+            (if (nil? after)
+              ;; x is exactly on the last point
+              (second before)
+              ;; Linear interpolation between before and after
+              (let [[x1 y1] before
+                    [x2 y2] after
+                    t (/ (- x x1) (- x2 x1))]
+                (+ y1 (* t (- y2 y1)))))))))))
+
 (defn accelerando
   "Linearly interpolated change between from and to.
   e.g. (->> notes (tempo (accelerando 0 4 3/2))))"
