@@ -294,20 +294,16 @@ Development
 
 Leipzig includes MCP (Model Context Protocol) integration for interactive development with Claude Code.
 
-To start an NREPL server for development:
+To enable interactive development, start an NREPL server:
 
-    ./start-nrepl.sh
+    lein repl
 
-Or manually:
-
-    lein repl :headless :host 127.0.0.1 :port 7888
-
-With Claude Code installed, the MCP NREPL server will automatically connect, enabling:
+With Claude Code installed, the MCP NREPL server (configured in `.mcp.json`) will automatically connect to your running NREPL, enabling:
 - Interactive Clojure code evaluation
 - Namespace and function exploration
 - Real-time code investigation
 
-The MCP configuration is in `.mcp.json` and will be automatically loaded by Claude Code.
+The MCP server connects to the NREPL port specified in `.nrepl-port` (created automatically by `lein repl`).
 
 Issues
 ------
