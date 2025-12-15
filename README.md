@@ -1,7 +1,8 @@
 [Leipzig](https://github.com/ctford/leipzig)
 ============================================
 
-[![Build Status](https://travis-ci.org/ctford/leipzig.png)](https://travis-ci.org/ctford/leipzig)
+[![CI](https://github.com/ctford/leipzig/workflows/CI/badge.svg)](https://github.com/ctford/leipzig/actions)
+[![ClojureScript Build](https://github.com/ctford/leipzig/workflows/ClojureScript%20Build/badge.svg)](https://github.com/ctford/leipzig/actions)
 
 A composition library for Clojure and Clojurescript by [@ctford](https://github.com/ctford).
 

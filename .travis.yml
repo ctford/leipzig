@@ -1,5 +1,0 @@
-sudo: false
-language: clojure
-script: lein midje leipzig.test.* 
-jdk:
-  - openjdk9
