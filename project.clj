@@ -5,14 +5,14 @@
             :url "http://opensource.org/licenses/MIT"
             :distribution :repo
             :comments "Same as Overtone"}
-  :dependencies	[[org.clojure/clojure "1.7.0"]
-                 [org.clojure/clojurescript "1.7.170"]
+  :dependencies	[[org.clojure/clojure "1.11.4"]
+                 [org.clojure/clojurescript "1.11.132"]
                  [overtone "0.9.1"]
                  [org.clojure/math.numeric-tower "0.0.4"]]
   :source-paths ["src/clj" "src/cljc"]
   :profiles {:dev
              {:plugins [[lein-midje "3.2.1"]
-                        [lein-cljsbuild "1.1.1"]
+                        [lein-cljsbuild "1.1.8"]
                         [codox "0.8.8"]]
               :dependencies  [[com.cemerick/piggieback "0.2.1"]
                               [org.clojure/tools.nrepl "0.2.10"]
