@@ -287,6 +287,28 @@ To run the unit tests without having to start Overtone's Supercollider server:
 
     lein midje leipzig.test.*
 
+Development
+-----------
+
+### NREPL and Claude Code Integration
+
+Leipzig includes MCP (Model Context Protocol) integration for interactive development with Claude Code.
+
+To start an NREPL server for development:
+
+    ./start-nrepl.sh
+
+Or manually:
+
+    lein repl :headless :host 127.0.0.1 :port 7888
+
+With Claude Code installed, the MCP NREPL server will automatically connect, enabling:
+- Interactive Clojure code evaluation
+- Namespace and function exploration
+- Real-time code investigation
+
+The MCP configuration is in `.mcp.json` and will be automatically loaded by Claude Code.
+
 Issues
 ------
 
